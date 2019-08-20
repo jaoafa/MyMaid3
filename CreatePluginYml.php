@@ -1,9 +1,10 @@
 <?php
+date_default_timezone_set("Asia/Tokyo");
 define("CommandLocation", __DIR__ . "/src/main/java/com/jaoafa/MyMaid3/Command/"); // コマンドがあるディレクトリ (/で終わらせること)
 define("YmlLocation", __DIR__ . "/src/main/resources/plugin.yml"); // plugin.ymlの位置(作成先)
 define("PluginName", "MyMaid3"); // プラグイン名
 define("MainClass", "com.jaoafa.MyMaid3.Main"); // メインクラス
-define("Version", "0.0.1"); // バージョン
+define("Version", date("YmdHi")); // バージョン
 define("Description", "General Plugin Version 3"); // プラグインの説明
 define("PermissionPrefix", "mymaid"); // パーミッションノードの接頭辞
 define("Author", "mine_book000"); // プラグインの制作者
