@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<project name="MyMaid3" default="CreatePluginYml">
+	<target name="CreatePluginYml" description="CreatePluginYml">
+		<exec executable="php">
+			<arg value="CreatePluginYml.php" />
+		</exec>
+	</target>
+</project>

@@ -1,0 +1,19 @@
+name: MyMaid3
+main: com.jaoafa.MyMaid3.Main
+version: 0.0.1
+description: General Plugin Version 3
+author: mine_book000
+database: true
+softdepend:
+  - PermissionsEx
+  - LuckPerms
+  - GeoipAPI
+  - dynmap
+  - Votifier
+  - jaoSuperAchievement
+  - MinecraftJPVoteMissFiller
+commands:
+  test:
+    description: test
+    usage: /test
+    permission: mymaid.test

@@ -1,0 +1,227 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jaoafa</groupId>
+	<artifactId>MyMaid3</artifactId>
+	<version>0.0.1</version>
+	<name>MyMaid3</name>
+	<description>わたしたちの「めいど」をここに。</description>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<finalName>MyMaid3</finalName>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>com.jaoafa.MyMaid3.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<configuration>
+							<target>
+								<exec executable="php">
+									<arg value="CreatePluginYml.php" />
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<filtering>true</filtering>
+				<directory>src/main/resources/</directory>
+			</resource>
+		</resources>
+	</build>
+	<repositories>
+		<!-- Spigot/Bukkit -->
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+		<!-- LuckPerms -->
+		<repository>
+			<id>TheCentralRepository</id>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
+		<!-- Dynmap API -->
+		<repository>
+			<id>mikeprimm-repo</id>
+			<url>http://repo.mikeprimm.com/</url>
+		</repository>
+		<!-- Vault API -->
+		<repository>
+			<id>vault-repo</id>
+			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!--Spigot-API -->
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.12.2-R0.1-SNAPSHOT</version>
+		</dependency>
+		<!--Bukkit API -->
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.12.2-R0.1-SNAPSHOT</version>
+		</dependency>
+		<!--CraftBukkit -->
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>1.12.2-R0.1-SNAPSHOT</version>
+			<systemPath>${basedir}/lib/craftbukkit-1.12.2.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- PermissionsEx(PEX) -->
+		<dependency>
+			<groupId>ru.tehkode</groupId>
+			<artifactId>PermissionsEx</artifactId>
+			<version>1.23.4</version>
+			<classifier>shaded</classifier>
+			<systemPath>${basedir}/lib/PermissionsEx.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- LuckPerms -->
+		<dependency>
+			<groupId>me.lucko.luckperms</groupId>
+			<artifactId>luckperms-api</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<!-- GeoIP API -->
+		<dependency>
+			<groupId>eu.theindra.geoip.Main</groupId>
+			<artifactId>geoip</artifactId>
+			<version>2.0</version>
+			<classifier>shaded</classifier>
+			<systemPath>${basedir}/lib/geoipAPI.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- Dynmap API -->
+		<dependency>
+			<groupId>org.dynmap</groupId>
+			<artifactId>dynmap-api</artifactId>
+			<version>2.0</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- Votifier -->
+		<dependency>
+			<groupId>com.vexsoftware</groupId>
+			<artifactId>votifier</artifactId>
+			<version>1.9</version>
+			<classifier>shaded</classifier>
+			<systemPath>${basedir}/lib/Votifier.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- jaoSuperAchievement -->
+		<dependency>
+			<groupId>com.jaoafa</groupId>
+			<artifactId>jaoSuperAchievement</artifactId>
+			<version>0.0.1</version>
+			<systemPath>${basedir}/lib/jaoSuperAchievement.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- TitleAPI -->
+		<dependency>
+			<groupId>com.connorlinfoot</groupId>
+			<artifactId>TitleAPI</artifactId>
+			<version>1.7.5</version>
+			<classifier>shaded</classifier>
+			<systemPath>${basedir}/lib/TitleAPI.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- MinecraftJPVoteMissFiller -->
+		<dependency>
+			<groupId>com.jaoafa</groupId>
+			<artifactId>MinecraftJPVoteMissFiller</artifactId>
+			<version>0.0.1</version>
+			<systemPath>${basedir}/lib/MinecraftJPVoteMissFiller.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- WorldGuard -->
+		<dependency>
+			<groupId>com.sk89q.worldguard</groupId>
+			<artifactId>worldguard</artifactId>
+			<version>6.2.1;84bc322</version>
+			<systemPath>${basedir}/lib/worldguard-6.2.1.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- WorldEdit -->
+		<dependency>
+			<groupId>com.sk89q.worldedit</groupId>
+			<artifactId>worldedit</artifactId>
+			<version>6.1.8-SNAPSHOT;cd4729f</version>
+			<systemPath>${basedir}/lib/worldedit-bukkit-6.1.7.3.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- MCBans -->
+		<dependency>
+			<groupId>com.mcbans.firestar</groupId>
+			<artifactId>mcbans</artifactId>
+			<version>4.3.3</version>
+			<systemPath>${basedir}/lib/MCBans.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- jaoReputation -->
+		<dependency>
+			<groupId>com.jaoafa</groupId>
+			<artifactId>JaoReputation</artifactId>
+			<version>0.0.1</version>
+			<systemPath>${basedir}/lib/jaoReputation.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<!-- Vault API -->
+		<dependency>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>VaultAPI</artifactId>
+			<version>1.6</version>
+		</dependency>
+	</dependencies>
+</project>
