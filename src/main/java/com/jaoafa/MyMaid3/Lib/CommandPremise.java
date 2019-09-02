@@ -1,4 +1,6 @@
-package com.jaoafa.MyMaid3;
+package com.jaoafa.MyMaid3.Lib;
+
+import java.util.List;
 
 public interface CommandPremise {
 
@@ -12,5 +14,5 @@ public interface CommandPremise {
 	 * コマンドの使い方を指定・返却します。
 	 * @return コマンドの使い方
 	 */
-	public String getUsage();
+	public List<String> getUsage();
 }

@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 0.0.1
+version: 201909030659
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -13,6 +13,23 @@ softdepend:
   - jaoSuperAchievement
   - MinecraftJPVoteMissFiller
 commands:
+  afk:
+    description: >
+      AFK(Away From
+      Keyboard)モードをオン・オフにします。
+    usage: |
+      /afk: AFK(Away From Keyboard)モードをオン・オフにします。(トグル)
+      /afk <Player>: 指定したPlayerのAFK情報を表示します。
+    permission: mymaid.afk
+  chat:
+    description: test
+    usage: /test
+    permission: mymaid.chat
+  discordlink:
+    description: >
+      DiscordアカウントとMinecraftアカウントを紐づけます。
+    usage: '/discordlink <AuthKey>'
+    permission: mymaid.discordlink
   test:
     description: test
     usage: /test

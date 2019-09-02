@@ -48,7 +48,7 @@
 				</executions>
 			</plugin>
 			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.8</version>
 				<executions>
@@ -97,6 +97,14 @@
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
+		<repository>
+			<id>logback-classic</id>
+			<url>https://mvnrepository.com/artifact/ch.qos.logback/logback-classic</url>
+		</repository>
+		<repository>
+			<id>logback-core</id>
+			<url>https://mvnrepository.com/artifact/ch.qos.logback/logback-core</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -120,29 +128,11 @@
 			<systemPath>${basedir}/lib/craftbukkit-1.12.2.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
-		<!-- PermissionsEx(PEX) -->
-		<dependency>
-			<groupId>ru.tehkode</groupId>
-			<artifactId>PermissionsEx</artifactId>
-			<version>1.23.4</version>
-			<classifier>shaded</classifier>
-			<systemPath>${basedir}/lib/PermissionsEx.jar</systemPath>
-			<scope>system</scope>
-		</dependency>
 		<!-- LuckPerms -->
 		<dependency>
 			<groupId>me.lucko.luckperms</groupId>
 			<artifactId>luckperms-api</artifactId>
 			<version>4.0</version>
-		</dependency>
-		<!-- GeoIP API -->
-		<dependency>
-			<groupId>eu.theindra.geoip.Main</groupId>
-			<artifactId>geoip</artifactId>
-			<version>2.0</version>
-			<classifier>shaded</classifier>
-			<systemPath>${basedir}/lib/geoipAPI.jar</systemPath>
-			<scope>system</scope>
 		</dependency>
 		<!-- Dynmap API -->
 		<dependency>
@@ -160,14 +150,6 @@
 			<systemPath>${basedir}/lib/Votifier.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
-		<!-- jaoSuperAchievement -->
-		<dependency>
-			<groupId>com.jaoafa</groupId>
-			<artifactId>jaoSuperAchievement</artifactId>
-			<version>0.0.1</version>
-			<systemPath>${basedir}/lib/jaoSuperAchievement.jar</systemPath>
-			<scope>system</scope>
-		</dependency>
 		<!-- TitleAPI -->
 		<dependency>
 			<groupId>com.connorlinfoot</groupId>
@@ -175,14 +157,6 @@
 			<version>1.7.5</version>
 			<classifier>shaded</classifier>
 			<systemPath>${basedir}/lib/TitleAPI.jar</systemPath>
-			<scope>system</scope>
-		</dependency>
-		<!-- MinecraftJPVoteMissFiller -->
-		<dependency>
-			<groupId>com.jaoafa</groupId>
-			<artifactId>MinecraftJPVoteMissFiller</artifactId>
-			<version>0.0.1</version>
-			<systemPath>${basedir}/lib/MinecraftJPVoteMissFiller.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
 		<!-- WorldGuard -->
@@ -209,19 +183,34 @@
 			<systemPath>${basedir}/lib/MCBans.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
-		<!-- jaoReputation -->
-		<dependency>
-			<groupId>com.jaoafa</groupId>
-			<artifactId>JaoReputation</artifactId>
-			<version>0.0.1</version>
-			<systemPath>${basedir}/lib/jaoReputation.jar</systemPath>
-			<scope>system</scope>
-		</dependency>
 		<!-- Vault API -->
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.6</version>
+		</dependency>
+		<!-- Discord4J -->
+		<dependency>
+			<!-- https://jitpack.io/com/github/austinv11/Discord4J/2.10.1/javadoc/ -->
+			<groupId>com.discord4j</groupId>
+			<artifactId>Discord4J</artifactId>
+			<version>2.10.1</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.2.3</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -23,7 +23,7 @@ require_once(__DIR__ . "/spyc/Spyc.php");
 $data = [
     "name" => PluginName,
     "main" => MainClass,
-    "version" => Version,
+    "version" => (int) Version,
     "description" => Description,
     "author" => Author,
     "database" => true,
@@ -36,7 +36,7 @@ if (file_exists(CommandLocation) && is_dir(CommandLocation)) {
         while (($file = readdir($dh)) !== false) {
             if ($file != "." && $file != ".." && is_file(CommandLocation . $file)) {
                 $java = file_get_contents(CommandLocation . $file);
-                if (preg_match("/public class Cmd_(.+) implements/", $java, $m) == 0 || !isset($m[1])) {
+                if (preg_match("/public class Cmd_(.+?) /", $java, $m) == 0 || !isset($m[1])) {
                     echo "[" . $file . "] commandName get error\n";
                 }
                 $commandName = mb_strtolower($m[1]);
@@ -46,10 +46,17 @@ if (file_exists(CommandLocation) && is_dir(CommandLocation)) {
                 }
                 $description = $m[1];
 
-                if (preg_match("/getUsage\(\)[\s\S]*?\{[\s\S]*?return \"([\s\S]+?)\";[\s\S]*?\}/", $java, $m) == 0 || !isset($m[1])) {
+                if (preg_match("/getUsage\(\)[\s\S]*?\{([\s\S]*)\}/", $java, $m) == 0 || !isset($m[1])) {
                     echo "[" . $file . "] usage get error\n";
                 }
-                $usage = $m[1];
+                if(preg_match_all("/add\(\"(.+?)\"\);/", $m[1], $u) == 0 || !isset($u[1])){
+                    echo "[" . $file . "] usage(add) get error\n";
+                }
+                $usage = "";
+                foreach ($u[1] as $value) {
+                    $usage .= $value . "\n";
+                }
+                $usage = trim($usage);
 
                 $permission = PermissionPrefix . "." . $commandName;
 
