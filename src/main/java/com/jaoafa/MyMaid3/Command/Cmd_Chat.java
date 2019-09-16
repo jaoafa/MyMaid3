@@ -1,15 +1,24 @@
 package com.jaoafa.MyMaid3.Command;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
+
+import sx.blah.discord.util.DiscordException;
+import sx.blah.discord.util.RequestBuffer;
 
 public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandPremise {
 	@Override
@@ -23,23 +32,47 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandP
 			return true;
 		}
 		ChatColor color = ChatColor.GRAY;
-		for (ChatColor cc : ChatColor.values()) {
-			cc.name();
-
+		List<String> colors = Arrays.stream(args).filter(
+				arg -> arg != null && arg.startsWith("color:")).collect(Collectors.toList());
+		if (colors.size() != 0) {
+			for (ChatColor cc : ChatColor.values()) {
+				if (!cc.name().equalsIgnoreCase(colors.get(0).substring("color:".length()))) {
+					continue;
+				}
+				color = cc;
+			}
 		}
+		List<String> texts = Arrays.stream(args).filter(
+				arg -> arg != null && !arg.startsWith("color:")).collect(Collectors.toList());
+		String text = ChatColor.translateAlternateColorCodes('&', String.join(" ", texts));
+		if (args[0].equalsIgnoreCase("jaotan")) {
+			color = ChatColor.GOLD;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+		Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdf.format(new Date()) + "]" + color + "■" + ChatColor.WHITE
+				+ args[0] + ": " + text);
+		RequestBuffer.request(() -> {
+			try {
+				Main.ServerChatChannel.sendMessage(args[0] + ": " + text);
+			} catch (DiscordException discordexception) {
+				Main.DiscordExceptionError(getClass(), null, discordexception);
+			}
+		});
+		//DiscordSend("**" + args[0] + "**: " + text);
 		return true;
 	}
 
 	@Override
 	public String getDescription() {
-		return "test";
+		return "偽のプレイヤーをしゃべらせます。";
 	}
 
 	@Override
 	public List<String> getUsage() {
 		return new ArrayList<String>() {
 			{
-				add("/test");
+				add("/chat <FakePlayer> <Message>");
 			}
 		};
 	}

@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.jaoafa.MyMaid3.DiscordEvent.Event_Ready;
+import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerLeave;
 import com.jaoafa.MyMaid3.Lib.ClassFinder;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
@@ -213,6 +214,7 @@ public class Main extends JavaPlugin {
 
 	private void registDiscordEvent(EventDispatcher d) {
 		d.registerListener(new Event_Ready());
+		d.registerListener(new Event_ServerLeave());
 	}
 
 	public static void DiscordExceptionError(Class<?> clazz, IChannel channel, DiscordException exception) {

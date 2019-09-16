@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 201909030659
+version: 201909142159
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -22,8 +22,9 @@ commands:
       /afk <Player>: 指定したPlayerのAFK情報を表示します。
     permission: mymaid.afk
   chat:
-    description: test
-    usage: /test
+    description: >
+      偽のプレイヤーをしゃべらせます。
+    usage: '/chat <FakePlayer> <Message>'
     permission: mymaid.chat
   discordlink:
     description: >

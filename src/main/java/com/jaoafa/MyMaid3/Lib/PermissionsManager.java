@@ -349,6 +349,54 @@ public class PermissionsManager implements Listener {
 		}
 	}
 
+	public static void setPermissionsGroup(String uuidstr, String group) {
+		// 権限管理プラグインが自動選択されてなかったら、自動選択する。
+		if (SelectPermissionsPlugin == null)
+			checkPermissionsPluginAutoSelecter();
+
+		if (uuidstr == null)
+			throw new InternalError("uuidstrがnullです。");
+		if (group == null)
+			throw new InternalError("グループ名がnullです。");
+
+		if (isSelectPermissionsPlugin(PermissionsPlugin.PermissionsEx)) {
+			if (!checkPermissionsPlugin()) {
+				// プラグインが動作していない
+				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
+			}
+			/*
+			Collection<String> groups = PermissionsEx.getPermissionManager().getGroupNames();
+			for (String g : groups) {
+				if (PermissionsEx.getUser(player).inGroup(g)) {
+					PermissionsEx.getUser(player).removeGroup(g);
+				}
+			}
+			PermissionsEx.getUser(player).addGroup(group);
+			*/
+			throw new IllegalStateException("PermissionsEx非対応");
+		} else if (isSelectPermissionsPlugin(PermissionsPlugin.LuckPerms)) {
+			if (!checkPermissionsPlugin()) {
+				// プラグインが動作していない
+				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
+			}
+			LuckPermsApi LPApi = LuckPerms.getApi();
+			UUID uuid = UUID.fromString(uuidstr);
+			if (uuid == null)
+				throw new InternalError("オンラインプレイヤーのUUIDがnullです。");
+			User LPplayer = LPApi.getUser(uuid);
+			if (LPplayer == null) {
+				throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
+			}
+			// APIを使ってグループにプレイヤーを入れる方法がわからない。なのでかなり無茶苦茶
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+					"lp user " + uuidstr + " parent set " + group);
+			/*
+			LPplayer.clearParents();
+			LPplayer.setPrimaryGroup(group);
+			*/
+		}
+	}
+
 	public static PermissionsPlugin getSelectPermissionsPlugin() {
 		// 権限管理プラグインが自動選択されてなかったら、自動選択する。
 		if (SelectPermissionsPlugin == null)
