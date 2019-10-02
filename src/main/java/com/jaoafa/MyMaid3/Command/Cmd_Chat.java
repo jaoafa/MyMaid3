@@ -42,7 +42,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandP
 				color = cc;
 			}
 		}
-		List<String> texts = Arrays.stream(args).filter(
+		List<String> texts = Arrays.stream(Arrays.copyOfRange(args, 1, args.length)).filter(
 				arg -> arg != null && !arg.startsWith("color:")).collect(Collectors.toList());
 		String text = ChatColor.translateAlternateColorCodes('&', String.join(" ", texts));
 		if (args[0].equalsIgnoreCase("jaotan")) {

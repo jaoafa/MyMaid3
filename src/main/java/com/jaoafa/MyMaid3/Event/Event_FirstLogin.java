@@ -21,7 +21,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.EmbedBuilder;
+import sx.blah.discord.util.RequestBuffer;
 
 public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 	@EventHandler
@@ -55,7 +57,15 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 		builder.withThumbnail(
 				"https://crafatar.com/renders/body/" + player.getUniqueId().toString() + ".png?overlay=true&scale=10");
 		IChannel channel = Main.getDiscordClient().getChannelByID(597423444501463040L);
-		channel.sendMessage(builder.build());
+		RequestBuffer.request(() -> {
+			try {
+				channel.sendMessage(builder.build());
+			} catch (DiscordException discordexception) {
+				Main.DiscordExceptionError(getClass(), null, discordexception);
+			}
+		});
+
+		sendMCBansData(player);
 	}
 
 	private String getReputation(UUID uuid) {
@@ -77,6 +87,44 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	private static void sendMCBansData(Player player) {
+		try {
+			String url = Main.MCBansRepAPI + "?u=" + player.getUniqueId().toString() + "&data";
+			OkHttpClient client = new OkHttpClient();
+			Request request = new Request.Builder().url(url).get().build();
+			Response response = client.newCall(request).execute();
+			if (response.code() != 200) {
+				return;
+			}
+			JSONObject json = new JSONObject(response.body().string());
+			response.close();
+
+			if (!json.has("status")) {
+				return;
+			}
+
+			if (!json.getBoolean("status")) {
+				return;
+			}
+			String count = json.getString("datacount");
+			String data = json.getString("data");
+
+			IChannel channel = Main.getDiscordClient().getChannelByID(597423444501463040L);
+			RequestBuffer.request(() -> {
+				try {
+					channel.sendMessage("**-----: MCBans Ban DATA / `" + player.getName() + "` :-----**\n"
+							+ "Ban: " + count + "\n"
+							+ "```" + data + "```");
+				} catch (DiscordException discordexception) {
+					Main.DiscordExceptionError(Event_FirstLogin.class, null, discordexception);
+				}
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
 		}
 	}
 }

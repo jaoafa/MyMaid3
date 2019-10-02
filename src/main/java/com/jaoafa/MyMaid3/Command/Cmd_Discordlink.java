@@ -71,6 +71,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 			name = res.getString("name");
 			disid = res.getString("disid");
 			discriminator = res.getString("discriminator");
+			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
 			SendMessage(sender, cmd, "操作に失敗しました。");
@@ -92,6 +93,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 				SendMessage(sender, cmd, "すでにあなたのMinecraftアカウントと接続されています。");
 				return true;
 			}
+			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
 			SendMessage(sender, cmd, "操作に失敗しました。");
@@ -112,6 +114,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 				SendMessage(sender, cmd, "すでにあなたのMinecraftアカウントは別のDiscordアカウントに接続されています。");
 				return true;
 			}
+			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
 			SendMessage(sender, cmd, "操作に失敗しました。");
@@ -132,6 +135,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 				SendMessage(sender, cmd, "アカウントリンク要求をしたDiscordアカウントは既に他のMinecraftアカウントと接続されています。");
 				return true;
 			}
+			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
 			SendMessage(sender, cmd, "操作に失敗しました。");
@@ -156,6 +160,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 			PreparedStatement statement = conn.prepareStatement("DELETE FROM discordlink_waiting WHERE id = ?");
 			statement.setInt(1, id);
 			statement.executeUpdate();
+			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
 			SendMessage(sender, cmd, "操作に失敗しました。");
@@ -174,6 +179,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 			statement.setString(5, discriminator);
 			statement.setString(6, permission);
 			statement.executeUpdate();
+			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
 			SendMessage(sender, cmd, "操作に失敗しました。");

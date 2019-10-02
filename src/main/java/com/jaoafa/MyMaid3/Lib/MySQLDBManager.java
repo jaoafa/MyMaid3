@@ -46,6 +46,7 @@ public class MySQLDBManager {
 			getWaitTimeout();
 		}
 		LAST_PACKET = System.currentTimeMillis();
+		conn.setHoldability(ResultSet.CLOSE_CURSORS_AT_COMMIT);
 		return conn;
 	}
 
@@ -60,6 +61,7 @@ public class MySQLDBManager {
 			} else {
 				WAIT_TIMEOUT = -1;
 			}
+			statement.close();
 		} catch (SQLException e) {
 			WAIT_TIMEOUT = -1;
 		}
