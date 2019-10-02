@@ -39,6 +39,7 @@ public class Main extends JavaPlugin {
 	public static MySQLDBManager MySQLDBManager = null;
 	public static IChannel ReportChannel = null;
 	public static IChannel ServerChatChannel = null;
+	public static String MCBansRepAPI = null;
 
 	/**
 	 * プラグインが起動したときに呼び出し
@@ -98,6 +99,13 @@ public class Main extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+
+		if (config.contains("MCBansRepAPI")) {
+			MCBansRepAPI = config.getString("MCBansRepAPI");
+		} else {
+			getLogger().warning("コンフィグにMCBansRepAPIが記載されていなかったため、Reputationチェック処理は動作しません。");
+		}
+
 		try {
 			MySQLDBManager = new MySQLDBManager(
 					config.getString("sqlserver"),

@@ -38,6 +38,7 @@ public class Event_ServerLeave {
 				player = res.getString("player");
 				uuid = res.getString("uuid");
 			}
+			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
 			return;
@@ -52,6 +53,7 @@ public class Event_ServerLeave {
 				statement.setInt(1, 1);
 				statement.setString(2, user.getStringID());
 				statement.executeUpdate();
+				statement.close();
 			} catch (SQLException e) {
 				ErrorReporter.report(e);
 				return;
