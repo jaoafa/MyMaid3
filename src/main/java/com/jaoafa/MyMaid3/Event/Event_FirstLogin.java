@@ -56,6 +56,8 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 		builder.withTimestamp(Instant.now());
 		builder.withThumbnail(
 				"https://crafatar.com/renders/body/" + player.getUniqueId().toString() + ".png?overlay=true&scale=10");
+		builder.withAuthorIcon(Main.getDiscordClient().getOurUser().getAvatarURL());
+		builder.withAuthorName(Main.getDiscordClient().getOurUser().getName());
 		IChannel channel = Main.getDiscordClient().getChannelByID(597423444501463040L);
 		RequestBuffer.request(() -> {
 			try {
