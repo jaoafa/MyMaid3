@@ -46,7 +46,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 		}
 
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.withDesc("NEW PLAYER JOIN");
+		builder.withTitle("NEW PLAYER JOIN");
 		builder.withDesc("新規プレイヤー(`" + player.getName() + "`)がサーバにログインしました！");
 		builder.withColor(Color.GREEN);
 		builder.appendField("プレイヤーID", "`" + player.getName() + "`", false);
@@ -107,6 +107,9 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 			}
 
 			if (!json.getBoolean("status")) {
+				return;
+			}
+			if (!json.has("datacount")) {
 				return;
 			}
 			String count = json.getString("datacount");
