@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 201910040848
+version: 201910061703
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -38,6 +38,11 @@ commands:
       /g <0-3>: 指定された数値に合うゲームモードに変更します。
       /g <0-3> <Player>: 指定したプレイヤーのゲームモードを指定された数値に合うゲームモードに変更します。
     permission: mymaid.g
+  getuserkey:
+    description: >
+      ユーザーを認証するためのキーを取得します。
+    usage: /getuserkey
+    permission: mymaid.getuserkey
   test:
     description: test
     usage: /test
