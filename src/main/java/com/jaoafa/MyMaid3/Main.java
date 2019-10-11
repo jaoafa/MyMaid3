@@ -33,7 +33,6 @@ import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RequestBuffer;
 
 public class Main extends JavaPlugin {
-	private static JavaPlugin JavaPlugin = null;
 	private static Main Main = null;
 	private static IDiscordClient DiscordClient = null;
 	public static MySQLDBManager MySQLDBManager = null;
@@ -48,7 +47,6 @@ public class Main extends JavaPlugin {
 	 */
 	@Override
 	public void onEnable() {
-		setJavaPlugin(this);
 		setMain(this);
 
 		loadConfig();
@@ -258,11 +256,7 @@ public class Main extends JavaPlugin {
 	}
 
 	public static JavaPlugin getJavaPlugin() {
-		return JavaPlugin;
-	}
-
-	public static void setJavaPlugin(JavaPlugin javaPlugin) {
-		JavaPlugin = javaPlugin;
+		return Main;
 	}
 
 	public static Main getMain() {
