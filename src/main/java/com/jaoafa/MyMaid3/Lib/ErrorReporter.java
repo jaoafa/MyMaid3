@@ -6,13 +6,12 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.time.Instant;
 import java.util.Date;
 
 import com.jaoafa.MyMaid3.Main;
 
-import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.EmbedBuilder;
-import sx.blah.discord.util.RequestBuffer;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 public class ErrorReporter {
 	public static void report(Throwable exception) {
@@ -21,7 +20,7 @@ public class ErrorReporter {
 			System.out.println("Main.ReportChannel == null error.");
 			return;
 		}
-		if (Main.getDiscordClient() == null) {
+		if (Main.getJDA() == null) {
 			System.out.println("Main.getClient() == null error.");
 			return;
 		}
@@ -32,19 +31,13 @@ public class ErrorReporter {
 
 		try {
 			EmbedBuilder builder = new EmbedBuilder();
-			builder.withTitle("MyMaid3 Discord Error Reporter");
-			builder.withColor(Color.RED);
-			builder.appendField("StackTrace", "```" + sw.toString() + "```", false);
-			builder.appendField("Message", "```" + exception.getMessage() + "```", false);
-			builder.appendField("Cause", "```" + exception.getCause() + "```", false);
-			builder.withTimestamp(System.currentTimeMillis());
-			RequestBuffer.request(() -> {
-				try {
-					Main.ReportChannel.sendMessage(builder.build());
-				} catch (DiscordException discordexception) {
-					Main.DiscordExceptionError(ErrorReporter.class, Main.ReportChannel, discordexception);
-				}
-			});
+			builder.setTitle("MyMaid3 Discord Error Reporter");
+			builder.setColor(Color.RED);
+			builder.addField("StackTrace", "```" + sw.toString() + "```", false);
+			builder.addField("Message", "```" + exception.getMessage() + "```", false);
+			builder.addField("Cause", "```" + exception.getCause() + "```", false);
+			builder.setTimestamp(Instant.now());
+			Main.ReportChannel.sendMessage(builder.build()).queue();
 		} catch (Exception e) {
 			try {
 				String text = "MyMaid3 Discord Error Reporter (" + MyMaidLibrary.sdfFormat(new Date()) + ")\n"
@@ -56,15 +49,7 @@ public class ErrorReporter {
 						+ exception.getCause();
 				InputStream stream = new ByteArrayInputStream(
 						text.getBytes("utf-8"));
-				RequestBuffer.request(() -> {
-					try {
-						Main.ReportChannel.sendFile("MyMaid3 Discord Error Reporter", stream,
-								"Mainreport" + System.currentTimeMillis() + ".txt");
-					} catch (DiscordException discordexception) {
-						Main.DiscordExceptionError(ErrorReporter.class, Main.ReportChannel,
-								discordexception);
-					}
-				});
+				Main.ReportChannel.sendFile(stream, "Mainreport" + System.currentTimeMillis() + ".txt");
 			} catch (UnsupportedEncodingException ex) {
 				return;
 			}

@@ -105,6 +105,10 @@
 			<id>logback-core</id>
 			<url>https://mvnrepository.com/artifact/ch.qos.logback/logback-core</url>
 		</repository>
+		<repository>
+			<id>jcenter</id>
+			<url>http://jcenter.bintray.com</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -189,12 +193,22 @@
 			<artifactId>VaultAPI</artifactId>
 			<version>1.6</version>
 		</dependency>
-		<!-- Discord4J -->
+		<!-- JDA -->
 		<dependency>
-			<!-- https://jitpack.io/com/github/austinv11/Discord4J/2.10.1/javadoc/ -->
-			<groupId>com.discord4j</groupId>
-			<artifactId>Discord4J</artifactId>
-			<version>2.10.1</version>
+			<groupId>net.dv8tion</groupId>
+			<artifactId>JDA</artifactId>
+			<version>4.0.0_54</version>
+			<exclusions>
+				<exclusion>
+					<groupId>club.minnced</groupId>
+					<artifactId>opus-java</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20190722</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

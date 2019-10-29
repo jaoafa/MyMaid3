@@ -24,20 +24,19 @@ import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
-import sx.blah.discord.Discord4J;
-import sx.blah.discord.api.ClientBuilder;
-import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.api.events.EventDispatcher;
-import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.RequestBuffer;
+import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
 
 public class Main extends JavaPlugin {
 	private static Main Main = null;
-	private static IDiscordClient DiscordClient = null;
+	private static JDA JDA = null;
 	public static MySQLDBManager MySQLDBManager = null;
-	public static IChannel ReportChannel = null;
-	public static IChannel ServerChatChannel = null;
+	public static TextChannel ReportChannel = null;
+	public static TextChannel ServerChatChannel = null;
 	public static String MCBansRepAPI = null;
 
 	/**
@@ -75,20 +74,24 @@ public class Main extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		try {
-			Discord4J.disableAudio();
 
-			DiscordClient = new ClientBuilder()
-					.withToken(config.getString("discordtoken"))
-					.login();
-		} catch (DiscordException e) {
-			getLogger().warning("Discordへの接続に失敗しました。(" + e.getErrorMessage() + ")");
+		try {
+			JDABuilder jdabuilder = new JDABuilder(AccountType.BOT)
+					.setAutoReconnect(true)
+					.setBulkDeleteSplittingEnabled(false)
+					.setToken(config.getString("discordtoken"))
+					.setContextEnabled(false)
+					.setEventManager(new AnnotatedEventManager());
+
+			jdabuilder = registDiscordEvent(jdabuilder);
+
+			JDA = jdabuilder.build().awaitReady();
+		} catch (Exception e) {
+			getLogger().warning("Discordへの接続に失敗しました。(" + e.getMessage() + ")");
 			getLogger().warning("MyMaid3プラグインを終了します。");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		EventDispatcher dispatcher = DiscordClient.getDispatcher();
-		registDiscordEvent(dispatcher);
 
 		if (!config.contains("sqlserver") || !config.contains("sqlport") || !config.contains("sqldatabase")
 				|| !config.contains("sqluser") || !config.contains("sqlpassword")) {
@@ -218,12 +221,13 @@ public class Main extends JavaPlugin {
 		}
 	}
 
-	private void registDiscordEvent(EventDispatcher d) {
-		d.registerListener(new Event_Ready());
-		d.registerListener(new Event_ServerLeave());
+	private JDABuilder registDiscordEvent(JDABuilder d) {
+		d.addEventListeners(new Event_Ready());
+		d.addEventListeners(new Event_ServerLeave());
+		return d;
 	}
 
-	public static void DiscordExceptionError(Class<?> clazz, IChannel channel, DiscordException exception) {
+	public static void DiscordExceptionError(Class<?> clazz, MessageChannel channel, Throwable exception) {
 		if (channel == null && ReportChannel != null) {
 			channel = ReportChannel;
 		} else if (channel == null) {
@@ -231,27 +235,19 @@ public class Main extends JavaPlugin {
 			System.out.println("DiscordExceptionError did not work properly!");
 			return;
 		}
-		final IChannel FINALCHANNEL = channel;
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		exception.printStackTrace(pw);
 		pw.flush();
 		try {
 			InputStream is = new ByteArrayInputStream(sw.toString().getBytes("utf-8"));
-			RequestBuffer.request(() -> {
-				FINALCHANNEL.sendFile(
-						":pencil:おっと！MyMaid3のDiscord関連でなにか問題が発生したようです！ <@221991565567066112>\n**ErrorMsg**: `"
-								+ exception.getErrorMessage()
-								+ "`\n**Class**: `" + clazz.getName() + "`",
-						is,
-						"stacktrace.txt");
-			});
+			channel.sendMessage(":pencil:おっと！MyMaid3のDiscord関連でなにか問題が発生したようです！ <@221991565567066112>\\n**ErrorMsg**: `"
+					+ exception.getMessage()
+					+ "`\n**Class**: `" + clazz.getName() + " (" + exception.getClass().getName() + ")`").queue();
+			channel.sendFile(is, "stacktrace.txt").queue();
 		} catch (UnsupportedEncodingException ex) {
-			RequestBuffer.request(() -> {
-				FINALCHANNEL.sendMessage(":pencil:<@221991565567066112> おっと！メッセージ送信時に問題が発生したみたいです！\n**ErrorMsg**: `"
-						+ exception.getErrorMessage() + "`\n**Class**: `" + clazz.getName()
-						+ "`\nUnsupportedEncodingException: `" + ex.getMessage() + "`");
-			});
+			channel.sendMessage(":pencil:<@221991565567066112> おっと！メッセージ送信時に問題が発生したみたいです！\n**ErrorMsg**: `"
+					+ ex.getMessage() + "`\n**Class**: `" + clazz.getName() + "`").queue();
 		}
 	}
 
@@ -267,12 +263,12 @@ public class Main extends JavaPlugin {
 		Main = main;
 	}
 
-	public static void setDiscordClient(IDiscordClient discordclient) {
-		DiscordClient = discordclient;
+	public static void setJDA(JDA jda) {
+		JDA = jda;
 	}
 
-	public static IDiscordClient getDiscordClient() {
-		return DiscordClient;
+	public static JDA getJDA() {
+		return JDA;
 	}
 
 	public static MySQLDBManager getMySQLDBManager() {

@@ -4,7 +4,7 @@ define("CommandLocation", __DIR__ . "/src/main/java/com/jaoafa/MyMaid3/Command/"
 define("YmlLocation", __DIR__ . "/src/main/resources/plugin.yml"); // plugin.ymlの位置(作成先)
 define("PluginName", "MyMaid3"); // プラグイン名
 define("MainClass", "com.jaoafa.MyMaid3.Main"); // メインクラス
-define("Version", date("YmdHi")); // バージョン
+define("Version", date("Y.m.d_H.i")); // バージョン
 define("Description", "General Plugin Version 3"); // プラグインの説明
 define("PermissionPrefix", "mymaid"); // パーミッションノードの接頭辞
 define("Author", "mine_book000"); // プラグインの制作者
@@ -23,7 +23,7 @@ require_once(__DIR__ . "/spyc/Spyc.php");
 $data = [
     "name" => PluginName,
     "main" => MainClass,
-    "version" => (int) Version,
+    "version" => Version,
     "description" => Description,
     "author" => Author,
     "database" => true,
@@ -49,7 +49,7 @@ if (file_exists(CommandLocation) && is_dir(CommandLocation)) {
                 if (preg_match("/getUsage\(\)[\s\S]*?\{([\s\S]*)\}/", $java, $m) == 0 || !isset($m[1])) {
                     echo "[" . $file . "] usage get error\n";
                 }
-                if(preg_match_all("/add\(\"(.+?)\"\);/", $m[1], $u) == 0 || !isset($u[1])){
+                if (preg_match_all("/add\(\"(.+?)\"\);/", $m[1], $u) == 0 || !isset($u[1])) {
                     echo "[" . $file . "] usage(add) get error\n";
                 }
                 $usage = "";

@@ -9,28 +9,26 @@ import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.ErrorReporter;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
-import sx.blah.discord.api.events.EventSubscriber;
-import sx.blah.discord.handle.impl.events.guild.member.UserLeaveEvent;
-import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IUser;
-import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.RequestBuffer;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.hooks.SubscribeEvent;
 
 public class Event_ServerLeave {
-	@EventSubscriber
-	public void onMemberLeaveEvent(UserLeaveEvent event) {
-		if (event.getGuild().getLongID() != 597378876556967936L) {
+	@SubscribeEvent
+	public void onMemberLeaveEvent(GuildMemberLeaveEvent event) {
+		if (event.getGuild().getIdLong() != 597378876556967936L) {
 			return; // jMS Gamers Clubのみ
 		}
-		IUser user = event.getUser();
-		IChannel channel = event.getGuild().getChannelByID(597423444501463040L);
+		User user = event.getUser();
+		TextChannel channel = event.getGuild().getTextChannelById(597423444501463040L);
 		String player = null;
 		String uuid = null;
 		try {
 			Connection conn = Main.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("SELECT * FROM discordlink WHERE disid = ? AND disabled = ?");
-			statement.setString(1, user.getStringID());
+			statement.setString(1, user.getId());
 			statement.setInt(2, 0);
 			ResultSet res = statement.executeQuery();
 			if (res.next()) {
@@ -51,7 +49,7 @@ public class Event_ServerLeave {
 				PreparedStatement statement = conn
 						.prepareStatement("UPDATE discordlink SET disabled = ? WHERE disid = ?");
 				statement.setInt(1, 1);
-				statement.setString(2, user.getStringID());
+				statement.setString(2, user.getId());
 				statement.executeUpdate();
 				statement.close();
 			} catch (SQLException e) {
@@ -59,16 +57,8 @@ public class Event_ServerLeave {
 				return;
 			}
 
-			String _player = player;
-			RequestBuffer.request(() -> {
-				try {
-					channel.sendMessage(
-							":wave:" + user.getName() + "#" + user.getDiscriminator() + "が退出したため、" + _player
-									+ "の連携が無効化され、Defaultに降格しました。");
-				} catch (DiscordException discordexception) {
-					Main.DiscordExceptionError(getClass(), channel, discordexception);
-				}
-			});
+			channel.sendMessage(":wave:" + user.getName() + "#" + user.getDiscriminator() + "が退出したため、" + player
+					+ "の連携が無効化され、Defaultに降格しました。").queue();
 		}
 	}
 }

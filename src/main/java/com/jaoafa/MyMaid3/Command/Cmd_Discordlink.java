@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,12 +18,9 @@ import com.jaoafa.MyMaid3.Lib.ErrorReporter;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
-import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.handle.obj.IGuild;
-import sx.blah.discord.handle.obj.IRole;
-import sx.blah.discord.handle.obj.IUser;
-import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.RequestBuffer;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 
 public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, CommandPremise {
 
@@ -145,13 +141,10 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 		}
 
 		// DiscordアカウントがDiscordチャンネルから退出していないかどうか
-		IDiscordClient client = Main.getDiscordClient();
-		IUser user = client.fetchUser(Long.valueOf(disid));
-		IGuild guild = client.getGuildByID(597378876556967936L);
-		List<IUser> users = guild.getUsers();
-		List<IUser> filtered = users.stream().filter(
-				_user -> _user != null && _user.getLongID() == user.getLongID()).collect(Collectors.toList());
-		if (filtered.size() != 1) {
+		JDA jda = Main.getJDA();
+		Guild guild = jda.getGuildById(597378876556967936L);
+		Member member = guild.getMemberById(disid);
+		if (member == null) {
 			SendMessage(sender, cmd, "アカウントリンク要求をしたDiscordアカウントは既に当サーバのDiscordチャンネルから退出しています。");
 			return true;
 		}
@@ -189,26 +182,13 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 		}
 
 		SendMessage(sender, cmd, "アカウントのリンクが完了しました。");
-		RequestBuffer.request(() -> {
-			try {
-				client.getChannelByID(597419057251090443L).sendMessage(
-						":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！ MinecraftID: " + player.getName());
-			} catch (DiscordException discordexception) {
-				Main.DiscordExceptionError(getClass(), null, discordexception);
-			}
-		});
+		jda.getTextChannelById(597419057251090443L).sendMessage(
+				":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！ MinecraftID: `" + player.getName() + "`")
+				.queue();
 		PermissionsManager.setPermissionsGroup(player, "Verified");
 
-		RequestBuffer.request(() -> {
-			try {
-				List<IRole> roles = guild.getRolesForUser(user);
-				roles.add(client.getRoleByID(604011598952136853L)); // MinecraftConnected
-				roles.add(client.getRoleByID(597405176969560064L)); // Verified
-				guild.editUserRoles(user, roles.toArray(new IRole[roles.size()]));
-			} catch (DiscordException discordexception) {
-				Main.DiscordExceptionError(getClass(), null, discordexception);
-			}
-		});
+		guild.addRoleToMember(member, guild.getRoleById(604011598952136853L)).queue(); // MinecraftConnected
+		guild.addRoleToMember(member, guild.getRoleById(597405176969560064L)).queue(); // Verified
 		return true;
 	}
 

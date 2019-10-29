@@ -17,9 +17,6 @@ import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
-import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.RequestBuffer;
-
 public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandPremise {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -52,13 +49,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandP
 
 		Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdf.format(new Date()) + "]" + color + "■" + ChatColor.WHITE
 				+ args[0] + ": " + text);
-		RequestBuffer.request(() -> {
-			try {
-				Main.ServerChatChannel.sendMessage(args[0] + ": " + text);
-			} catch (DiscordException discordexception) {
-				Main.DiscordExceptionError(getClass(), null, discordexception);
-			}
-		});
+		Main.ServerChatChannel.sendMessage(args[0] + ": " + text).queue();
 		//DiscordSend("**" + args[0] + "**: " + text);
 		return true;
 	}

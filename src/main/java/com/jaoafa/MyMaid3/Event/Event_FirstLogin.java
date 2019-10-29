@@ -17,13 +17,10 @@ import org.json.JSONObject;
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.EmbedBuilder;
-import sx.blah.discord.util.RequestBuffer;
 
 public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 	@EventHandler
@@ -46,26 +43,19 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 		}
 
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.withTitle("NEW PLAYER JOIN");
-		builder.withDesc("新規プレイヤー(`" + player.getName() + "`)がサーバにログインしました！");
-		builder.withColor(Color.GREEN);
-		builder.appendField("プレイヤーID", "`" + player.getName() + "`", false);
-		builder.appendField("評価値", reputation + " / 10", false);
-		builder.appendField("プレイヤー数", Bukkit.getOnlinePlayers().size() + "人", false);
-		builder.appendField("プレイヤー", "`" + String.join(", ", players) + "`", false);
-		builder.withTimestamp(Instant.now());
-		builder.withThumbnail(
+		builder.setTitle("NEW PLAYER JOIN");
+		builder.appendDescription("新規プレイヤー(`" + player.getName() + "`)がサーバにログインしました！");
+		builder.setColor(Color.GREEN);
+		builder.addField("プレイヤーID", "`" + player.getName() + "`", false);
+		builder.addField("評価値", reputation + " / 10", false);
+		builder.addField("プレイヤー数", Bukkit.getOnlinePlayers().size() + "人", false);
+		builder.addField("プレイヤー", "`" + String.join(", ", players) + "`", false);
+		builder.setTimestamp(Instant.now());
+		builder.setThumbnail(
 				"https://crafatar.com/renders/body/" + player.getUniqueId().toString() + ".png?overlay=true&scale=10");
-		builder.withAuthorIcon(Main.getDiscordClient().getOurUser().getAvatarURL());
-		builder.withAuthorName(Main.getDiscordClient().getOurUser().getName());
-		IChannel channel = Main.getDiscordClient().getChannelByID(597423444501463040L);
-		RequestBuffer.request(() -> {
-			try {
-				channel.sendMessage(builder.build());
-			} catch (DiscordException discordexception) {
-				Main.DiscordExceptionError(getClass(), null, discordexception);
-			}
-		});
+		builder.setAuthor(Main.getJDA().getSelfUser().getName(), null,
+				Main.getJDA().getSelfUser().getAvatarUrl());
+		Main.getJDA().getTextChannelById(597423444501463040L).sendMessage(builder.build()).queue();
 
 		sendMCBansData(player);
 	}
@@ -117,16 +107,11 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 			String count = json.getString("datacount");
 			String data = json.getString("data");
 
-			IChannel channel = Main.getDiscordClient().getChannelByID(597423444501463040L);
-			RequestBuffer.request(() -> {
-				try {
-					channel.sendMessage("**-----: MCBans Ban DATA / `" + player.getName() + "` :-----**\n"
+			Main.getJDA().getTextChannelById(597423444501463040L)
+					.sendMessage("**-----: MCBans Ban DATA / `" + player.getName() + "` :-----**\n"
 							+ "Ban: " + count + "\n"
-							+ "```" + data + "```");
-				} catch (DiscordException discordexception) {
-					Main.DiscordExceptionError(Event_FirstLogin.class, null, discordexception);
-				}
-			});
+							+ "```" + data + "```")
+					.queue();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;

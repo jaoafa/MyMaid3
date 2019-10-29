@@ -15,9 +15,6 @@ import com.connorlinfoot.titleapi.TitleAPI;
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Task.Task_AFKING;
 
-import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.RequestBuffer;
-
 public class AFKPlayer {
 	static Map<String, AFKPlayer> players = new HashMap<>();
 
@@ -62,13 +59,7 @@ public class AFKPlayer {
 
 		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is afk!");
 		if (Main.ServerChatChannel != null) {
-			RequestBuffer.request(() -> {
-				try {
-					Main.ServerChatChannel.sendMessage(player.getName() + " is afk!");
-				} catch (DiscordException discordexception) {
-					Main.DiscordExceptionError(getClass(), null, discordexception);
-				}
-			});
+			Main.ServerChatChannel.sendMessage(player.getName() + " is afk!").queue();
 		}
 
 		try {
@@ -101,13 +92,7 @@ public class AFKPlayer {
 
 		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is now online!");
 		if (Main.ServerChatChannel != null) {
-			RequestBuffer.request(() -> {
-				try {
-					Main.ServerChatChannel.sendMessage(player.getName() + " is now online!");
-				} catch (DiscordException discordexception) {
-					Main.DiscordExceptionError(getClass(), null, discordexception);
-				}
-			});
+			Main.ServerChatChannel.sendMessage(player.getName() + " is now online!").queue();
 		}
 
 		TitleAPI.clearTitle(player);
