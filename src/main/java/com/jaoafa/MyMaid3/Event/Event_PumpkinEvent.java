@@ -93,7 +93,7 @@ public class Event_PumpkinEvent extends MyMaidLibrary implements Listener {
 			statement.setString(1, id);
 			statement.setString(2, "MyMaid_2019PumpkinID");
 			statement.setString(3, player.getName());
-			statement.setString(3, player.getUniqueId().toString());
+			statement.setString(4, player.getUniqueId().toString());
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {

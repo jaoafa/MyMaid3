@@ -205,6 +205,7 @@ public class Main extends JavaPlugin {
 					try {
 						Listener listener = (Listener) instance;
 						getServer().getPluginManager().registerEvents(listener, this);
+						getLogger().info(clazz.getSimpleName() + " registered");
 					} catch (ClassCastException e) {
 						// commandexecutor not implemented
 						getLogger().info(clazz.getSimpleName() + ": Listener not implemented [1]");
