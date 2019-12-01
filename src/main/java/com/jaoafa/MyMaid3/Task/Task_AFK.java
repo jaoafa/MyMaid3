@@ -28,10 +28,10 @@ public class Task_AFK extends BukkitRunnable {
 			if (player.isInsideVehicle()) {
 				continue; // トロッコ関連はMoveイベント発生しないっぽい？
 			}
-			long nowtime = System.currentTimeMillis();
+			long nowtime = System.currentTimeMillis() / 1000L;
 			long lastmovetime = afkplayer.getLastActionTime();
 			long sa = nowtime - lastmovetime; // 前回移動した時間から現在の時間の差を求めて3分差があったらAFK扱い
-			if (sa >= 180000) {
+			if (sa >= 180) {
 				afkplayer.start();
 			}
 		}

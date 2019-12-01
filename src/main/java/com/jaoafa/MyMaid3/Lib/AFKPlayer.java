@@ -133,7 +133,7 @@ public class AFKPlayer {
 	}
 
 	public void setNowLastActionTime() {
-		LastActionTime = System.currentTimeMillis();
+		LastActionTime = System.currentTimeMillis() / 1000L;
 		players.put(player.getName(), this);
 	}
 
