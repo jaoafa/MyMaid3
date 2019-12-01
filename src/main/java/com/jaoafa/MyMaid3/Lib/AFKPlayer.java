@@ -23,6 +23,7 @@ public class AFKPlayer {
 	private long AFKStartTime = -1L;
 	private BukkitTask Task = null;
 	private ItemStack HeadItem = null;
+	private long LastActionTime = -1L;
 
 	public AFKPlayer(Player player) {
 		if (players.containsKey(player.getName())) {
@@ -32,6 +33,7 @@ public class AFKPlayer {
 			this.AFKStartTime = afkplayer.AFKStartTime;
 			this.Task = afkplayer.Task;
 			this.HeadItem = afkplayer.HeadItem;
+			this.LastActionTime = afkplayer.LastActionTime;
 			return;
 		}
 		this.player = player;
@@ -100,6 +102,15 @@ public class AFKPlayer {
 		players.put(player.getName(), this);
 	}
 
+	public void clear() {
+		if (isAFKing) {
+			end();
+		}
+		if (players.containsKey(player.getName())) {
+			players.remove(player.getName());
+		}
+	}
+
 	public boolean isAFK() {
 		if (Task == null || Task.isCancelled()) {
 			isAFKing = false;
@@ -115,5 +126,18 @@ public class AFKPlayer {
 
 	public long getAFKStartTime() {
 		return AFKStartTime;
+	}
+
+	public long getLastActionTime() {
+		return LastActionTime;
+	}
+
+	public void setNowLastActionTime() {
+		LastActionTime = System.currentTimeMillis();
+		players.put(player.getName(), this);
+	}
+
+	public static Map<String, AFKPlayer> getAFKPlayers() {
+		return players;
 	}
 }

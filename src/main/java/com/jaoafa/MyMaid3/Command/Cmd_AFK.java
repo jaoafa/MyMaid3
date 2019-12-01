@@ -3,6 +3,8 @@ package com.jaoafa.MyMaid3.Command;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -22,6 +24,15 @@ public class Cmd_AFK extends MyMaidLibrary implements CommandExecutor, CommandPr
 			return true;
 		}
 		if (args.length == 1) {
+			if (args[0].equalsIgnoreCase("data")) {
+				Map<String, AFKPlayer> list = AFKPlayer.getAFKPlayers();
+				SendMessage(sender, cmd, "データ数: " + list.size());
+				for (Entry<String, AFKPlayer> player : list.entrySet()) {
+					SendMessage(sender, cmd,
+							player.getKey() + " | afking: " + Boolean.toString(player.getValue().isAFK()));
+				}
+				return true;
+			}
 			Player player = Bukkit.getPlayerExact(args[0]);
 			if (player == null) {
 				SendMessage(sender, cmd, "指定されたプレイヤー「" + args[0] + "」は見つかりませんでした。");
@@ -71,6 +82,10 @@ public class Cmd_AFK extends MyMaidLibrary implements CommandExecutor, CommandPr
 				SendMessage(sender, cmd, "AFK経過時間: " + builder.toString());
 			} else {
 				SendMessage(sender, cmd, "指定されたプレイヤー「" + player.getName() + "」は現在AFKではありません。");
+				if (afkplayer.getLastActionTime() != -1L) {
+					String actionTime = MyMaidLibrary.sdfFormat(new Date(afkplayer.getLastActionTime() * 1000));
+					SendMessage(sender, cmd, "このプレイヤーの最終アクションは " + actionTime + " です。");
+				}
 			}
 			return true;
 		}

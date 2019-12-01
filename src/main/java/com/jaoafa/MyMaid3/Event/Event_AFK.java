@@ -16,6 +16,7 @@ public class Event_AFK extends MyMaidLibrary implements Listener {
 	public void onPlayerMoveEvent(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		AFKPlayer afkplayer = new AFKPlayer(player);
+		afkplayer.setNowLastActionTime();
 		if (!afkplayer.isAFK()) {
 			return;
 		}
@@ -26,16 +27,14 @@ public class Event_AFK extends MyMaidLibrary implements Listener {
 	public void OnEvent_PlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		AFKPlayer afkplayer = new AFKPlayer(player);
-		if (!afkplayer.isAFK()) {
-			return;
-		}
-		afkplayer.end();
+		afkplayer.clear();
 	}
 
 	@EventHandler
 	public void OnEvent_PlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		AFKPlayer afkplayer = new AFKPlayer(player);
+		afkplayer.setNowLastActionTime();
 		if (!afkplayer.isAFK()) {
 			return;
 		}
