@@ -14,7 +14,7 @@ It is used only by servers related to [jao Minecraft Server](https://jaoafa.com/
 This project license is "No License". In other words, as the default copyright law of Japan is applied, we do not allow duplication, modification, redistribution of some or all.  
 (For GitHub's Fork, it is an exception because of GitHub's terms of service.)  
 Originally, in the case of "No license", use is permitted unless changed. But, due to the above description, **use on non-designated servers is DISALLOWED**.  
-**Please also use permission before using source code and ideas.**
+**Please also get permission before using source code and ideas.**
 
 ### Reasons for deciding these.
 
