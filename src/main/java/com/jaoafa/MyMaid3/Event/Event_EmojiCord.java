@@ -15,14 +15,15 @@ public class Event_EmojiCord extends MyMaidLibrary implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
 		String message = event.getMessage();
-		Pattern p = Pattern.compile("<:(.+?):(\\w+?)=>");
+		Pattern p = Pattern
+				.compile("<a?\\:(\\w+?)\\:([a-zA-Z0-9+/=]+?)>|\\:([\\w+-]+?(?:~\\d+?)?)\\:(?:\\:skin-tone-(\\d)\\:)?");
 		Matcher m = p.matcher(message);
-		if (!m.find()) {
-			return;
+		while (m.find()) {
+			message = message.replace(m.group(), m.group(1));
 		}
 		Player player = event.getPlayer();
 		// とりあえずめんどいので:TEXT:形式に直す
-		player.chat(m.group(1));
+		player.chat(message);
 		event.setCancelled(true);
 	}
 }
