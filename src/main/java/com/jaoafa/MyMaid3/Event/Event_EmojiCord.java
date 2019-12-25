@@ -18,12 +18,16 @@ public class Event_EmojiCord extends MyMaidLibrary implements Listener {
 		Pattern p = Pattern
 				.compile("<a?\\:(\\w+?)\\:([a-zA-Z0-9+/=]+?)>|\\:([\\w+-]+?(?:~\\d+?)?)\\:(?:\\:skin-tone-(\\d)\\:)?");
 		Matcher m = p.matcher(message);
+		boolean match = false;
 		while (m.find()) {
 			message = message.replace(m.group(), m.group(1));
+			match = true;
 		}
 		Player player = event.getPlayer();
 		// とりあえずめんどいので:TEXT:形式に直す
-		player.chat(message);
-		event.setCancelled(true);
+		if (match) {
+			player.chat(message);
+			event.setCancelled(true);
+		}
 	}
 }
