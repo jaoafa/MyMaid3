@@ -20,6 +20,10 @@ public class Event_EmojiCord extends MyMaidLibrary implements Listener {
 		Matcher m = p.matcher(message);
 		boolean match = false;
 		while (m.find()) {
+			if (m.group(1) == null || m.group(1).equals("")) {
+				continue;
+			}
+			System.out.println("[ECREPLACE] " + m.group() + " -> " + m.group(1));
 			message = message.replace(m.group(), m.group(1));
 			match = true;
 		}
@@ -28,6 +32,14 @@ public class Event_EmojiCord extends MyMaidLibrary implements Listener {
 		if (match) {
 			player.chat(message);
 			event.setCancelled(true);
+		} else {
+			String new_message = message.replaceAll(
+					"<a?\\:(\\w+?)\\:([a-zA-Z0-9+/=]+?)>|\\:([\\w+-]+?(?:~\\d+?)?)\\:(?:\\:skin-tone-(\\d)\\:)?",
+					":$1:");
+			if (!message.equals(new_message)) {
+				player.chat(new_message);
+				event.setCancelled(true);
+			}
 		}
 	}
 }
