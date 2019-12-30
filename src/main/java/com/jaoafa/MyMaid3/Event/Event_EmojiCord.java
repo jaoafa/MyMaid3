@@ -24,7 +24,7 @@ public class Event_EmojiCord extends MyMaidLibrary implements Listener {
 				continue;
 			}
 			System.out.println("[ECREPLACE] " + m.group() + " -> " + m.group(1));
-			message = message.replace(m.group(), m.group(1));
+			message = message.replace(m.group(), ":" + m.group(1) + ":");
 			match = true;
 		}
 		Player player = event.getPlayer();
