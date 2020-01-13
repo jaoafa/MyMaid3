@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.01.13_10.24
+version: 2020.01.13_10.59
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -26,6 +26,11 @@ commands:
       偽のプレイヤーをしゃべらせます。
     usage: '/chat <FakePlayer> <Message>'
     permission: mymaid.chat
+  dedbull:
+    description: >
+      DedBullを飲み、暗視を付けます。または効果を消します。
+    usage: /dedbull
+    permission: mymaid.dedbull
   discordlink:
     description: >
       DiscordアカウントとMinecraftアカウントを紐づけます。
