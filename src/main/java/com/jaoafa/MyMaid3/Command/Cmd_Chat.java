@@ -49,7 +49,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandP
 
 		Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdf.format(new Date()) + "]" + color + "■" + ChatColor.WHITE
 				+ args[0] + ": " + text);
-		Main.ServerChatChannel.sendMessage(args[0] + ": " + text).queue();
+		Main.ServerChatChannel.sendMessage("**" + args[0] + "**: " + text).queue();
 		//DiscordSend("**" + args[0] + "**: " + text);
 		return true;
 	}
