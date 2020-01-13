@@ -20,10 +20,6 @@ public class Cmd_Dedbull extends MyMaidLibrary implements CommandExecutor, Comma
 			SendUsageMessage(sender, cmd);
 			return true;
 		}
-		if (args.length < 2) {
-			SendUsageMessage(sender, cmd);
-			return true;
-		}
 		if (!(sender instanceof Player)) {
 			SendMessage(sender, cmd, "このコマンドはゲーム内から実行してください。");
 			return true;
