@@ -5,6 +5,8 @@
 [![License](https://img.shields.io/badge/license-None-yellow.svg)](https://img.shields.io)
 [![jao Minecraft Server](https://raw.githubusercontent.com/jaoafa/jao-Minecraft-Server/master/logo/new_logo-421x97.png)](https://jaoafa.com)
 
+[Click here for English README](https://github.com/jaoafa/MyMaid3/blob/master/README-en.md)
+
 このプロジェクトは、今まで[jaoafa/MyMaid2(jaoafa/MyMaid2)](https://github.com/jaoafa/MyMaid2)で開発されてきた「MyMaid2」の後継にあたる「MyMaid3プラグイン」のソースコード公開場所です。
 [jao Minecraft Server](https://jaoafa.com/)に関係するサーバのみで使用され、それ以外でのサーバでの使用は原則禁止しています。
 
