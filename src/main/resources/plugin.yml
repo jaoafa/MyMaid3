@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.02.29_12.43
+version: 2020.03.11_19.24
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -52,3 +52,11 @@ commands:
     description: test
     usage: /test
     permission: mymaid.test
+  tpalias:
+    description: >
+      TeleportAliasの設定をします。Admin・Moderatorのみ利用できます。
+    usage: |
+      /tpalias set <Target> <Replacement>: tpコマンド実行時に<Target>を<Replacement>に置き換えるよう設定します。
+      /tpalias remove <Target>: tpコマンド実行時の<Target>置き換え設定を削除します。
+      /tpalias list: tpコマンド実行時の置き換え設定一覧を表示します。
+    permission: mymaid.tpalias
