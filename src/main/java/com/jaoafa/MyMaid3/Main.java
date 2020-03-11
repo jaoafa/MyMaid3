@@ -39,6 +39,7 @@ public class Main extends JavaPlugin {
 	public static TextChannel ReportChannel = null;
 	public static TextChannel ServerChatChannel = null;
 	public static String MCBansRepAPI = null;
+	public static String BugReportWebhookUrl = null;
 
 	/**
 	 * プラグインが起動したときに呼び出し
@@ -92,6 +93,10 @@ public class Main extends JavaPlugin {
 			getLogger().warning("MyMaid3プラグインを終了します。");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
+		}
+
+		if (config.contains("bugreportwebhookurl")) {
+			BugReportWebhookUrl = config.getString("bugreportwebhookurl");
 		}
 
 		if (!config.contains("sqlserver") || !config.contains("sqlport") || !config.contains("sqldatabase")
