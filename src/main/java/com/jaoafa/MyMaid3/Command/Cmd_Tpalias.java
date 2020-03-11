@@ -22,6 +22,16 @@ public class Cmd_Tpalias extends MyMaidLibrary implements CommandExecutor, Comma
 			SendUsageMessage(sender, cmd);
 			return true;
 		}
+		if (args.length == 1) {
+			if (args[0].equalsIgnoreCase("list")) {
+				// /tpalias list
+				SendMessage(sender, cmd, "----- TeleportAlias List -----");
+				for (Map.Entry<String, String> one : TeleportAlias.getAlias().entrySet()) {
+					SendMessage(sender, cmd, one.getKey() + " -> " + one.getValue());
+				}
+				return true;
+			}
+		}
 		if (sender instanceof Player) {
 			String group = PermissionsManager.getPermissionMainGroup((Player) sender);
 			if (!group.equalsIgnoreCase("Moderator") && !group.equalsIgnoreCase("Admin")) {
@@ -35,16 +45,7 @@ public class Cmd_Tpalias extends MyMaidLibrary implements CommandExecutor, Comma
 			return true;
 		}
 		//Player player = (Player) sender;
-		if (args.length == 1) {
-			if (args[0].equalsIgnoreCase("list")) {
-				// /tpalias list
-				SendMessage(sender, cmd, "----- TeleportAlias List -----");
-				for (Map.Entry<String, String> one : TeleportAlias.getAlias().entrySet()) {
-					SendMessage(sender, cmd, one.getKey() + " -> " + one.getValue());
-				}
-				return true;
-			}
-		} else if (args.length == 2) {
+		if (args.length == 2) {
 			if (args[0].equalsIgnoreCase("remove")) {
 				boolean res = TeleportAlias.removeAlias(args[1]);
 				SendMessage(sender, cmd, "削除に" + (res ? "成功" : "失敗") + "しました。");
@@ -57,6 +58,7 @@ public class Cmd_Tpalias extends MyMaidLibrary implements CommandExecutor, Comma
 				return true;
 			}
 		}
+		SendUsageMessage(sender, cmd);
 		return true;
 	}
 
