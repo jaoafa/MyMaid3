@@ -54,12 +54,10 @@ public class TeleportAlias {
 	}
 
 	public static String getReplaceAlias(String target) {
-		if (alias.size() == 0) {
-			try {
-				Load();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			Load();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		if (alias.containsKey(target)) {
 			return alias.get(target);
@@ -95,7 +93,7 @@ public class TeleportAlias {
 			str += data;
 		}
 		JSONObject obj = new JSONObject(str);
-		if (!obj.has("data")) {
+		if (obj.has("data")) {
 			alias = toMap(obj.getJSONObject("data"));
 		}
 		br.close();
