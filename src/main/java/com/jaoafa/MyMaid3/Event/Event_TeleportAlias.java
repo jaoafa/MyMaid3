@@ -5,8 +5,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.TeleportAlias;
+import com.jaoafa.MyMaid3.Task.Task_TeleportAlias;
 
 public class Event_TeleportAlias extends MyMaidLibrary implements Listener {
 	@EventHandler
@@ -26,7 +28,7 @@ public class Event_TeleportAlias extends MyMaidLibrary implements Listener {
 			if (replacement == null) {
 				return;
 			}
-			player.performCommand("tp " + replacement);
+			new Task_TeleportAlias(player, replacement).runTaskLater(Main.getJavaPlugin(), 10L);
 			event.setCancelled(true);
 			return;
 		}
