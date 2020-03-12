@@ -24,6 +24,7 @@ import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 import com.jaoafa.MyMaid3.Task.Task_AFK;
+import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
 
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
@@ -236,6 +237,7 @@ public class Main extends JavaPlugin {
 
 	private void scheduleTask() {
 		new Task_AFK().runTaskTimerAsynchronously(this, 0L, 1200L);
+		new Task_AutoRemoveTeam().runTaskTimer(this, 0L, 1200L);
 	}
 
 	public static void DiscordExceptionError(Class<?> clazz, MessageChannel channel, Throwable exception) {
