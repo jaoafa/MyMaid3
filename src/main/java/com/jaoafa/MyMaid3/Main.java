@@ -102,7 +102,7 @@ public class Main extends JavaPlugin {
 
 		if (!config.contains("sqlserver") || !config.contains("sqlport") || !config.contains("sqldatabase")
 				|| !config.contains("sqluser") || !config.contains("sqlpassword")) {
-			getLogger().warning("Discordへの接続に失敗しました。(コンフィグにSQL接続情報が設定されていません)");
+			getLogger().warning("MySQLへの接続に失敗しました。(コンフィグにSQL接続情報が設定されていません)");
 			getLogger().warning("MyMaid3プラグインを終了します。");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
@@ -122,7 +122,7 @@ public class Main extends JavaPlugin {
 					config.getString("sqluser"),
 					config.getString("sqlpassword"));
 		} catch (ClassNotFoundException e) {
-			getLogger().warning("Discordへの接続に失敗しました。(MySQL接続するためのクラスが見つかりません)");
+			getLogger().warning("MySQLへの接続に失敗しました。(MySQL接続するためのクラスが見つかりません)");
 			getLogger().warning("MyMaid3プラグインを終了します。");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
