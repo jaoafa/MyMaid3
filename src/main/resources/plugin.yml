@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.03.24_23.57
+version: 2020.03.25_04.20
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -40,6 +40,11 @@ commands:
       DiscordアカウントとMinecraftアカウントを紐づけます。
     usage: '/discordlink <AuthKey>'
     permission: mymaid.discordlink
+  feedback:
+    description: >
+      フィードバックを行います。メッセージは運営チャンネルに送られます。
+    usage: '/feedback <Message>'
+    permission: mymaid.feedback
   g:
     description: ゲームモードを変更します。
     usage: |
