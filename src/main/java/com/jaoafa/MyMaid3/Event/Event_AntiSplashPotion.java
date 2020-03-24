@@ -31,6 +31,7 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
 		try {
 			group = PermissionsManager.getPermissionMainGroup(player);
 		} catch (IllegalArgumentException e) {
+			event.setCancelled(true);
 			return;
 		}
 		if (group.equalsIgnoreCase("Default")) {
@@ -72,6 +73,7 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
 		try {
 			group = PermissionsManager.getPermissionMainGroup(player);
 		} catch (IllegalArgumentException e) {
+			event.setCancelled(true);
 			return;
 		}
 
@@ -106,7 +108,13 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
 				item.getType() != Material.LINGERING_POTION) {
 			return;
 		}
-		String group = PermissionsManager.getPermissionMainGroup(player);
+		String group = null;
+		try {
+			group = PermissionsManager.getPermissionMainGroup(player);
+		} catch (IllegalArgumentException e) {
+			event.setCancelled(true);
+			return;
+		}
 		if (group.equalsIgnoreCase("Default")) {
 			// 所持を含む全部の動作を禁止
 			player.getInventory().remove(item);
