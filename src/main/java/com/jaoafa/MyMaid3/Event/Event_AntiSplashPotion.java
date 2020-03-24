@@ -19,12 +19,20 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
 	public void onPotionDrink(PlayerItemConsumeEvent event) {
 		Player player = event.getPlayer();
 		ItemStack item = event.getItem();
+		if (item == null) {
+			return;
+		}
 		if (item.getType() != Material.POTION &&
 				item.getType() != Material.SPLASH_POTION &&
 				item.getType() != Material.LINGERING_POTION) {
 			return;
 		}
-		String group = PermissionsManager.getPermissionMainGroup(player);
+		String group = null;
+		try {
+			group = PermissionsManager.getPermissionMainGroup(player);
+		} catch (IllegalArgumentException e) {
+			return;
+		}
 		if (group.equalsIgnoreCase("Default")) {
 			// 所持を含む全部の動作を禁止
 			player.getInventory().remove(item);
@@ -51,13 +59,21 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
 			return;
 		}
 		ItemStack item = event.getPotion().getItem();
+		if (item == null) {
+			return;
+		}
 		if (item.getType() != Material.POTION &&
 				item.getType() != Material.SPLASH_POTION &&
 				item.getType() != Material.LINGERING_POTION) {
 			return;
 		}
 		Player player = (Player) event.getPotion().getShooter();
-		String group = PermissionsManager.getPermissionMainGroup(player);
+		String group = null;
+		try {
+			group = PermissionsManager.getPermissionMainGroup(player);
+		} catch (IllegalArgumentException e) {
+			return;
+		}
 
 		if (group.equalsIgnoreCase("Default")) {
 			// 所持を含む全部の動作を禁止
@@ -82,6 +98,9 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
 	public void onPotionInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		ItemStack item = event.getItem();
+		if (item == null) {
+			return;
+		}
 		if (item.getType() != Material.POTION &&
 				item.getType() != Material.SPLASH_POTION &&
 				item.getType() != Material.LINGERING_POTION) {
