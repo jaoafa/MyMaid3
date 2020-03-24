@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.03.25_04.20
+version: 2020.03.25_05.09
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -69,3 +69,8 @@ commands:
       /tpalias remove <Target>: tpコマンド実行時の<Target>置き換え設定を削除します。
       /tpalias list: tpコマンド実行時の置き換え設定一覧を表示します。
     permission: mymaid.tpalias
+  vercheck:
+    description: >
+      開発部が制作しているプラグインのバージョンをチェックします。
+    usage: /vercheck
+    permission: mymaid.vercheck
