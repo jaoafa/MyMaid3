@@ -23,6 +23,10 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandExecutor, CommandPr
 			SendUsageMessage(sender, cmd);
 			return true;
 		}
+		if (args.length == 0) {
+			SendUsageMessage(sender, cmd);
+			return true;
+		}
 		String message = String.join(" ", args) + "\nby `" + sender.getName() + "`";
 
 		WebhookClientBuilder builder = new WebhookClientBuilder(Main.BugReportWebhookUrl);
