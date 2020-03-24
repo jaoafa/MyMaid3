@@ -15,22 +15,17 @@ public class Event_EmojiCord extends MyMaidLibrary implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
 		String message = event.getMessage();
+		Pattern p = Pattern
+				.compile("<a?\\:(\\w+?)\\:([a-zA-Z0-9+/=]+?)>|\\:([\\w+-]+?(?:~\\d+?)?)\\:(?:\\:skin-tone-(\\d)\\:)?");
+		Matcher m = p.matcher(message);
 		boolean match = false;
-		while (true) {
-			Pattern p = Pattern
-					.compile(
-							"<a?\\:(\\w+?)\\:([a-zA-Z0-9+/=]+?)>|\\:([\\w+-]+?(?:~\\d+?)?)\\:(?:\\:skin-tone-(\\d)\\:)?");
-			Matcher m = p.matcher(message);
-			if (m.find()) {
-				if (m.group(1) == null || m.group(1).equals("")) {
-					break;
-				}
-				System.out.println("[ECREPLACE] " + m.group() + " -> :" + m.group(1) + ":");
-				message = message.replaceAll(m.group(), ":" + m.group(1) + ":");
-				match = true;
-			} else {
-				break;
+		while (m.find()) {
+			if (m.group(1) == null || m.group(1).equals("")) {
+				continue;
 			}
+			System.out.println("[ECREPLACE] " + m.group() + " -> :" + m.group(1) + ":");
+			message = message.replaceAll(Pattern.quote(m.group()), ":" + m.group(1) + ":");
+			match = true;
 		}
 		Player player = event.getPlayer();
 		// とりあえずめんどいので:TEXT:形式に直す
@@ -39,7 +34,7 @@ public class Event_EmojiCord extends MyMaidLibrary implements Listener {
 			event.setCancelled(true);
 		} else {
 			String new_message = message.replaceAll(
-					"<a?:(.+?):(.+)>",
+					Pattern.quote("<a?:(.+?):(.+)>"),
 					":$1:");
 			if (!message.equals(new_message)) {
 				player.chat(new_message);
