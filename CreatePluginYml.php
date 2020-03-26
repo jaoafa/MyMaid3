@@ -16,6 +16,7 @@ define("Softdepend", [
     "Votifier",
     "jaoSuperAchievement",
     "MinecraftJPVoteMissFiller",
+    "ViaVersion"
 ]); // 依存関係
 
 require_once(__DIR__ . "/spyc/Spyc.php");

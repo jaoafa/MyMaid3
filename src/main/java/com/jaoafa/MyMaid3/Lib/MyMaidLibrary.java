@@ -5,9 +5,11 @@ import java.util.Date;
 
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.jaoafa.MyMaid3.Main;
@@ -71,5 +73,26 @@ public class MyMaidLibrary {
 		}
 
 		return false;
+	}
+
+	public static void sendAM(String str) {
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			String group = PermissionsManager.getPermissionMainGroup(p);
+			if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")) {
+				continue;
+			}
+			p.sendMessage(str);
+		}
+	}
+
+	public static void sendAMR(String str) {
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			String group = PermissionsManager.getPermissionMainGroup(p);
+			if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
+					&& !group.equalsIgnoreCase("Regular")) {
+				continue;
+			}
+			p.sendMessage(str);
+		}
 	}
 }
