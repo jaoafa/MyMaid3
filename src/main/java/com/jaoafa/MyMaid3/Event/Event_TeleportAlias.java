@@ -28,7 +28,7 @@ public class Event_TeleportAlias extends MyMaidLibrary implements Listener {
 			if (replacement == null) {
 				return;
 			}
-			new Task_TeleportAlias(player, replacement).runTaskLater(Main.getJavaPlugin(), 10L);
+			new Task_TeleportAlias(player, replacement).runTaskLater(Main.getJavaPlugin(), 5L);
 			event.setCancelled(true);
 			return;
 		}
