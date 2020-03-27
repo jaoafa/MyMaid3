@@ -43,12 +43,19 @@ public class Task_ViaVerNotify extends BukkitRunnable {
 		}
 		if (!obj.has(verstr)) {
 			// version not found.
-			sendAMR("[ViaVersion] " + ChatColor.YELLOW + player.getName() + " -> (" + ver + ")");
+			sendAMR("[ViaVersion] " + ChatColor.AQUA + player.getName() + " -> (" + ver + ")");
 			return;
 		}
 		String version = obj.getString(verstr);
 
-		sendAMR("[ViaVersion] " + ChatColor.YELLOW + player.getName() + " -> " + version + " (" + ver + ")");
+		if (!version.equals("1.12.2")) {
+			player.sendMessage("[VersionChecker] " + ChatColor.AQUA + "あなたはクライアントバージョン「" + version + "」で接続しています。");
+			player.sendMessage("[VersionChecker] " + ChatColor.AQUA + "サーババージョンは1.12.2のため、" + ChatColor.RED
+					+ "一部のブロック・機能は利用できません。");
+			player.sendMessage("[VersionChecker] " + ChatColor.AQUA + "クライアントバージョンを「1.12.2」にすることを強くお勧めします。");
+		}
+
+		sendAMR("[ViaVersion] " + ChatColor.AQUA + player.getName() + " -> " + version + " (" + ver + ")");
 	}
 
 	String toString(InputStream is) throws IOException {
