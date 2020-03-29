@@ -18,7 +18,7 @@ public class Event_SpectatorHide extends MyMaidLibrary implements Listener {
 
 		if (mode == GameMode.SPECTATOR) {
 			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "dynmap hide " + player.getName());
-		} else if (mode == GameMode.SPECTATOR) {
+		} else {
 			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "dynmap show " + player.getName());
 		}
 	}
