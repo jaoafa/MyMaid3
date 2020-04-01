@@ -95,4 +95,32 @@ public class MyMaidLibrary {
 			p.sendMessage(str);
 		}
 	}
+
+	public static boolean isAM(Player player) {
+		String group = PermissionsManager.getPermissionMainGroup(player);
+		if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")) {
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean isAMR(Player player) {
+		String group = PermissionsManager.getPermissionMainGroup(player);
+		if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
+				&& !group.equalsIgnoreCase("Regular")) {
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean isAMRV(Player player) {
+		String group = PermissionsManager.getPermissionMainGroup(player);
+		if (!group.equalsIgnoreCase("Admin")
+				&& !group.equalsIgnoreCase("Moderator")
+				&& !group.equalsIgnoreCase("Regular")
+				&& !group.equalsIgnoreCase("Verified")) {
+			return false;
+		}
+		return true;
+	}
 }
