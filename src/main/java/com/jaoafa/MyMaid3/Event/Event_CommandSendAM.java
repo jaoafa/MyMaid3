@@ -3,7 +3,6 @@ package com.jaoafa.MyMaid3.Event;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -61,11 +60,6 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener {
 			}
 		};
 
-		if (!Bukkit.getServer().getOnlinePlayers().stream()
-				.filter(p -> p.getName().equalsIgnoreCase(commands[1]))
-				.collect(Collectors.toList()).isEmpty()) {
-			return;
-		}
 		if (tells.contains(commands[0])) {
 			if (commands.length <= 2) {
 				return;
@@ -90,9 +84,7 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener {
 			}
 			String jp = lunachatapi.japanize(text, JapanizeType.GOOGLE_IME);
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-				String p_group = PermissionsManager.getPermissionMainGroup(p);
-				if ((p_group.equalsIgnoreCase("Admin") || p_group.equalsIgnoreCase("Moderator"))
-						&& (!player.getName().equals(p.getName()))) {
+				if (isAM(p) && (!player.getName().equals(p.getName()))) {
 					p.sendMessage(ChatColor.GRAY + "(" + ChatColor.YELLOW + jp + ChatColor.GRAY + ")");
 				}
 			}
