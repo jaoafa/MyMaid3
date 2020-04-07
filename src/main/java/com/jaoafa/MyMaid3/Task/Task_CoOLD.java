@@ -58,18 +58,29 @@ public class Task_CoOLD extends BukkitRunnable {
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			while (res.next()) {
+				int rolled_back = res.getInt("rolled_back");
 				long time = res.getLong("time");
 				String date = sdf.format(new Date(time * 1000));
 				String username = getUserName(res.getInt("user"));
 				int type = res.getInt("type");
 				String typeja = getTypeJa(type);
 				@SuppressWarnings("deprecation")
-				Material material = Material.getMaterial(res.getInt("data"));
-				String block = material != null ? material.name().toLowerCase() + ":" + res.getInt("meta")
-						: res.getInt("data") + ":" + res.getInt("meta");
+				Material material = Material.getMaterial(res.getInt("type"));
+				String block = material != null ? nameFilter(material, res.getInt("data"))
+						: res.getInt("type") + ":" + res.getInt("data");
 
-				player.sendMessage(date + ChatColor.WHITE + " - " + ChatColor.DARK_AQUA + username + " "
-						+ ChatColor.WHITE + typeja + " " + ChatColor.DARK_AQUA + block);
+				if (rolled_back == 1) {
+					// rollbacked
+					player.sendMessage(date + ChatColor.WHITE + " - "
+							+ ChatColor.DARK_AQUA + ChatColor.STRIKETHROUGH + username + " "
+							+ ChatColor.WHITE + ChatColor.STRIKETHROUGH + typeja + " "
+							+ ChatColor.DARK_AQUA + ChatColor.STRIKETHROUGH + block);
+				} else {
+					player.sendMessage(date + ChatColor.WHITE + " - "
+							+ ChatColor.DARK_AQUA + username + " "
+							+ ChatColor.WHITE + typeja + " "
+							+ ChatColor.DARK_AQUA + block);
+				}
 			}
 		} catch (SQLException e) {
 			player.sendMessage(
@@ -103,5 +114,25 @@ public class Task_CoOLD extends BukkitRunnable {
 			a2 = "clicked";
 		}
 		return a2;
+	}
+
+	String nameFilter(Material material, int data) {
+		if (material == Material.STONE) {
+			switch (data) {
+			case 1:
+				return "granite";
+			case 2:
+				return "polished_granite";
+			case 3:
+				return "diorite";
+			case 4:
+				return "polished_diorite";
+			case 5:
+				return "andesite";
+			case 6:
+				return "polished_andesite";
+			}
+		}
+		return material.name().toLowerCase() + ":" + data;
 	}
 }

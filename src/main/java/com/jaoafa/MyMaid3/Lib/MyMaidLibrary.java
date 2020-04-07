@@ -123,4 +123,13 @@ public class MyMaidLibrary {
 		}
 		return true;
 	}
+
+	public static boolean isInt(String s) {
+		try {
+			Integer.valueOf(s);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
 }

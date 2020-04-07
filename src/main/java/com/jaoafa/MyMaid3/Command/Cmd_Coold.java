@@ -3,6 +3,7 @@ package com.jaoafa.MyMaid3.Command;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,9 +39,17 @@ public class Cmd_Coold extends MyMaidLibrary implements CommandExecutor, Command
 				SendMessage(sender, cmd, "先に/coold iをしてブロック情報を取得してからページ処理してください。");
 				return true;
 			}
+			if (!isInt(args[1]) || Integer.valueOf(args[1]) <= 0) {
+				SendMessage(sender, cmd, "有効なページを指定してください。");
+				return true;
+			}
+
+			player.sendMessage("[CoreProtectOLD] " + ChatColor.LIGHT_PURPLE + "Please wait...");
 			Location loc = Main.coOLDLoc.get(player.getUniqueId());
-			BukkitTask task = new Task_CoOLD(player, loc, 1).runTaskAsynchronously(Main.getJavaPlugin());
+			BukkitTask task = new Task_CoOLD(player, loc, Integer.valueOf(args[1]))
+					.runTaskAsynchronously(Main.getJavaPlugin());
 			Main.coOLDEnabler.put(player.getUniqueId(), task);
+			return true;
 		}
 
 		if (!Main.coOLDEnabler.containsKey(player.getUniqueId())) {
