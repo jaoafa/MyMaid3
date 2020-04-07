@@ -7,8 +7,12 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
@@ -16,6 +20,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.jaoafa.MyMaid3.DiscordEvent.Event_Ready;
 import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerLeave;
@@ -42,6 +47,9 @@ public class Main extends JavaPlugin {
 	public static String MCBansRepAPI = null;
 	public static String BugReportWebhookUrl = null;
 	public static String FeedbackWebhookUrl = null;
+	public static Map<UUID, BukkitTask> coOLDEnabler = new HashMap<>();
+	public static Map<UUID, Location> coOLDLoc = new HashMap<>();
+	public static MySQLDBManager MySQLDBManager_COOLD = null;
 
 	/**
 	 * プラグインが起動したときに呼び出し
