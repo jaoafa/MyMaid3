@@ -2,6 +2,7 @@ package com.jaoafa.MyMaid3.Event;
 
 import java.awt.Color;
 
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -25,6 +26,10 @@ public class Event_PacketLimiterKickNotify extends MyMaidLibrary implements List
 			embed.setColor(Color.ORANGE);
 			embed.addField("プレイヤー", event.getPlayer().getName(), true);
 			embed.addField("理由", event.getReason(), false);
+			Location loc = event.getPlayer().getLocation();
+			String location = loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " "
+					+ loc.getBlockZ();
+			embed.addField("座標", location, false);
 
 			Main.getJDA().getTextChannelById(597423444501463040L).sendMessage(embed.build()).queue();
 		}
