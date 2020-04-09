@@ -30,7 +30,8 @@ public class Cmd_Vercheck extends MyMaidLibrary implements CommandExecutor, Comm
 				"MyMaid3",
 				"AntiAlts3",
 				"PeriodMatch2",
-				"Bakushinchi"
+				"Bakushinchi",
+				"jao-Super-Achievement2"
 		};
 
 		SendMessage(sender, cmd, "----- Version Check -----");
