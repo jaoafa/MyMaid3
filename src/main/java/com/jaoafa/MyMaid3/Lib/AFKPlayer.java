@@ -14,6 +14,9 @@ import org.bukkit.scheduler.BukkitTask;
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Task.Task_AFKING;
+import com.jaoafa.jaoSuperAchievement2.API.AchievementAPI;
+import com.jaoafa.jaoSuperAchievement2.API.Achievementjao;
+import com.jaoafa.jaoSuperAchievement2.Lib.AchievementType;
 
 public class AFKPlayer {
 	static Map<String, AFKPlayer> players = new HashMap<>();
@@ -60,9 +63,6 @@ public class AFKPlayer {
 				ChatColor.BLUE + "" + ChatColor.BOLD + "When you are back, please enter the command '/afk' or Move.");
 
 		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is afk!");
-		if (Main.ServerChatChannel != null) {
-			Main.ServerChatChannel.sendMessage(player.getName() + " is afk!").queue();
-		}
 
 		try {
 			Task = new Task_AFKING(player).runTaskTimer(Main.getJavaPlugin(), 0L, 5L);
@@ -72,6 +72,15 @@ public class AFKPlayer {
 		}
 
 		players.put(player.getName(), this);
+
+		if (!Achievementjao.getAchievement(player, new AchievementType(31))) {
+			player.sendMessage(AchievementAPI.getPrefix() + "実績の解除中に問題が発生しました。もう一度お試しください。");
+			return;
+		}
+
+		if (Main.ServerChatChannel != null) {
+			Main.ServerChatChannel.sendMessage(player.getName() + " is afk!").queue();
+		}
 	}
 
 	public void end() {
@@ -93,13 +102,14 @@ public class AFKPlayer {
 		player.setPlayerListName(listname);
 
 		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is now online!");
-		if (Main.ServerChatChannel != null) {
-			Main.ServerChatChannel.sendMessage(player.getName() + " is now online!").queue();
-		}
 
 		TitleAPI.clearTitle(player);
 
 		players.put(player.getName(), this);
+
+		if (Main.ServerChatChannel != null) {
+			Main.ServerChatChannel.sendMessage(player.getName() + " is now online!").queue();
+		}
 	}
 
 	public void clear() {
