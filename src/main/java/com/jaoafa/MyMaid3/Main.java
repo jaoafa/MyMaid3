@@ -28,6 +28,7 @@ import com.jaoafa.MyMaid3.Lib.ClassFinder;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
+import com.jaoafa.MyMaid3.Lib.TPSChecker;
 import com.jaoafa.MyMaid3.Task.Task_AFK;
 import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
 import com.jaoafa.MyMaid3.Task.Task_TPSTimings;
@@ -76,7 +77,12 @@ public class Main extends JavaPlugin {
 		PermissionsManager.first();
 		if (!isEnabled())
 			return;
+
 		scheduleTask();
+		if (!isEnabled())
+			return;
+
+		TPSChecker.OnEnable_TPSSetting();
 	}
 
 	private void loadConfig() {
