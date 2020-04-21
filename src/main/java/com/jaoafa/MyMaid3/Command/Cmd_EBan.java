@@ -34,7 +34,7 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 			return true;
 		}
 
-		if (args.length >= 2 && args[0].equalsIgnoreCase("add")) {
+		if (args.length >= 3 && args[0].equalsIgnoreCase("add")) {
 			// /eban add mine_book000 test a b c
 			onCmd_Add(sender, cmd, args);
 			return true;
@@ -56,7 +56,7 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 				SendMessage(sender, cmd, eban.getPlayer().getName() + " " + eban.getLastBanReason());
 			}
 		} else if (args.length == 2) {
-			OfflinePlayer offplayer = getOfflinePlayer(args[0]);
+			OfflinePlayer offplayer = getOfflinePlayer(args[1]);
 			EBan eban = new EBan(offplayer);
 			if (eban.isBanned()) {
 				SendMessage(sender, cmd, "プレイヤー「" + offplayer.getName() + "」は現在EBanされています。");
@@ -78,8 +78,8 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 				return;
 			}
 		}
-		String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-		OfflinePlayer offplayer = getOfflinePlayer(args[0]);
+		String reason = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+		OfflinePlayer offplayer = getOfflinePlayer(args[1]);
 		EBan eban = new EBan(offplayer);
 		if (eban.addBan(sender.getName(), reason)) {
 			SendMessage(sender, cmd, ChatColor.RED + "実行に成功しました。");
@@ -97,8 +97,12 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 				return;
 			}
 		}
-		OfflinePlayer offplayer = getOfflinePlayer(args[0]);
+		OfflinePlayer offplayer = getOfflinePlayer(args[1]);
 		EBan eban = new EBan(offplayer);
+		if (!eban.isBanned()) {
+			SendMessage(sender, cmd, ChatColor.RED + "指定されたプレイヤーはEBanされていません。");
+			return;
+		}
 		if (eban.removeBan()) {
 			SendMessage(sender, cmd, ChatColor.RED + "実行に成功しました。");
 		} else {
@@ -126,7 +130,7 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 			{
 				add("/eban add <Target> <Reason>: TargetをEBanします。");
 				add("/eban remove <Target>: TargetのEBanを解除します。");
-				add("/eban status: EBane一覧を表示します。");
+				add("/eban status: EBan一覧を表示します。");
 				add("/eban status <Target>: TargetのEBan情報を表示します。");
 			}
 		};

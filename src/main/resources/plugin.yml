@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.04.21_19.36
+version: 2020.04.22_08.03
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -54,7 +54,7 @@ commands:
     usage: |
       /eban add <Target> <Reason>: TargetをEBanします。
       /eban remove <Target>: TargetのEBanを解除します。
-      /eban status: EBane一覧を表示します。
+      /eban status: EBan一覧を表示します。
       /eban status <Target>: TargetのEBan情報を表示します。
     permission: mymaid.eban
   feedback:

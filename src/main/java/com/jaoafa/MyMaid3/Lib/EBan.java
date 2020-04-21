@@ -37,8 +37,8 @@ public class EBan {
 	long DBSyncTime = -1L;
 
 	public EBan(OfflinePlayer offplayer) {
-		if (data.containsKey(player.getUniqueId())) {
-			EBan eban = data.get(player.getUniqueId());
+		if (data.containsKey(offplayer.getUniqueId())) {
+			EBan eban = data.get(offplayer.getUniqueId());
 			this.banned = eban.isBanned();
 			this.lastreason = eban.getLastBanReason();
 			this.banned_unixtime = eban.getBannedUnixTime();
@@ -50,8 +50,8 @@ public class EBan {
 	}
 
 	public EBan(UUID uuid) {
-		if (data.containsKey(player.getUniqueId())) {
-			EBan eban = data.get(player.getUniqueId());
+		if (data.containsKey(uuid)) {
+			EBan eban = data.get(uuid);
 			this.banned = eban.isBanned();
 			this.lastreason = eban.getLastBanReason();
 			this.banned_unixtime = eban.getBannedUnixTime();
@@ -72,7 +72,7 @@ public class EBan {
 		}
 
 		try {
-			Connection conn = Main.MySQLDBManager_COOLD.getConnection();
+			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement(
 					"INSERT INTO eban (player, uuid, banned_by, reason, status) VALUES (?, ?, ?, ?, ?);");
 			statement.setString(1, player.getName());
@@ -118,7 +118,7 @@ public class EBan {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager_COOLD.getConnection();
+			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("UPDATE eban SET status = ? WHERE uuid = ? ORDER BY id DESC;");
 			statement.setString(1, "end");
@@ -197,14 +197,14 @@ public class EBan {
 	 */
 	public void DBSync(boolean force) {
 		// TODO データベースから各種情報を取得
-		if ((DBSyncTime + 30 * 60 * 1000) > System.currentTimeMillis()) {
+		if (!force && ((DBSyncTime + 30 * 60 * 1000) > System.currentTimeMillis())) {
 			return; // 30分未経過
 		}
 		if (Main.MySQLDBManager == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager_COOLD.getConnection();
+			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("SELECT * FROM eban WHERE uuid = ? ORDER BY id DESC LIMIT 1");
 			statement.setString(1, player.getUniqueId().toString());
@@ -245,7 +245,7 @@ public class EBan {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager_COOLD.getConnection();
+			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM eban WHERE status = ?");
 			statement.setString(1, "punishing");
 			ResultSet res = statement.executeQuery();
