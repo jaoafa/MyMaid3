@@ -31,12 +31,12 @@ public class AFKPlayer {
 	public AFKPlayer(Player player) {
 		if (players.containsKey(player.getName())) {
 			AFKPlayer afkplayer = players.get(player.getName());
-			this.player = afkplayer.player;
-			this.isAFKing = afkplayer.isAFKing;
-			this.AFKStartTime = afkplayer.AFKStartTime;
-			this.Task = afkplayer.Task;
-			this.HeadItem = afkplayer.HeadItem;
-			this.LastActionTime = afkplayer.LastActionTime;
+			this.player = afkplayer.getPlayer();
+			this.isAFKing = afkplayer.isAFK();
+			this.AFKStartTime = afkplayer.getAFKStartTime();
+			this.Task = afkplayer.getTask();
+			this.HeadItem = afkplayer.getHeadItem();
+			this.LastActionTime = afkplayer.getLastActionTime();
 			return;
 		}
 		this.player = player;
@@ -149,5 +149,17 @@ public class AFKPlayer {
 
 	public static Map<String, AFKPlayer> getAFKPlayers() {
 		return players;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public BukkitTask getTask() {
+		return Task;
+	}
+
+	public ItemStack getHeadItem() {
+		return HeadItem;
 	}
 }

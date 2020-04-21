@@ -15,6 +15,7 @@ public class Event_Ready {
 		Main.setJDA(event.getJDA());
 
 		Main.ReportChannel = event.getJDA().getTextChannelById(597765357196935169L);
+		Main.jaotanChannel = event.getJDA().getTextChannelById(597423444501463040L);
 		FileConfiguration config = Main.getMain().getConfig();
 		if (config.contains("serverchat_id")) {
 			long serverchat_id = Long.valueOf(config.getString("serverchat_id"));

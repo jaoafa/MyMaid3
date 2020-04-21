@@ -46,6 +46,7 @@ public class Main extends JavaPlugin {
 	public static MySQLDBManager MySQLDBManager = null;
 	public static TextChannel ReportChannel = null;
 	public static TextChannel ServerChatChannel = null;
+	public static TextChannel jaotanChannel = null;
 	public static String MCBansRepAPI = null;
 	public static String BugReportWebhookUrl = null;
 	public static String FeedbackWebhookUrl = null;
