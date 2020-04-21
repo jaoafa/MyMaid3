@@ -28,6 +28,8 @@ public class EBan {
 	static Map<UUID, EBan> data = new HashMap<>();
 
 	OfflinePlayer player;
+	String name;
+	UUID uuid;
 
 	boolean banned = false;
 	String banned_by = null;
@@ -39,6 +41,8 @@ public class EBan {
 	public EBan(OfflinePlayer offplayer) {
 		if (data.containsKey(offplayer.getUniqueId())) {
 			EBan eban = data.get(offplayer.getUniqueId());
+			this.name = eban.getName();
+			this.uuid = eban.getUUID();
 			this.banned = eban.isBanned();
 			this.lastreason = eban.getLastBanReason();
 			this.banned_unixtime = eban.getBannedUnixTime();
@@ -52,6 +56,8 @@ public class EBan {
 	public EBan(UUID uuid) {
 		if (data.containsKey(uuid)) {
 			EBan eban = data.get(uuid);
+			this.name = eban.getName();
+			this.uuid = eban.getUUID();
 			this.banned = eban.isBanned();
 			this.lastreason = eban.getLastBanReason();
 			this.banned_unixtime = eban.getBannedUnixTime();
@@ -210,11 +216,15 @@ public class EBan {
 			statement.setString(1, player.getUniqueId().toString());
 			ResultSet res = statement.executeQuery();
 			if (res.next()) {
+				this.name = res.getString("player");
+				this.uuid = UUID.fromString(res.getString("uuid"));
 				this.banned = res.getString("status").equalsIgnoreCase("punishing");
 				this.lastreason = res.getString("reason");
 				this.banned_unixtime = res.getDate("created_at").getTime() / 1000;
 				this.banned_by = res.getString("banned_by");
 			} else {
+				this.name = res.getString("player");
+				this.uuid = UUID.fromString(res.getString("uuid"));
 				this.banned = false;
 				this.lastreason = null;
 				this.banned_unixtime = -1L;
@@ -227,6 +237,8 @@ public class EBan {
 		} catch (SQLException e) {
 			e.printStackTrace();
 
+			this.name = player.getName();
+			this.uuid = player.getUniqueId();
 			this.banned = false;
 			this.lastreason = null;
 			this.banned_unixtime = -1L;
@@ -263,6 +275,14 @@ public class EBan {
 
 	public OfflinePlayer getPlayer() {
 		return player;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public UUID getUUID() {
+		return uuid;
 	}
 
 	public long getDBSyncTime() {

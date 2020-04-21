@@ -53,7 +53,13 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 			Set<EBan> ebans = EBan.getList();
 			SendMessage(sender, cmd, "現在、" + ebans.size() + "人のプレイヤーがEBanされています。");
 			for (EBan eban : ebans) {
-				SendMessage(sender, cmd, eban.getPlayer().getName() + " " + eban.getLastBanReason());
+				String name;
+				if (eban.getPlayer() == null || eban.getPlayer().getName() == null) {
+					name = eban.getName();
+				} else {
+					name = eban.getPlayer().getName();
+				}
+				SendMessage(sender, cmd, name + " " + eban.getLastBanReason());
 			}
 		} else if (args.length == 2) {
 			OfflinePlayer offplayer = getOfflinePlayer(args[1]);
