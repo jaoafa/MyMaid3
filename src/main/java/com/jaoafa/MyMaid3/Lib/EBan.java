@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -97,7 +98,7 @@ public class EBan {
 		Bukkit.broadcastMessage(
 				"[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でEBanされました。");
 		Main.jaotanChannel.sendMessage("__**EBan[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
-				+ "」によって「" + reason + "」という理由でEBanされました。");
+				+ "」によって「" + reason + "」という理由でEBanされました。").queue();
 
 		if (player.isOnline()) {
 			if (player.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -118,7 +119,7 @@ public class EBan {
 	/**
 	 * このユーザーの処罰を解除します。
 	 */
-	public boolean removeBan() {
+	public boolean removeBan(String removePlayerName) {
 		DBSync();
 		if (Main.MySQLDBManager == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
@@ -140,9 +141,16 @@ public class EBan {
 		}
 		DBSync(true);
 
+		if (player.isOnline()) {
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+			player.getPlayer()
+					.sendMessage(ChatColor.GRAY + "[" + sdf.format(new Date()) + "]" + ChatColor.GOLD + "■jaotan"
+							+ ChatColor.WHITE + ": " + "じゃあな…！");
+		}
 		Bukkit.broadcastMessage("[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」のEBanを解除しました。");
 		Main.jaotanChannel.sendMessage(
-				"__**EBan[解除]**__: プレイヤー「" + player.getName() + "」のEBanを「" + banned_by + "」によって解除されました。");
+				"__**EBan[解除]**__: プレイヤー「" + player.getName() + "」のEBanを「" + removePlayerName + "」によって解除されました。")
+				.queue();
 		return true;
 	}
 

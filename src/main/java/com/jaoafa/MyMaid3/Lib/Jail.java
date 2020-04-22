@@ -102,7 +102,7 @@ public class Jail {
 				"[Jail] " + ChatColor.GREEN + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でJailされました。");
 		TextChannel sendTo = getDiscordSendTo();
 		sendTo.sendMessage("__**Jail[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
-				+ "」によって「" + reason + "」という理由でJailされました。");
+				+ "」によって「" + reason + "」という理由でJailされました。").queue();
 
 		if (player.isOnline()) {
 			if (player.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -120,7 +120,7 @@ public class Jail {
 	/**
 	 * このユーザーの処罰を解除します。
 	 */
-	public boolean removeBan() {
+	public boolean removeBan(String removePlayerName) {
 		DBSync();
 		if (Main.MySQLDBManager == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
@@ -142,7 +142,8 @@ public class Jail {
 		Bukkit.broadcastMessage("[Jail] " + ChatColor.GREEN + "プレイヤー:「" + player.getName() + "」のJailを解除しました。");
 		TextChannel sendTo = getDiscordSendTo();
 		sendTo.sendMessage(
-				"__**Jail[解除]**__: プレイヤー「" + player.getName() + "」のJailを「" + banned_by + "」によって解除されました。");
+				"__**Jail[解除]**__: プレイヤー「" + player.getName() + "」のJailを「" + removePlayerName + "」によって解除されました。")
+				.queue();
 		return true;
 	}
 
@@ -180,7 +181,7 @@ public class Jail {
 		Bukkit.broadcastMessage(
 				"[JAIL] " + ChatColor.GREEN + "プレイヤー「" + player.getName() + "」が遺言を残しました。遺言:「" + testment + "」");
 		TextChannel sendTo = getDiscordSendTo();
-		sendTo.sendMessage("***Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。");
+		sendTo.sendMessage("***Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。").queue();
 		return true;
 	}
 

@@ -108,7 +108,7 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 			SendMessage(sender, cmd, ChatColor.RED + "指定されたプレイヤーはEBanされていません。");
 			return;
 		}
-		if (eban.removeBan()) {
+		if (eban.removeBan(sender.getName())) {
 			SendMessage(sender, cmd, ChatColor.RED + "実行に成功しました。");
 		} else {
 			SendMessage(sender, cmd, ChatColor.RED + "実行に失敗しました。");

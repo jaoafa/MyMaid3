@@ -115,7 +115,7 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandExecutor, CommandP
 			SendMessage(sender, cmd, ChatColor.GREEN + "指定されたプレイヤーはJailされていません。");
 			return;
 		}
-		if (jail.removeBan()) {
+		if (jail.removeBan(sender.getName())) {
 			SendMessage(sender, cmd, ChatColor.GREEN + "実行に成功しました。");
 		} else {
 			SendMessage(sender, cmd, ChatColor.GREEN + "実行に失敗しました。");
