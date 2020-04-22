@@ -234,8 +234,8 @@ public class EBan {
 				this.banned_unixtime = res.getDate("created_at").getTime() / 1000;
 				this.banned_by = res.getString("banned_by");
 			} else {
-				this.name = res.getString("player");
-				this.uuid = UUID.fromString(res.getString("uuid"));
+				this.name = player.getName();
+				this.uuid = player.getUniqueId();
 				this.banned = false;
 				this.lastreason = null;
 				this.banned_unixtime = -1L;
