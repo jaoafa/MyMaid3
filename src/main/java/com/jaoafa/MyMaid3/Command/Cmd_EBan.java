@@ -26,7 +26,6 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 			SendUsageMessage(sender, cmd);
 			return true;
 		}
-		// TODO つくる、descriptionもusageも
 		if (args.length >= 1 && args[0].equalsIgnoreCase("status")) {
 			// /eban status
 			// /eban status mine_book000
@@ -35,7 +34,7 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 		}
 
 		if (args.length >= 3 && args[0].equalsIgnoreCase("add")) {
-			// /eban add mine_book000 test a b c
+			// /eban remove mine_book000
 			onCmd_Add(sender, cmd, args);
 			return true;
 		}

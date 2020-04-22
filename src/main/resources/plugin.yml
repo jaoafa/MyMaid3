@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.04.22_08.03
+version: 2020.04.22_09.35
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -74,10 +74,25 @@ commands:
       ユーザーを認証するためのキーを取得します。
     usage: /getuserkey
     permission: mymaid.getuserkey
+  jail:
+    description: Jailに関する処理を行います。
+    usage: |
+      /jail add <Target> <Reason>: TargetをJailします。
+      /jail remove <Target>: TargetのJailを解除します。
+      /jail status: Jail一覧を表示します。
+      /jail status <Target>: TargetのJail情報を表示します。
+      /jail testment <Testment>: 遺言を記録します。
+    permission: mymaid.jail
   test:
     description: test
     usage: /test
     permission: mymaid.test
+  testment:
+    description: >
+      遺言を記録します。/jail
+      testmentのエイリアスコマンドです。
+    usage: '/testment <Testment>'
+    permission: mymaid.testment
   tpalias:
     description: >
       TeleportAliasの設定をします。Admin・Moderatorのみ利用できます。

@@ -20,12 +20,14 @@ import org.bukkit.World;
 
 import com.jaoafa.MyMaid3.Main;
 
+import net.dv8tion.jda.api.entities.TextChannel;
+
 /**
- * EBanライブラリ
+ * Jailライブラリ
  * @author tomachi
  */
-public class EBan {
-	static Map<UUID, EBan> data = new HashMap<>();
+public class Jail {
+	static Map<UUID, Jail> data = new HashMap<>();
 
 	OfflinePlayer player;
 	String name;
@@ -34,35 +36,38 @@ public class EBan {
 	boolean banned = false;
 	String banned_by = null;
 	String lastreason = null;
+	String lasttestment = null;
 	long banned_unixtime = -1L;
 
 	long DBSyncTime = -1L;
 
-	public EBan(OfflinePlayer offplayer) {
+	public Jail(OfflinePlayer offplayer) {
 		if (data.containsKey(offplayer.getUniqueId())) {
-			EBan eban = data.get(offplayer.getUniqueId());
-			this.name = eban.getName();
-			this.uuid = eban.getUUID();
-			this.banned = eban.isBanned();
-			this.lastreason = eban.getLastBanReason();
-			this.banned_unixtime = eban.getBannedUnixTime();
-			this.banned_by = eban.getBannedBy();
-			this.DBSyncTime = eban.getDBSyncTime();
+			Jail jail = data.get(offplayer.getUniqueId());
+			this.name = jail.getName();
+			this.uuid = jail.getUUID();
+			this.banned = jail.isBanned();
+			this.lastreason = jail.getLastBanReason();
+			this.lasttestment = jail.getLastBanTestment();
+			this.banned_unixtime = jail.getBannedUnixTime();
+			this.banned_by = jail.getBannedBy();
+			this.DBSyncTime = jail.getDBSyncTime();
 		}
 		this.player = offplayer;
 		DBSync();
 	}
 
-	public EBan(UUID uuid) {
+	public Jail(UUID uuid) {
 		if (data.containsKey(uuid)) {
-			EBan eban = data.get(uuid);
-			this.name = eban.getName();
-			this.uuid = eban.getUUID();
-			this.banned = eban.isBanned();
-			this.lastreason = eban.getLastBanReason();
-			this.banned_unixtime = eban.getBannedUnixTime();
-			this.banned_by = eban.getBannedBy();
-			this.DBSyncTime = eban.getDBSyncTime();
+			Jail jail = data.get(uuid);
+			this.name = jail.getName();
+			this.uuid = jail.getUUID();
+			this.banned = jail.isBanned();
+			this.lastreason = jail.getLastBanReason();
+			this.lasttestment = jail.getLastBanTestment();
+			this.banned_unixtime = jail.getBannedUnixTime();
+			this.banned_by = jail.getBannedBy();
+			this.DBSyncTime = jail.getDBSyncTime();
 		}
 		this.player = Bukkit.getOfflinePlayer(uuid);
 		DBSync();
@@ -80,12 +85,11 @@ public class EBan {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement(
-					"INSERT INTO eban (player, uuid, banned_by, reason, status) VALUES (?, ?, ?, ?, ?);");
+					"INSERT INTO jail (player, uuid, banned_by, reason) VALUES (?, ?, ?, ?);");
 			statement.setString(1, player.getName());
 			statement.setString(2, player.getUniqueId().toString());
 			statement.setString(3, banned_by);
 			statement.setString(4, reason);
-			statement.setString(5, "punishing");
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
@@ -95,9 +99,10 @@ public class EBan {
 		DBSync(true);
 
 		Bukkit.broadcastMessage(
-				"[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でEBanされました。");
-		Main.jaotanChannel.sendMessage("__**EBan[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
-				+ "」によって「" + reason + "」という理由でEBanされました。");
+				"[Jail] " + ChatColor.GREEN + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でJailされました。");
+		TextChannel sendTo = getDiscordSendTo();
+		sendTo.sendMessage("__**Jail[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
+				+ "」によって「" + reason + "」という理由でJailされました。");
 
 		if (player.isOnline()) {
 			if (player.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -107,9 +112,6 @@ public class EBan {
 			World Jao_Afa = Bukkit.getServer().getWorld("Jao_Afa");
 			Location minami = new Location(Jao_Afa, 2856, 69, 2888);
 			player.getPlayer().teleport(minami);
-
-			player.getPlayer().sendMessage("[EBan] " + ChatColor.RED + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
-			player.getPlayer().sendMessage("[EBan] " + ChatColor.RED + "https://jaoafa.com/rule/management/punishment");
 		}
 
 		return true;
@@ -123,14 +125,11 @@ public class EBan {
 		if (Main.MySQLDBManager == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
-		if (!isBanned()) {
-			return false;
-		}
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
-					.prepareStatement("UPDATE eban SET status = ? WHERE uuid = ? ORDER BY id DESC;");
-			statement.setString(1, "end");
+					.prepareStatement("UPDATE jail SET status = ? WHERE uuid = ? ORDER BY id DESC;");
+			statement.setBoolean(1, false);
 			statement.setString(2, player.getUniqueId().toString());
 			statement.executeUpdate();
 			statement.close();
@@ -140,19 +139,49 @@ public class EBan {
 		}
 		DBSync(true);
 
-		Bukkit.broadcastMessage("[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」のEBanを解除しました。");
-		Main.jaotanChannel.sendMessage(
-				"__**EBan[解除]**__: プレイヤー「" + player.getName() + "」のEBanを「" + banned_by + "」によって解除されました。");
+		Bukkit.broadcastMessage("[Jail] " + ChatColor.GREEN + "プレイヤー:「" + player.getName() + "」のJailを解除しました。");
+		TextChannel sendTo = getDiscordSendTo();
+		sendTo.sendMessage(
+				"__**Jail[解除]**__: プレイヤー「" + player.getName() + "」のJailを「" + banned_by + "」によって解除されました。");
 		return true;
 	}
 
 	/**
 	 * このユーザーが処罰されているかどうかを調べます。
-	 * @return このユーザーがEBanされているかどうか
+	 * @return このユーザーがJailされているかどうか
 	 */
 	public boolean isBanned() {
 		DBSync();
 		return banned;
+	}
+
+	public boolean setTestment(String testment) {
+		DBSync();
+		if (Main.MySQLDBManager == null) {
+			throw new IllegalStateException("Main.MySQLDBManager == null");
+		}
+		if (!isBanned()) {
+			return false;
+		}
+		try {
+			Connection conn = Main.MySQLDBManager.getConnection();
+			PreparedStatement statement = conn
+					.prepareStatement("UPDATE jail SET testment = ? WHERE uuid = ? ORDER BY id DESC;");
+			statement.setString(1, testment);
+			statement.setString(2, player.getUniqueId().toString());
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		DBSync(true);
+
+		Bukkit.broadcastMessage(
+				"[JAIL] " + ChatColor.GREEN + "プレイヤー「" + player.getName() + "」が遺言を残しました。遺言:「" + testment + "」");
+		TextChannel sendTo = getDiscordSendTo();
+		sendTo.sendMessage("***Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。");
+		return true;
 	}
 
 	/**
@@ -180,6 +209,15 @@ public class EBan {
 	public String getLastBanReason() {
 		DBSync();
 		return lastreason;
+	}
+
+	/**
+	 * 最後の処罰遺言を取得します。
+	 * @return
+	 */
+	public String getLastBanTestment() {
+		DBSync();
+		return lasttestment;
 	}
 
 	/**
@@ -215,14 +253,15 @@ public class EBan {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
-					.prepareStatement("SELECT * FROM eban WHERE uuid = ? ORDER BY id DESC LIMIT 1");
+					.prepareStatement("SELECT * FROM jail WHERE uuid = ? ORDER BY id DESC LIMIT 1");
 			statement.setString(1, player.getUniqueId().toString());
 			ResultSet res = statement.executeQuery();
 			if (res.next()) {
 				this.name = res.getString("player");
 				this.uuid = UUID.fromString(res.getString("uuid"));
-				this.banned = res.getString("status").equalsIgnoreCase("punishing");
+				this.banned = res.getBoolean("status");
 				this.lastreason = res.getString("reason");
+				this.lasttestment = res.getString("testment");
 				this.banned_unixtime = res.getDate("created_at").getTime() / 1000;
 				this.banned_by = res.getString("banned_by");
 			} else {
@@ -230,6 +269,7 @@ public class EBan {
 				this.uuid = UUID.fromString(res.getString("uuid"));
 				this.banned = false;
 				this.lastreason = null;
+				this.lasttestment = null;
 				this.banned_unixtime = -1L;
 				this.banned_by = null;
 			}
@@ -244,6 +284,7 @@ public class EBan {
 			this.uuid = player.getUniqueId();
 			this.banned = false;
 			this.lastreason = null;
+			this.lasttestment = null;
 			this.banned_unixtime = -1L;
 			this.banned_by = null;
 		}
@@ -254,23 +295,23 @@ public class EBan {
 	 * 現在処罰中のユーザーの一覧を返します。
 	 * @return 現在処罰中のユーザーの一覧。取得に失敗した場合はnull
 	 */
-	public static Set<EBan> getList() {
-		Set<EBan> EBanList = new HashSet<>();
+	public static Set<Jail> getList() {
+		Set<Jail> JailList = new HashSet<>();
 		if (Main.MySQLDBManager == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM eban WHERE status = ?");
+			PreparedStatement statement = conn.prepareStatement("SELECT * FROM jail WHERE status = ?");
 			statement.setString(1, "punishing");
 			ResultSet res = statement.executeQuery();
 			while (res.next()) {
-				EBan eban = new EBan(UUID.fromString(res.getString("uuid")));
-				EBanList.add(eban);
+				Jail jail = new Jail(UUID.fromString(res.getString("uuid")));
+				JailList.add(jail);
 			}
 			res.close();
 			statement.close();
-			return EBanList;
+			return JailList;
 		} catch (SQLException e) {
 			return null;
 		}
@@ -290,5 +331,26 @@ public class EBan {
 
 	public long getDBSyncTime() {
 		return DBSyncTime;
+	}
+
+	public TextChannel getDiscordSendTo() {
+		try {
+			String group;
+			if (player.isOnline()) {
+				group = PermissionsManager.getPermissionMainGroup(player.getPlayer());
+			} else {
+				group = PermissionsManager.getPermissionMainGroup(name);
+			}
+
+			if (group.equalsIgnoreCase("Regular") || group.equalsIgnoreCase("Moderator")
+					|| group.equalsIgnoreCase("Admin")) {
+
+				return Main.getJDA().getTextChannelById(690854369783971881L); // #rma_jail
+			} else {
+				return Main.jaotanChannel; // #jaotan
+			}
+		} catch (IllegalArgumentException e) {
+			return Main.jaotanChannel; // #jaotan
+		}
 	}
 }
