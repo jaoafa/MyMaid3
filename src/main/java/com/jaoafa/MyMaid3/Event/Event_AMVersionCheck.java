@@ -10,7 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 import okhttp3.OkHttpClient;
@@ -25,17 +27,21 @@ public class Event_AMVersionCheck extends MyMaidLibrary implements Listener {
 			return;
 		}
 
-		Plugin plugin = Bukkit.getPluginManager().getPlugin("MyMaid3");
-		if (plugin == null) {
-			return;
-		}
-		String nowVer = plugin.getDescription().getVersion();
-		String latestVer = getVersion("MyMaid3");
-		if (nowVer.equalsIgnoreCase(latestVer)) {
-			return;
-		}
-		player.sendMessage("[MyMaid3] " + ChatColor.RED + "MyMaid3のバージョンが最新ではありません。直近の更新内容が反映されていない可能性があります。");
-		player.sendMessage("[MyMaid3] " + ChatColor.RED + "現在のバージョン: " + nowVer + " / 最新のバージョン: " + latestVer);
+		new BukkitRunnable() {
+			public void run() {
+				Plugin plugin = Bukkit.getPluginManager().getPlugin("MyMaid3");
+				if (plugin == null) {
+					return;
+				}
+				String nowVer = plugin.getDescription().getVersion();
+				String latestVer = getVersion("MyMaid3");
+				if (nowVer.equalsIgnoreCase(latestVer)) {
+					return;
+				}
+				player.sendMessage("[MyMaid3] " + ChatColor.RED + "MyMaid3のバージョンが最新ではありません。直近の更新内容が反映されていない可能性があります。");
+				player.sendMessage("[MyMaid3] " + ChatColor.RED + "現在のバージョン: " + nowVer + " / 最新のバージョン: " + latestVer);
+			}
+		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}
 
 	private String getVersion(String repo) {

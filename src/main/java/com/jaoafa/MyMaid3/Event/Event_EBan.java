@@ -22,7 +22,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.EBan;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
@@ -240,14 +242,22 @@ public class Event_EBan implements Listener {
 	@EventHandler
 	public void onJoinClearCache(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		EBan eban = new EBan(player);
-		eban.DBSync();
+		new BukkitRunnable() {
+			public void run() {
+				EBan eban = new EBan(player);
+				eban.DBSync();
+			}
+		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}
 
 	@EventHandler
 	public void onQuitClearCache(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		EBan eban = new EBan(player);
-		eban.DBSync();
+		new BukkitRunnable() {
+			public void run() {
+				EBan eban = new EBan(player);
+				eban.DBSync();
+			}
+		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}
 }
