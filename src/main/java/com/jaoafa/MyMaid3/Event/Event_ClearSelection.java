@@ -31,7 +31,7 @@ public class Event_ClearSelection extends MyMaidLibrary implements Listener {
 			return;
 		}
 
-		boolean bool = player.performCommand("//sel");
+		boolean bool = player.performCommand("/sel");
 		if (!bool) {
 			player.sendMessage("[SEL] " + ChatColor.GREEN + "//selコマンドの実行に失敗しました。");
 		}
