@@ -9,13 +9,18 @@ import com.jaoafa.MyMaid3.Lib.TPSChecker;
 
 public class Task_TPSTimings extends BukkitRunnable {
 	JavaPlugin plugin;
+	private double OldTps1m = 20;
+	private boolean timingsChecking = false;
 
 	public Task_TPSTimings(JavaPlugin plugin) {
 		this.plugin = plugin;
 	}
 
-	private double OldTps1m = 20;
-	private boolean timingsChecking = false;
+	public Task_TPSTimings(JavaPlugin plugin, double OldTps1m, boolean timingsChecking) {
+		this.plugin = plugin;
+		this.OldTps1m = OldTps1m;
+		this.timingsChecking = timingsChecking;
+	}
 
 	@Override
 	public void run() {
@@ -28,7 +33,8 @@ public class Task_TPSTimings extends BukkitRunnable {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "timings paste");
 				Main.ReportChannel.sendMessage("timings pasted. " + OldTps1m + " -> " + tps1m);
 				timingsChecking = false;
-				runTaskTimer(plugin, 1200L, 1200L);
+				cancel();
+				new Task_TPSTimings(plugin, OldTps1m, timingsChecking).runTaskLater(plugin, 1200L);
 				return;
 			}
 
@@ -37,7 +43,7 @@ public class Task_TPSTimings extends BukkitRunnable {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "timings on");
 				timingsChecking = true;
 				cancel();
-				runTaskLater(plugin, 6000L);
+				new Task_TPSTimings(plugin, OldTps1m, timingsChecking).runTaskLater(plugin, 6000L);
 			}
 			OldTps1m = tps1m_double;
 		} catch (NumberFormatException e) {

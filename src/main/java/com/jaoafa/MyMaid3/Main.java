@@ -258,7 +258,7 @@ public class Main extends JavaPlugin {
 	private void scheduleTask() {
 		new Task_AFK().runTaskTimerAsynchronously(this, 0L, 1200L);
 		new Task_AutoRemoveTeam().runTaskTimer(this, 0L, 1200L);
-		new Task_TPSTimings(this).runTaskTimer(this, 1200L, 1200L);
+		new Task_TPSTimings(this).runTaskLater(this, 1200L);
 	}
 
 	public static void DiscordExceptionError(Class<?> clazz, MessageChannel channel, Throwable exception) {
