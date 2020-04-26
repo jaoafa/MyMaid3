@@ -132,4 +132,8 @@ public class MyMaidLibrary {
 			return false;
 		}
 	}
+
+	public static String DiscordEscape(String text) {
+		return text == null ? "" : text.replace("_", "\\_").replace("*", "\\*").replace("~", "\\~");
+	}
 }

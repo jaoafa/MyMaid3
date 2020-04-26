@@ -79,7 +79,7 @@ public class AFKPlayer {
 		}
 
 		if (Main.ServerChatChannel != null) {
-			Main.ServerChatChannel.sendMessage(player.getName() + " is afk!").queue();
+			Main.ServerChatChannel.sendMessage(MyMaidLibrary.DiscordEscape(player.getName()) + " is afk!").queue();
 		}
 	}
 
@@ -101,14 +101,16 @@ public class AFKPlayer {
 		String listname = player.getPlayerListName().replaceAll(player.getName(), ChatColor.WHITE + player.getName());
 		player.setPlayerListName(listname);
 
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is now online!");
+		Bukkit.broadcastMessage(
+				ChatColor.DARK_GRAY + MyMaidLibrary.DiscordEscape(player.getName()) + " is now online!");
 
 		TitleAPI.clearTitle(player);
 
 		players.put(player.getName(), this);
 
 		if (Main.ServerChatChannel != null) {
-			Main.ServerChatChannel.sendMessage(player.getName() + " is now online!").queue();
+			Main.ServerChatChannel.sendMessage(MyMaidLibrary.DiscordEscape(player.getName()) + " is now online!")
+					.queue();
 		}
 	}
 
