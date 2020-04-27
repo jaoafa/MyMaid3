@@ -103,6 +103,8 @@ public class Jail {
 		TextChannel sendTo = getDiscordSendTo();
 		sendTo.sendMessage("__**Jail[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
 				+ "」によって「" + reason + "」という理由でJailされました。").queue();
+		Main.ServerChatChannel.sendMessage("__**Jail[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
+				+ "」によって「" + reason + "」という理由でJailされました。").queue();
 
 		if (player.isOnline()) {
 			if (player.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -144,6 +146,9 @@ public class Jail {
 		sendTo.sendMessage(
 				"__**Jail[解除]**__: プレイヤー「" + player.getName() + "」のJailを「" + removePlayerName + "」によって解除されました。")
 				.queue();
+		Main.ServerChatChannel.sendMessage(
+				"__**Jail[解除]**__: プレイヤー「" + player.getName() + "」のJailを「" + removePlayerName + "」によって解除されました。")
+				.queue();
 		return true;
 	}
 
@@ -182,6 +187,8 @@ public class Jail {
 				"[JAIL] " + ChatColor.GREEN + "プレイヤー「" + player.getName() + "」が遺言を残しました。遺言:「" + testment + "」");
 		TextChannel sendTo = getDiscordSendTo();
 		sendTo.sendMessage("***Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。").queue();
+		Main.ServerChatChannel
+				.sendMessage("***Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。").queue();
 		return true;
 	}
 
