@@ -106,7 +106,7 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
 		if (data.contains("lore")) {
 			bookMeta.setLore(data.getStringList("lore"));
 		}
-		if (data.contains("pages")) {
+		if (!data.contains("pages")) {
 			return null;
 		}
 		bookMeta.setPages(data.getStringList("pages"));
