@@ -99,6 +99,8 @@ public class EBan {
 				"[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でEBanされました。");
 		Main.jaotanChannel.sendMessage("__**EBan[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
 				+ "」によって「" + reason + "」という理由でEBanされました。").queue();
+		Main.ServerChatChannel.sendMessage("__**EBan[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
+				+ "」によって「" + reason + "」という理由でEBanされました。").queue();
 
 		if (player.isOnline()) {
 			if (player.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -150,6 +152,10 @@ public class EBan {
 		Bukkit.broadcastMessage("[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」のEBanを解除しました。");
 		Main.jaotanChannel.sendMessage(
 				"__**EBan[解除]**__: プレイヤー「" + player.getName() + "」のEBanを「" + removePlayerName + "」によって解除されました。")
+				.queue();
+		Main.ServerChatChannel
+				.sendMessage(
+						"__**EBan[解除]**__: プレイヤー「" + player.getName() + "」のEBanを「" + removePlayerName + "」によって解除されました。")
 				.queue();
 		return true;
 	}
