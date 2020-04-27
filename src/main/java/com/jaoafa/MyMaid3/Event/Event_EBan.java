@@ -32,27 +32,35 @@ public class Event_EBan implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void OnEvent_LoginEBanCheck(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		EBan eban = new EBan(player.getUniqueId());
-		if (!eban.isBanned()) {
-			return;
-		}
-		String reason = eban.getLastBanReason();
-		if (reason == null) {
-			return;
-		}
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			String group = PermissionsManager.getPermissionMainGroup(p);
-			if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
-					&& !group.equalsIgnoreCase("Regular")) {
-				continue;
+
+		new BukkitRunnable() {
+			public void run() {
+				EBan eban = new EBan(player);
+				eban.DBSync();
+
+				if (!eban.isBanned()) {
+					return;
+				}
+				String reason = eban.getLastBanReason();
+				if (reason == null) {
+					return;
+				}
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					String group = PermissionsManager.getPermissionMainGroup(p);
+					if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
+							&& !group.equalsIgnoreCase("Regular")) {
+						continue;
+					}
+					p.sendMessage(
+							"[EBan] " + ChatColor.RED + "プレイヤー「" + player.getName() + "」は、「" + reason
+									+ "」という理由でEBanされています。");
+					p.sendMessage("[EBan] " + ChatColor.RED + "詳しい情報は /eban status " + player.getName() + " でご確認ください。");
+				}
+				player.sendMessage("[EBan] " + ChatColor.RED + "あなたは、「" + reason + "」という理由でEBanされています。");
+				player.sendMessage("[EBan] " + ChatColor.RED + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
+				player.sendMessage("[EBan] " + ChatColor.RED + "https://jaoafa.com/rule/management/ban");
 			}
-			p.sendMessage(
-					"[EBan] " + ChatColor.RED + "プレイヤー「" + player.getName() + "」は、「" + reason + "」という理由でEBanされています。");
-			p.sendMessage("[EBan] " + ChatColor.RED + "詳しい情報は /eban status " + player.getName() + " でご確認ください。");
-		}
-		player.sendMessage("[EBan] " + ChatColor.RED + "あなたは、「" + reason + "」という理由でEBanされています。");
-		player.sendMessage("[EBan] " + ChatColor.RED + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
-		player.sendMessage("[EBan] " + ChatColor.RED + "https://jaoafa.com/rule/management/ban");
+		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}
 
 	@EventHandler
@@ -237,17 +245,6 @@ public class Event_EBan implements Listener {
 			return;
 		}
 		event.setCancelled(true);
-	}
-
-	@EventHandler
-	public void onJoinClearCache(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		new BukkitRunnable() {
-			public void run() {
-				EBan eban = new EBan(player);
-				eban.DBSync();
-			}
-		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}
 
 	@EventHandler

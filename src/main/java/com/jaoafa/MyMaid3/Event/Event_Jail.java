@@ -32,27 +32,34 @@ public class Event_Jail implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void OnEvent_LoginJailCheck(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		Jail jail = new Jail(player.getUniqueId());
-		if (!jail.isBanned()) {
-			return;
-		}
-		String reason = jail.getLastBanReason();
-		if (reason == null) {
-			return;
-		}
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			String group = PermissionsManager.getPermissionMainGroup(p);
-			if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
-					&& !group.equalsIgnoreCase("Regular")) {
-				continue;
+
+		new BukkitRunnable() {
+			public void run() {
+				Jail jail = new Jail(player.getUniqueId());
+				if (!jail.isBanned()) {
+					return;
+				}
+				String reason = jail.getLastBanReason();
+				if (reason == null) {
+					return;
+				}
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					String group = PermissionsManager.getPermissionMainGroup(p);
+					if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
+							&& !group.equalsIgnoreCase("Regular")) {
+						continue;
+					}
+					p.sendMessage(
+							"[Jail] " + ChatColor.GREEN + "プレイヤー「" + player.getName() + "」は、「" + reason
+									+ "」という理由でJailされています。");
+					p.sendMessage(
+							"[Jail] " + ChatColor.GREEN + "詳しい情報は /jail status " + player.getName() + " でご確認ください。");
+				}
+				player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは、「" + reason + "」という理由でJailされています。");
+				player.sendMessage("[Jail] " + ChatColor.GREEN + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
+				player.sendMessage("[Jail] " + ChatColor.GREEN + "https://jaoafa.com/rule/management/ban");
 			}
-			p.sendMessage(
-					"[Jail] " + ChatColor.GREEN + "プレイヤー「" + player.getName() + "」は、「" + reason + "」という理由でJailされています。");
-			p.sendMessage("[Jail] " + ChatColor.GREEN + "詳しい情報は /jail status " + player.getName() + " でご確認ください。");
-		}
-		player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは、「" + reason + "」という理由でJailされています。");
-		player.sendMessage("[Jail] " + ChatColor.GREEN + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
-		player.sendMessage("[Jail] " + ChatColor.GREEN + "https://jaoafa.com/rule/management/ban");
+		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}
 
 	@EventHandler
