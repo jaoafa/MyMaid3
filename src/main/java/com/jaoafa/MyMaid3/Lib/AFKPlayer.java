@@ -101,8 +101,7 @@ public class AFKPlayer {
 		String listname = player.getPlayerListName().replaceAll(player.getName(), ChatColor.WHITE + player.getName());
 		player.setPlayerListName(listname);
 
-		Bukkit.broadcastMessage(
-				ChatColor.DARK_GRAY + MyMaidLibrary.DiscordEscape(player.getName()) + " is now online!");
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is now online!");
 
 		TitleAPI.clearTitle(player);
 
