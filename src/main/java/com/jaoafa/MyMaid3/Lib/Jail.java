@@ -186,9 +186,10 @@ public class Jail {
 		Bukkit.broadcastMessage(
 				"[JAIL] " + ChatColor.GREEN + "プレイヤー「" + player.getName() + "」が遺言を残しました。遺言:「" + testment + "」");
 		TextChannel sendTo = getDiscordSendTo();
-		sendTo.sendMessage("***Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。").queue();
+		sendTo.sendMessage("__**Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。").queue();
 		Main.ServerChatChannel
-				.sendMessage("***Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。").queue();
+				.sendMessage("__**Jail[遺言]**__: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。")
+				.queue();
 		return true;
 	}
 
