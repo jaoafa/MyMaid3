@@ -26,7 +26,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
  * Jailライブラリ
  * @author tomachi
  */
-public class Jail {
+public class Jail extends MyMaidLibrary {
 	static Map<UUID, Jail> data = new HashMap<>();
 
 	OfflinePlayer player;
@@ -101,10 +101,14 @@ public class Jail {
 		Bukkit.broadcastMessage(
 				"[Jail] " + ChatColor.GREEN + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でJailされました。");
 		TextChannel sendTo = getDiscordSendTo();
-		sendTo.sendMessage("__**Jail[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
-				+ "」によって「" + reason + "」という理由でJailされました。").queue();
-		Main.ServerChatChannel.sendMessage("__**Jail[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
-				+ "」によって「" + reason + "」という理由でJailされました。").queue();
+		sendTo.sendMessage(
+				"__**Jail[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
+						+ "」によって「" + DiscordEscape(reason) + "」という理由でJailされました。")
+				.queue();
+		Main.ServerChatChannel.sendMessage(
+				"__**Jail[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
+						+ "」によって「" + DiscordEscape(reason) + "」という理由でJailされました。")
+				.queue();
 
 		if (player.isOnline()) {
 			if (player.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -130,7 +134,7 @@ public class Jail {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
-					.prepareStatement("UPDATE jail SET status = ? WHERE uuid = ? ORDER BY id DESC;");
+					.prepareStatement("UPDATE jail SET status = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1;");
 			statement.setBoolean(1, false);
 			statement.setString(2, player.getUniqueId().toString());
 			statement.executeUpdate();
@@ -144,10 +148,12 @@ public class Jail {
 		Bukkit.broadcastMessage("[Jail] " + ChatColor.GREEN + "プレイヤー:「" + player.getName() + "」のJailを解除しました。");
 		TextChannel sendTo = getDiscordSendTo();
 		sendTo.sendMessage(
-				"__**Jail[解除]**__: プレイヤー「" + player.getName() + "」のJailを「" + removePlayerName + "」によって解除されました。")
+				"__**Jail[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のJailを「"
+						+ DiscordEscape(removePlayerName) + "」によって解除されました。")
 				.queue();
 		Main.ServerChatChannel.sendMessage(
-				"__**Jail[解除]**__: プレイヤー「" + player.getName() + "」のJailを「" + removePlayerName + "」によって解除されました。")
+				"__**Jail[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のJailを「"
+						+ DiscordEscape(removePlayerName) + "」によって解除されました。")
 				.queue();
 		return true;
 	}
@@ -172,7 +178,7 @@ public class Jail {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
-					.prepareStatement("UPDATE jail SET testment = ? WHERE uuid = ? ORDER BY id DESC;");
+					.prepareStatement("UPDATE jail SET testment = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1;");
 			statement.setString(1, testment);
 			statement.setString(2, player.getUniqueId().toString());
 			statement.executeUpdate();
@@ -186,9 +192,11 @@ public class Jail {
 		Bukkit.broadcastMessage(
 				"[JAIL] " + ChatColor.GREEN + "プレイヤー「" + player.getName() + "」が遺言を残しました。遺言:「" + testment + "」");
 		TextChannel sendTo = getDiscordSendTo();
-		sendTo.sendMessage("__**Jail[遺言]***: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。").queue();
+		sendTo.sendMessage("__**Jail[遺言]***: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(testment)
+				+ "」という遺言を残しました。").queue();
 		Main.ServerChatChannel
-				.sendMessage("__**Jail[遺言]**__: プレイヤー「" + player.getName() + "」が「" + testment + "」という遺言を残しました。")
+				.sendMessage("__**Jail[遺言]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「"
+						+ DiscordEscape(testment) + "」という遺言を残しました。")
 				.queue();
 		return true;
 	}

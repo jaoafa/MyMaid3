@@ -25,7 +25,7 @@ import com.jaoafa.MyMaid3.Main;
  * EBanライブラリ
  * @author tomachi
  */
-public class EBan {
+public class EBan extends MyMaidLibrary {
 	static Map<UUID, EBan> data = new HashMap<>();
 
 	OfflinePlayer player;
@@ -97,10 +97,14 @@ public class EBan {
 
 		Bukkit.broadcastMessage(
 				"[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でEBanされました。");
-		Main.jaotanChannel.sendMessage("__**EBan[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
-				+ "」によって「" + reason + "」という理由でEBanされました。").queue();
-		Main.ServerChatChannel.sendMessage("__**EBan[追加]**__: プレイヤー「" + player.getName() + "」が「" + banned_by
-				+ "」によって「" + reason + "」という理由でEBanされました。").queue();
+		Main.jaotanChannel.sendMessage(
+				"__**EBan[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
+						+ "」によって「" + reason + "」という理由でEBanされました。")
+				.queue();
+		Main.ServerChatChannel.sendMessage(
+				"__**EBan[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
+						+ "」によって「" + reason + "」という理由でEBanされました。")
+				.queue();
 
 		if (player.isOnline()) {
 			if (player.getPlayer().getGameMode() == GameMode.SPECTATOR) {
@@ -132,7 +136,7 @@ public class EBan {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
-					.prepareStatement("UPDATE eban SET status = ? WHERE uuid = ? ORDER BY id DESC;");
+					.prepareStatement("UPDATE eban SET status = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1;");
 			statement.setString(1, "end");
 			statement.setString(2, player.getUniqueId().toString());
 			statement.executeUpdate();
@@ -151,11 +155,13 @@ public class EBan {
 		}
 		Bukkit.broadcastMessage("[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」のEBanを解除しました。");
 		Main.jaotanChannel.sendMessage(
-				"__**EBan[解除]**__: プレイヤー「" + player.getName() + "」のEBanを「" + removePlayerName + "」によって解除されました。")
+				"__**EBan[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のEBanを「"
+						+ DiscordEscape(removePlayerName) + "」によって解除されました。")
 				.queue();
 		Main.ServerChatChannel
 				.sendMessage(
-						"__**EBan[解除]**__: プレイヤー「" + player.getName() + "」のEBanを「" + removePlayerName + "」によって解除されました。")
+						"__**EBan[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のEBanを「"
+								+ DiscordEscape(removePlayerName) + "」によって解除されました。")
 				.queue();
 		return true;
 	}
