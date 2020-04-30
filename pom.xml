@@ -269,5 +269,10 @@
 			<version>0.0.2</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>biz.source_code</groupId>
+			<artifactId>base64coder</artifactId>
+			<version>2010-12-19</version>
+		</dependency>
 	</dependencies>
 </project>

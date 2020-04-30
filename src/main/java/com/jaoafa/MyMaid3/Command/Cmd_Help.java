@@ -11,6 +11,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -19,6 +20,12 @@ import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
+
+import net.minecraft.server.v1_12_R1.Item;
+import net.minecraft.server.v1_12_R1.MojangsonParseException;
+import net.minecraft.server.v1_12_R1.MojangsonParser;
+import net.minecraft.server.v1_12_R1.NBTBase;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
 
 public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandPremise {
 	@Override
@@ -43,13 +50,13 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
 				return true;
 			}
 			BookMeta book = (BookMeta) player.getInventory().getItemInMainHand().getItemMeta();
-			List<String> lore = book.hasLore() ? book.getLore() : null;
 			if (!book.hasPages()) {
 				SendMessage(sender, cmd, "エラーが発生しました。詳しくはプラグイン制作者にお問い合わせください。Debug: Pages null");
 				return true;
 			}
-			List<String> pages = book.getPages();
-			boolean res = save(lore, pages);
+			net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+			NBTTagCompound bookData = nmsItem.getTag();
+			boolean res = save(bookData);
 			if (res) {
 				SendMessage(sender, cmd, "登録に成功しました。");
 			} else {
@@ -72,18 +79,15 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
 		return true;
 	}
 
-	boolean save(List<String> lore, List<String> pages) {
-		File file = new File(Main.getJavaPlugin().getDataFolder(), "helpBook.yml");
-		FileConfiguration data = YamlConfiguration.loadConfiguration(file);
-		if (data.contains("lore")) {
-			data.set("lore_bak" + System.currentTimeMillis() / 1000, data.getStringList("lore"));
-		}
-		data.set("lore", lore);
-		if (data.contains("pages")) {
-			data.set("pages_bak" + System.currentTimeMillis() / 1000, data.getStringList("pages"));
-		}
-		data.set("pages", pages);
+	boolean save(NBTTagCompound bookData) {
 		try {
+			File file = new File(Main.getJavaPlugin().getDataFolder(), "helpBook.yml");
+
+			FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+			if (data.contains("nbt")) {
+				data.set("nbt_bak" + System.currentTimeMillis() / 1000, data.getString("nbt"));
+			}
+			data.set("nbt", bookData.toString());
 			data.save(file);
 			return true;
 		} catch (IOException e) {
@@ -98,20 +102,20 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
 			return null;
 		}
 		FileConfiguration data = YamlConfiguration.loadConfiguration(file);
-
-		ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
-		BookMeta bookMeta = (BookMeta) book.getItemMeta();
-		bookMeta.setTitle("jao Minecraft Server Help book");
-		bookMeta.setAuthor("jaotan");
-		if (data.contains("lore")) {
-			bookMeta.setLore(data.getStringList("lore"));
-		}
-		if (!data.contains("pages")) {
+		if (!data.contains("nbt")) {
 			return null;
 		}
-		bookMeta.setPages(data.getStringList("pages"));
-		book.setItemMeta(bookMeta);
-		return book;
+		net.minecraft.server.v1_12_R1.ItemStack nmsItem = new net.minecraft.server.v1_12_R1.ItemStack(
+				Item.getById(387));
+		try {
+			NBTBase nbtbase = MojangsonParser.parse(data.getString("nbt"));
+			nmsItem.setTag((NBTTagCompound) nbtbase);
+			ItemStack book = CraftItemStack.asBukkitCopy(nmsItem);
+			return book;
+		} catch (MojangsonParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
