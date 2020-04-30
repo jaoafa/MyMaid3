@@ -21,6 +21,16 @@ public class MyMaidLibrary {
 	}
 
 	/**
+	 * Playerに対してメッセージを送信します。
+	 * @param player Player
+	 * @param cmdName コマンド名
+	 * @param message メッセージ
+	 */
+	public static void SendMessage(Player player, String cmdName, String message) {
+		player.sendMessage("[" + cmdName + "] " + ChatColor.GREEN + message);
+	}
+
+	/**
 	 * CommandSenderに対してメッセージを送信します。
 	 * @param sender CommandSender
 	 * @param cmd Commandデータ

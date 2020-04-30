@@ -88,6 +88,15 @@ public class Cmd_G extends MyMaidLibrary implements CommandExecutor, CommandPrem
 			SendMessage(sender, cmd, beforeGameMode.name() + " -> " + gm.name());
 			return true;
 		} else if (args.length == 2) {
+			if (sender instanceof Player) {
+				Player player = (Player) sender;
+				if (!isAMR(player)) {
+					SendMessage(sender, cmd,
+							"あなたの権限では他のユーザーのゲームモードを変更することはできません。自身のゲームモードを変更する場合はプレイヤー名を入れずに入力してください。");
+					return true;
+				}
+			}
+
 			int i;
 			try {
 				i = Integer.parseInt(args[0]);
