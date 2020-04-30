@@ -98,14 +98,6 @@
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
 		<repository>
-			<id>logback-classic</id>
-			<url>https://mvnrepository.com/artifact/ch.qos.logback/logback-classic</url>
-		</repository>
-		<repository>
-			<id>logback-core</id>
-			<url>https://mvnrepository.com/artifact/ch.qos.logback/logback-core</url>
-		</repository>
-		<repository>
 			<id>jcenter</id>
 			<url>https://jcenter.bintray.com</url>
 		</repository>

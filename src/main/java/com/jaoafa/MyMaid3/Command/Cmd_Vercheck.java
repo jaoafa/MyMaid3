@@ -46,7 +46,7 @@ public class Cmd_Vercheck extends MyMaidLibrary implements CommandExecutor, Comm
 
 			String status;
 			if (nowVer.equalsIgnoreCase(latestVer)) {
-				status = "This plugin is up to date.";
+				status = ChatColor.AQUA + "This plugin is up to date.";
 			} else {
 				status = ChatColor.RED + "This plugin is out of date.";
 			}
