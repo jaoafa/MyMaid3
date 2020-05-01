@@ -192,8 +192,10 @@ public class Jail extends MyMaidLibrary {
 		Bukkit.broadcastMessage(
 				"[JAIL] " + ChatColor.GREEN + "プレイヤー「" + player.getName() + "」が遺言を残しました。遺言:「" + testment + "」");
 		TextChannel sendTo = getDiscordSendTo();
-		sendTo.sendMessage("__**Jail[遺言]***: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(testment)
-				+ "」という遺言を残しました。").queue();
+		sendTo.sendMessage(
+				"__**Jail[遺言]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(testment)
+						+ "」という遺言を残しました。")
+				.queue();
 		Main.ServerChatChannel
 				.sendMessage("__**Jail[遺言]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「"
 						+ DiscordEscape(testment) + "」という遺言を残しました。")
