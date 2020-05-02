@@ -48,21 +48,26 @@ public class Cmd_MyMaid3 extends MyMaidLibrary implements CommandExecutor, Comma
 		if (nowVer.equals(latestVer)) {
 			SendMessage(sender, cmd, ChatColor.AQUA + "現在導入されているバージョンは最新です。");
 			SendMessage(sender, cmd, ChatColor.AQUA + "導入バージョン: " + nowVer);
+		} else if (nowVerSha.equals(latestVerSha)) {
+			// shaがおなじ
+			SendMessage(sender, cmd, ChatColor.AQUA + "現在導入されているバージョンは最新です。");
+			SendMessage(sender, cmd, ChatColor.AQUA + "導入バージョン: " + nowVer);
+			SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer + " (" + latestVerSha + ")");
 		} else if (nowVerDate.before(latestVerDate)) {
 			// 新しいバージョンあり
 			SendMessage(sender, cmd, ChatColor.RED + "現在導入されているバージョンよりも新しいバージョンがリリースされています。");
 			SendMessage(sender, cmd, ChatColor.AQUA + "導入バージョン: " + nowVer);
-			SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer);
+			SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer + " (" + latestVerSha + ")");
 		} else if (nowVerSha.equals(latestVerSha)) {
 			// shaがおなじ
 			SendMessage(sender, cmd, ChatColor.AQUA + "現在導入されているバージョンは最新です。(-)");
 			SendMessage(sender, cmd, ChatColor.AQUA + "導入バージョン: " + nowVer);
-			SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer);
+			SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer + " (" + latestVerSha + ")");
 		} else if (nowVerDate.after(latestVerDate)) {
 			// リリースバージョンよりも導入されている方が新しい
 			SendMessage(sender, cmd, ChatColor.AQUA + "現在導入されているバージョンは最新です。(※)");
 			SendMessage(sender, cmd, ChatColor.AQUA + "導入バージョン: " + nowVer);
-			SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer);
+			SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer + " (" + latestVerSha + ")");
 		}
 
 		SendMessage(sender, cmd, "最近の更新履歴");
