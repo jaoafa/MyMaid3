@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.05.02_19.09
+version: 2020.05.02_19.33
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -39,6 +39,11 @@ commands:
       /coold i
       /coold l <Page>
     permission: mymaid.coold
+  ded:
+    description: >
+      最後に死亡した場所に移動します。
+    usage: /ded
+    permission: mymaid.ded
   dedbull:
     description: >
       DedBullを飲み、暗視を付けます。または効果を消します。
