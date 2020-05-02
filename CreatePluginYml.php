@@ -4,7 +4,12 @@ define("CommandLocation", __DIR__ . "/src/main/java/com/jaoafa/MyMaid3/Command/"
 define("YmlLocation", __DIR__ . "/src/main/resources/plugin.yml"); // plugin.ymlの位置(作成先)
 define("PluginName", "MyMaid3"); // プラグイン名
 define("MainClass", "com.jaoafa.MyMaid3.Main"); // メインクラス
-define("Version", date("Y.m.d_H.i")); // バージョン
+if(file_exists(__DIR__ . "/src/main/resources/COMMIT")){
+    $COMMIT = "_" . mb_substr(file_get_contents(__DIR__ . "/src/main/resources/COMMIT"), 0, 7);
+}else{
+    $COMMIT = "";
+}
+define("Version", date("Y.m.d_H.i") . $COMMIT); // バージョン
 define("Description", "General Plugin Version 3"); // プラグインの説明
 define("PermissionPrefix", "mymaid"); // パーミッションノードの接頭辞
 define("Author", "mine_book000"); // プラグインの制作者
