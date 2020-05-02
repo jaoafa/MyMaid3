@@ -9,8 +9,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
@@ -42,41 +43,47 @@ public class Cmd_Vercheck extends MyMaidLibrary implements CommandExecutor, Comm
 				continue;
 			}
 			String nowVer = plugin.getDescription().getVersion();
-			String latestVer = getVersion(plName);
+			String nowVerSha = getVersionSha(nowVer);
+			String latestVerSha = getLastCommitSha(plName);
 
 			String status;
-			if (nowVer.equalsIgnoreCase(latestVer)) {
+			if (nowVerSha.equalsIgnoreCase(latestVerSha)) {
 				status = ChatColor.AQUA + "This plugin is up to date.";
 			} else {
 				status = ChatColor.RED + "This plugin is out of date.";
 			}
 
 			SendMessage(sender, cmd,
-					plName + ": " + nowVer + " - " + latestVer + " (" + status + ChatColor.GREEN + ")");
+					plName + ": " + nowVer + " - " + latestVerSha + " (" + status + ChatColor.GREEN + ")");
 		}
 		return true;
 	}
 
-	private String getVersion(String repo) {
+	private String getLastCommitSha(String repo) {
 		try {
-			String url = "https://raw.githubusercontent.com/jaoafa/" + repo + "/master/src/main/resources/plugin.yml";
+			String url = "https://api.github.com/repos/jaoafa/" + repo + "/commits";
 			OkHttpClient client = new OkHttpClient();
 			Request request = new Request.Builder().url(url).get().build();
 			Response response = client.newCall(request).execute();
 			if (response.code() != 200) {
 				return null;
 			}
-			YamlConfiguration yaml = YamlConfiguration.loadConfiguration(response.body().charStream());
+			JSONArray array = new JSONArray(response.body().string());
 			response.close();
-			if (yaml.contains("version")) {
-				return yaml.getString("version");
-			} else {
-				return null;
-			}
-		} catch (IOException e) {
+
+			return array.getJSONObject(0).getString("sha").substring(0, 7);
+		} catch (IOException | JSONException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private String getVersionSha(String version) {
+		String[] day_time = version.split("_");
+		if (day_time.length == 3) {
+			return day_time[2];
+		}
+		return null;
 	}
 
 	@Override
