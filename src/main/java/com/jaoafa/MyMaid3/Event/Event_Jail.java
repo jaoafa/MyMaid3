@@ -57,7 +57,7 @@ public class Event_Jail implements Listener {
 				}
 				player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは、「" + reason + "」という理由でJailされています。");
 				player.sendMessage("[Jail] " + ChatColor.GREEN + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
-				player.sendMessage("[Jail] " + ChatColor.GREEN + "https://jaoafa.com/rule/management/ban");
+				player.sendMessage("[Jail] " + ChatColor.GREEN + "https://jaoafa.com/rule/management/punishment");
 			}
 		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}
