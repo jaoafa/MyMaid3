@@ -11,8 +11,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
@@ -73,11 +74,13 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandExecutor, CommandPr
 		player.sendMessage("[Bug] " + ChatColor.GREEN + "  既に同様の報告がなされていませんか？");
 		player.sendMessage("[Bug] " + ChatColor.GREEN + "・5W1Hを用いてわかりやすく説明されていますか？");
 		player.sendMessage("[Bug] " + ChatColor.GREEN + "  特に「どこで」「どうすると」バグが起こるかを詳しく記載してください。");
+
 		String nowVer = Main.getJavaPlugin().getDescription().getVersion();
-		String latestVer = getVersion();
-		if (!nowVer.equalsIgnoreCase(latestVer)) {
-			player.sendMessage("[Bug] " + ChatColor.GREEN + "・MyMaid3の現在導入済みバージョン(" + nowVer + ")と最新リリースバージョン("
-					+ latestVer + ")が異なります。");
+		String nowVerSha = getVersionSha(nowVer);
+		String latestVerSha = getLastCommitSha("MyMaid3");
+		if (!nowVerSha.equalsIgnoreCase(latestVerSha)) {
+			player.sendMessage("[Bug] " + ChatColor.GREEN + "・MyMaid3の現在導入済みバージョン(" + nowVerSha + ")と最新リリースバージョン("
+					+ latestVerSha + ")が異なります。");
 			player.sendMessage("[Bug] " + ChatColor.GREEN + "  最近更新された事項でないかどうか確認してください。");
 		}
 		player.sendMessage("[Bug] " + ChatColor.GREEN + "");
@@ -172,26 +175,31 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandExecutor, CommandPr
 		});
 	}
 
-	String getVersion() {
+	private String getLastCommitSha(String repo) {
 		try {
-			String url = "https://raw.githubusercontent.com/jaoafa/MyMaid3/master/src/main/resources/plugin.yml";
+			String url = "https://api.github.com/repos/jaoafa/" + repo + "/commits";
 			OkHttpClient client = new OkHttpClient();
 			Request request = new Request.Builder().url(url).get().build();
 			Response response = client.newCall(request).execute();
 			if (response.code() != 200) {
 				return null;
 			}
-			YamlConfiguration yaml = YamlConfiguration.loadConfiguration(response.body().charStream());
+			JSONArray array = new JSONArray(response.body().string());
 			response.close();
-			if (yaml.contains("version")) {
-				return yaml.getString("version");
-			} else {
-				return null;
-			}
-		} catch (IOException e) {
+
+			return array.getJSONObject(0).getString("sha").substring(0, 7);
+		} catch (IOException | JSONException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private String getVersionSha(String version) {
+		String[] day_time = version.split("_");
+		if (day_time.length == 3) {
+			return day_time[2];
+		}
+		return null;
 	}
 
 	@Override
