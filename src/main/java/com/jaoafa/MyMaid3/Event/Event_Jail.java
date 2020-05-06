@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -174,6 +175,21 @@ public class Event_Jail implements Listener {
 		event.setCancelled(true);
 		player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは水や溶岩を撒けません。");
 		Bukkit.getLogger().info("[Jail] " + player.getName() + "==>あなたは水や溶岩を撒けません。");
+	}
+
+	@EventHandler
+	public void onPlayerBucketFillEvent(PlayerBucketFillEvent event) {
+		Player player = event.getPlayer();
+		if (!(player instanceof Player)) {
+			return;
+		}
+		Jail jail = new Jail(player);
+		if (!jail.isBanned()) { // Jailされてる
+			return;
+		}
+		event.setCancelled(true);
+		player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは水や溶岩を掬うことはできません。");
+		Bukkit.getLogger().info("[Jail] " + player.getName() + "==>あなたは水や溶岩を掬うことはできません。");
 	}
 
 	@EventHandler

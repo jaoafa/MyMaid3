@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -175,6 +176,21 @@ public class Event_EBan implements Listener {
 		event.setCancelled(true);
 		player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたは水や溶岩を撒けません。");
 		Bukkit.getLogger().info("[EBan] " + player.getName() + "==>あなたは水や溶岩を撒けません。");
+	}
+
+	@EventHandler
+	public void onPlayerBucketFillEvent(PlayerBucketFillEvent event) {
+		Player player = event.getPlayer();
+		if (!(player instanceof Player)) {
+			return;
+		}
+		EBan eban = new EBan(player);
+		if (!eban.isBanned()) { // EBanされてる
+			return;
+		}
+		event.setCancelled(true);
+		player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたは水や溶岩を掬うことはできません。");
+		Bukkit.getLogger().info("[EBan] " + player.getName() + "==>あなたは水や溶岩を掬うことはできません。");
 	}
 
 	@EventHandler
