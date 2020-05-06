@@ -243,7 +243,7 @@ public class EBan extends MyMaidLibrary {
 				this.uuid = UUID.fromString(res.getString("uuid"));
 				this.banned = res.getString("status").equalsIgnoreCase("punishing");
 				this.lastreason = res.getString("reason");
-				this.banned_unixtime = res.getDate("created_at").getTime() / 1000;
+				this.banned_unixtime = res.getTimestamp("created_at").getTime() / 1000;
 				this.banned_by = res.getString("banned_by");
 			} else {
 				this.name = player.getName();

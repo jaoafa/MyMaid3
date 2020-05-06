@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.05.07_02.25
+version: 2020.05.07_05.44
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -85,6 +85,14 @@ commands:
       /help: ヘルプブックを入手します。
       /help regist: ヘルプブックを登録します。運営のみ使用できます。
     permission: mymaid.help
+  history:
+    description: >
+      jaoHistoryに関する処理を行います。
+    usage: |
+      /history add <Target> <Message...>: Targetに対してMessageのヒストリーを追加します。
+      /history disable <Target> <ID>: TargetのIDに対応するヒストリーを無効にします。
+      /history status <Target>: Targetのヒストリー情報を表示します。
+    permission: mymaid.history
   jail:
     description: Jailに関する処理を行います。
     usage: |

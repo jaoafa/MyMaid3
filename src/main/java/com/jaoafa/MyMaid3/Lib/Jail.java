@@ -288,7 +288,7 @@ public class Jail extends MyMaidLibrary {
 				this.banned = res.getBoolean("status");
 				this.lastreason = res.getString("reason");
 				this.lasttestment = res.getString("testment");
-				this.banned_unixtime = res.getDate("created_at").getTime() / 1000;
+				this.banned_unixtime = res.getTimestamp("created_at").getTime() / 1000;
 				this.banned_by = res.getString("banned_by");
 			} else {
 				this.name = player.getName();
