@@ -19,6 +19,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 
 import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.jaoSuperAchievement2.API.AchievementAPI;
+import com.jaoafa.jaoSuperAchievement2.API.Achievementjao;
+import com.jaoafa.jaoSuperAchievement2.Lib.AchievementType;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -118,6 +121,10 @@ public class Jail extends MyMaidLibrary {
 			World Jao_Afa = Bukkit.getServer().getWorld("Jao_Afa");
 			Location minami = new Location(Jao_Afa, 2856, 69, 2888);
 			player.getPlayer().teleport(minami);
+
+			if (!Achievementjao.getAchievement(player.getPlayer(), new AchievementType(22))) {
+				player.getPlayer().sendMessage(AchievementAPI.getPrefix() + "実績の解除中に問題が発生しました。もう一度お試しください。");
+			}
 		}
 
 		return true;
