@@ -33,6 +33,9 @@ public class Task_ViaVerNotify extends BukkitRunnable {
 		int ver = Via.getAPI().getPlayerVersion(player.getUniqueId());
 		String verstr = Integer.toString(ver);
 		InputStream is = getClass().getResourceAsStream("/versions.json");
+		if (is == null) {
+			return;
+		}
 		JSONObject obj;
 		try {
 			String str = toString(is);
