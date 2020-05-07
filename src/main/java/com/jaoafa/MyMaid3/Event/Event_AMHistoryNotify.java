@@ -23,14 +23,17 @@ public class Event_AMHistoryNotify extends MyMaidLibrary implements Listener {
 		new BukkitRunnable() {
 			public void run() {
 				Historyjao histjao = new Historyjao(player);
+				if (histjao.getHistoryDatas().size() == 0) {
+					return;
+				}
 
-				for (Player player : Bukkit.getOnlinePlayers()) {
-					if (!isAM(player)) {
+				for (Player _player : Bukkit.getOnlinePlayers()) {
+					if (!isAM(_player)) {
 						continue;
 					}
-					player.sendMessage("[jaoHistory] " + ChatColor.RED + "プレイヤー「" + player.getName() + "」には"
+					_player.sendMessage("[jaoHistory] " + ChatColor.RED + "プレイヤー「" + player.getName() + "」には"
 							+ histjao.getHistoryDatas().size() + "件のjaoHistoryがあります。");
-					player.sendMessage(
+					_player.sendMessage(
 							"[jaoHistory] " + ChatColor.RED + "コマンド「/history status " + player.getName()
 									+ "」で詳細を閲覧できます。");
 				}
