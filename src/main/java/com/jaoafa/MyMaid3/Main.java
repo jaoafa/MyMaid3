@@ -67,6 +67,10 @@ public class Main extends JavaPlugin {
 		if (!isEnabled())
 			return;
 
+		existClassCheck();
+		if (!isEnabled())
+			return;
+
 		commandRegister();
 		if (!isEnabled())
 			return;
@@ -259,6 +263,25 @@ public class Main extends JavaPlugin {
 		new Task_AFK().runTaskTimerAsynchronously(this, 0L, 1200L);
 		new Task_AutoRemoveTeam().runTaskTimer(this, 0L, 1200L);
 		new Task_TPSTimings(this).runTaskLater(this, 1200L);
+	}
+
+	private void existClassCheck() {
+		existClass("com.jaoafa.MyMaid3.Lib.AFKPlayer");
+		existClass("com.jaoafa.MyMaid3.Lib.Jail");
+		existClass("com.jaoafa.MyMaid3.Task.Task_ViaVerNotify");
+	}
+
+	private boolean existClass(String clazz) {
+		try {
+			Class.forName(clazz);
+			getLogger().info("class: \"" + clazz + "\" found.");
+			return true;
+		} catch (ClassNotFoundException e) {
+			getLogger().info("class: \"" + clazz + "\" not found. server shutdowning...");
+			getServer().getPluginManager().disablePlugin(this);
+			getServer().shutdown();
+			return false;
+		}
 	}
 
 	public static void DiscordExceptionError(Class<?> clazz, MessageChannel channel, Throwable exception) {
