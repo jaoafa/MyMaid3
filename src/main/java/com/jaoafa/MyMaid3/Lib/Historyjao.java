@@ -98,9 +98,14 @@ public class Historyjao extends MyMaidLibrary {
 					.prepareStatement("SELECT * FROM jaoHistory WHERE uuid = ?");
 			statement.setString(1, player.getUniqueId().toString());
 			ResultSet res = statement.executeQuery();
+			this.histdatas.clear();
 			while (res.next()) {
 				this.name = res.getString("player");
 				this.uuid = UUID.fromString(res.getString("uuid"));
+
+				if (res.getBoolean("disabled")) {
+					continue;
+				}
 
 				HistoryData histdata = new HistoryData();
 				histdata.id = res.getInt("id");
