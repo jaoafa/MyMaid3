@@ -207,6 +207,10 @@ public class Jail extends MyMaidLibrary {
 				.sendMessage("__**Jail[遺言]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「"
 						+ DiscordEscape(testment) + "」という遺言を残しました。")
 				.queue();
+
+		if (lastreason.equals("jaoium所持")) {
+			removeBan("jaotan");
+		}
 		return true;
 	}
 
