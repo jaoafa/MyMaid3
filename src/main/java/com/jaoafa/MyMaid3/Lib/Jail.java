@@ -377,10 +377,10 @@ public class Jail extends MyMaidLibrary {
 
 				return Main.getJDA().getTextChannelById(690854369783971881L); // #rma_jail
 			} else {
-				return Main.jaotanChannel; // #jaotan
+				return Main.getJDA().getTextChannelById(709399145575874690L); // #jail
 			}
 		} catch (IllegalArgumentException e) {
-			return Main.jaotanChannel; // #jaotan
+			return Main.getJDA().getTextChannelById(709399145575874690L); // #jaotan
 		}
 	}
 }
