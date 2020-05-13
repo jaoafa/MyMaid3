@@ -63,6 +63,9 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
 				SendMessage(sender, cmd, "登録に失敗しました…");
 			}
 			return true;
+		} else if (args.length != 0 && isAMR(player)) {
+			player.performCommand("bukkit:help " + String.join(" ", args));
+			return true;
 		}
 		ItemStack is = load();
 		if (is == null) {
