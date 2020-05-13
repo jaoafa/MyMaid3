@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
+import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
 public class Event_ClearSelection extends MyMaidLibrary implements Listener {
 	LinkedList<UUID> sprinting = new LinkedList<>();
@@ -24,6 +25,10 @@ public class Event_ClearSelection extends MyMaidLibrary implements Listener {
 
 		Player player = event.getPlayer();
 		if (!sprinting.contains(player.getUniqueId())) {
+			return;
+		}
+		String group = PermissionsManager.getPermissionMainGroup(player);
+		if (group.equalsIgnoreCase("Default")) {
 			return;
 		}
 
