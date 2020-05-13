@@ -15,7 +15,7 @@ public class Event_NotFadeIce extends MyMaidLibrary implements Listener {
 		Block block = event.getBlock();
 		Material material = block.getType();
 
-		if (material != Material.ICE && material != Material.FROSTED_ICE) {
+		if (material != Material.ICE) {
 			return;
 		}
 
