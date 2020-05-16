@@ -22,7 +22,7 @@ import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Task.Task_CoOLD;
 
 public class Event_CoOLD extends MyMaidLibrary implements Listener {
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlace(BlockPlaceEvent event) {
 		Block block = event.getBlock();
 		Location loc = block.getLocation();
@@ -36,7 +36,7 @@ public class Event_CoOLD extends MyMaidLibrary implements Listener {
 		sendBlockEditData(player, loc);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
 		Location loc = block.getLocation();
