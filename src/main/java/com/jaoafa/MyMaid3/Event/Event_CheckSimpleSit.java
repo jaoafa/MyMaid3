@@ -29,7 +29,7 @@ public class Event_CheckSimpleSit extends MyMaidLibrary implements Listener {
 		if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
 			player.sendMessage("[SimpleSit] " + ChatColor.GREEN
 					+ "このコマンドはサバイバルモード・アドベンチャーモードの時には利用できません。クリエイティブモードに切り替えてから実行してください。");
-			return;
+			event.setCancelled(true);
 		}
 	}
 }
