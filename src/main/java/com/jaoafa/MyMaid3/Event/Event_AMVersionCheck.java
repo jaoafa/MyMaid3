@@ -35,8 +35,8 @@ public class Event_AMVersionCheck extends MyMaidLibrary implements Listener {
 					return;
 				}
 				String nowVer = plugin.getDescription().getVersion();
-				String nowVerSha = getVersionSha(nowVer);
-				String latestVerSha = getLastCommitSha("MyMaid3");
+				String nowVerSha = getVersionSha(nowVer).trim();
+				String latestVerSha = getLastCommitSha("MyMaid3").trim();
 				if (nowVerSha.equalsIgnoreCase(latestVerSha)) {
 					return;
 				}
