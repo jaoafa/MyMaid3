@@ -57,6 +57,7 @@ public class Task_CoOLD extends BukkitRunnable {
 			ResultSet res = statement.executeQuery();
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			boolean found = false;
 			while (res.next()) {
 				int rolled_back = res.getInt("rolled_back");
 				long time = res.getLong("time");
@@ -81,6 +82,12 @@ public class Task_CoOLD extends BukkitRunnable {
 							+ ChatColor.WHITE + typeja + " "
 							+ ChatColor.DARK_AQUA + block);
 				}
+				found = true;
+			}
+			res.close();
+			statement.close();
+			if (!found) {
+				player.sendMessage("[CoreProtectOLD] " + ChatColor.LIGHT_PURPLE + "not found.");
 			}
 		} catch (SQLException e) {
 			player.sendMessage(
