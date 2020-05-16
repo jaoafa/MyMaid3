@@ -26,10 +26,10 @@ public class Cmd_TempMute extends MyMaidLibrary implements CommandExecutor, Comm
 
 		if (tempmutes.contains(player)) {
 			tempmutes.remove(player);
-			SendMessage(sender, cmd, "一時的にすべてのチャットをミュートしました。リログすると解除されます。");
+			SendMessage(sender, cmd, "すべてのチャットミュートを解除しました。");
 		} else {
 			tempmutes.add(player);
-			SendMessage(sender, cmd, "すべてのチャットミュートを解除しました。");
+			SendMessage(sender, cmd, "一時的にすべてのチャットをミュートしました。リログすると解除されます。");
 		}
 		return true;
 	}
