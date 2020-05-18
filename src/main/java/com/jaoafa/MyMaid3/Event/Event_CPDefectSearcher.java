@@ -38,7 +38,7 @@ import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlace(BlockPlaceEvent event) {
 		Block block = event.getBlock();
 		Location loc = block.getLocation();
@@ -72,7 +72,7 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
 		Location loc = block.getLocation();
