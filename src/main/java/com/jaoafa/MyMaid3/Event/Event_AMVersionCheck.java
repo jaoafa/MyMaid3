@@ -42,7 +42,7 @@ public class Event_AMVersionCheck extends MyMaidLibrary implements Listener {
 				}
 				player.sendMessage("[MyMaid3] " + ChatColor.RED + "MyMaid3のバージョンが最新ではありません。直近の更新内容が反映されていない可能性があります。");
 				player.sendMessage("[MyMaid3] " + ChatColor.RED + "現在のバージョン: " + nowVerSha + " (" + nowVer
-						+ ") / 最新のバージョン: " + nowVerSha);
+						+ ") / 最新のバージョン: " + latestVerSha);
 			}
 		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}

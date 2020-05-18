@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerToggleSprintEvent;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
+import com.jaoafa.MyMaid3.Lib.SelClickManager;
 
 public class Event_ClearSelection extends MyMaidLibrary implements Listener {
 	LinkedList<UUID> sprinting = new LinkedList<>();
@@ -33,6 +34,10 @@ public class Event_ClearSelection extends MyMaidLibrary implements Listener {
 		}
 
 		if (player.getGameMode() != GameMode.CREATIVE) {
+			return;
+		}
+
+		if (!SelClickManager.isEnable(player)) {
 			return;
 		}
 
