@@ -15,10 +15,10 @@ import org.bukkit.plugin.Plugin;
 
 import com.jaoafa.MyMaid3.Main;
 
-import me.lucko.luckperms.LuckPerms;
-import me.lucko.luckperms.api.Group;
-import me.lucko.luckperms.api.LuckPermsApi;
-import me.lucko.luckperms.api.User;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
 
 public class PermissionsManager implements Listener {
 	/**
@@ -125,14 +125,14 @@ public class PermissionsManager implements Listener {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			LuckPermsApi LPApi = LuckPerms.getApi();
-			User LPplayer = LPApi.getUser(player.getUniqueId());
+			LuckPerms LPApi = LuckPermsProvider.get();
+			User LPplayer = LPApi.getUserManager().getUser(player.getUniqueId());
 			if (LPplayer == null) {
 				throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
 			}
 			List<String> list = new ArrayList<>();
 			String groupname = LPplayer.getPrimaryGroup();
-			Group group = LPApi.getGroup(groupname);
+			Group group = LPApi.getGroupManager().getGroup(groupname);
 			if (group == null)
 				throw new InternalError("Groupがnullです。");
 			list.add(group.getFriendlyName());
@@ -177,17 +177,17 @@ public class PermissionsManager implements Listener {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			LuckPermsApi LPApi = LuckPerms.getApi();
+			LuckPerms LPApi = LuckPermsProvider.get();
 			UUID uuid = player.getUniqueId();
 			if (uuid == null)
 				throw new InternalError("オンラインプレイヤーのUUIDがnullです。");
-			User LPplayer = LPApi.getUser(uuid);
+			User LPplayer = LPApi.getUserManager().getUser(player.getUniqueId());
 			if (LPplayer == null) {
 				throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
 			}
 			List<String> list = new ArrayList<>();
 			String groupname = LPplayer.getPrimaryGroup();
-			Group group = LPApi.getGroup(groupname);
+			Group group = LPApi.getGroupManager().getGroup(groupname);
 			if (group == null)
 				throw new InternalError("Groupがnullです。");
 			list.add(group.getFriendlyName());
@@ -248,13 +248,16 @@ public class PermissionsManager implements Listener {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			LuckPermsApi LPApi = LuckPerms.getApi();
-			User LPplayer = LPApi.getUser(player.getUniqueId());
+			LuckPerms LPApi = LuckPermsProvider.get();
+			UUID uuid = player.getUniqueId();
+			if (uuid == null)
+				throw new InternalError("オンラインプレイヤーのUUIDがnullです。");
+			User LPplayer = LPApi.getUserManager().getUser(player.getUniqueId());
 			if (LPplayer == null) {
 				throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
 			}
 			String groupname = LPplayer.getPrimaryGroup();
-			Group group = LPApi.getGroup(groupname);
+			Group group = LPApi.getGroupManager().getGroup(groupname);
 			if (group == null)
 				throw new InternalError("Groupがnullです。");
 			return group.getFriendlyName();
@@ -285,32 +288,22 @@ public class PermissionsManager implements Listener {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			/*
-			Collection<String> groups = PermissionsEx.getPermissionManager().getGroupNames();
-			String MaxGroup = null; // ?
-			for (String group : groups) {
-				if (PermissionsEx.getUser(player).inGroup(group)) {
-					MaxGroup = group;
-				}
-			}
-			return MaxGroup;
-			*/
 			throw new IllegalStateException("PermissionsEx非対応");
 		} else if (isSelectPermissionsPlugin(PermissionsPlugin.LuckPerms)) {
 			if (!checkPermissionsPlugin()) {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			LuckPermsApi LPApi = LuckPerms.getApi();
+			LuckPerms LPApi = LuckPermsProvider.get();
 			UUID uuid = player.getUniqueId();
 			if (uuid == null)
 				throw new InternalError("オンラインプレイヤーのUUIDがnullです。");
-			User LPplayer = LPApi.getUser(uuid);
+			User LPplayer = LPApi.getUserManager().getUser(player.getUniqueId());
 			if (LPplayer == null) {
 				throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
 			}
 			String groupname = LPplayer.getPrimaryGroup();
-			Group group = LPApi.getGroup(groupname);
+			Group group = LPApi.getGroupManager().getGroup(groupname);
 			if (group == null)
 				throw new InternalError("Groupがnullです。");
 			return group.getFriendlyName();
@@ -319,14 +312,14 @@ public class PermissionsManager implements Listener {
 		}
 	}
 
-	public static void setPermissionsGroup(Player player, String group) {
+	public static void setPermissionsGroup(Player player, String groupname) {
 		// 権限管理プラグインが自動選択されてなかったら、自動選択する。
 		if (SelectPermissionsPlugin == null)
 			checkPermissionsPluginAutoSelecter();
 
 		if (player == null)
 			throw new InternalError("オンラインプレイヤーがnullです。");
-		if (group == null)
+		if (groupname == null)
 			throw new InternalError("グループ名がnullです。");
 
 		if (isSelectPermissionsPlugin(PermissionsPlugin.PermissionsEx)) {
@@ -334,36 +327,25 @@ public class PermissionsManager implements Listener {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			/*
-			Collection<String> groups = PermissionsEx.getPermissionManager().getGroupNames();
-			for (String g : groups) {
-				if (PermissionsEx.getUser(player).inGroup(g)) {
-					PermissionsEx.getUser(player).removeGroup(g);
-				}
-			}
-			PermissionsEx.getUser(player).addGroup(group);
-			*/
 			throw new IllegalStateException("PermissionsEx非対応");
 		} else if (isSelectPermissionsPlugin(PermissionsPlugin.LuckPerms)) {
 			if (!checkPermissionsPlugin()) {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			LuckPermsApi LPApi = LuckPerms.getApi();
+			LuckPerms LPApi = LuckPermsProvider.get();
 			UUID uuid = player.getUniqueId();
 			if (uuid == null)
 				throw new InternalError("オンラインプレイヤーのUUIDがnullです。");
-			User LPplayer = LPApi.getUser(uuid);
+			User LPplayer = LPApi.getUserManager().getUser(player.getUniqueId());
 			if (LPplayer == null) {
 				throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
 			}
-			// APIを使ってグループにプレイヤーを入れる方法がわからない。なのでかなり無茶苦茶
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
-					"lp user " + player.getName() + " parent set " + group);
-			/*
-			LPplayer.clearParents();
-			LPplayer.setPrimaryGroup(group);
-			*/
+			Group group = LPApi.getGroupManager().getGroup(groupname);
+			if (group == null) {
+				throw new InternalError("Groupがnullです。");
+			}
+			LPplayer.setPrimaryGroup(groupname);
 		}
 	}
 
@@ -382,36 +364,28 @@ public class PermissionsManager implements Listener {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			/*
-			Collection<String> groups = PermissionsEx.getPermissionManager().getGroupNames();
-			for (String g : groups) {
-				if (PermissionsEx.getUser(player).inGroup(g)) {
-					PermissionsEx.getUser(player).removeGroup(g);
-				}
-			}
-			PermissionsEx.getUser(player).addGroup(group);
-			*/
 			throw new IllegalStateException("PermissionsEx非対応");
 		} else if (isSelectPermissionsPlugin(PermissionsPlugin.LuckPerms)) {
 			if (!checkPermissionsPlugin()) {
 				// プラグインが動作していない
 				throw new UnsupportedOperationException("権限管理プラグインが見つかりません！");
 			}
-			LuckPermsApi LPApi = LuckPerms.getApi();
-			UUID uuid = UUID.fromString(uuidstr);
-			if (uuid == null)
-				throw new InternalError("オンラインプレイヤーのUUIDがnullです。");
-			User LPplayer = LPApi.getUser(uuid);
-			if (LPplayer == null) {
-				throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
+			LuckPerms LPApi = LuckPermsProvider.get();
+			User LPplayer = null;
+			try {
+				UUID uuid = UUID.fromString(uuidstr);
+				if (uuid == null)
+					throw new InternalError("オンラインプレイヤーのUUIDがnullです。");
+				LPplayer = LPApi.getUserManager().getUser(uuid);
+			} catch (IllegalArgumentException e) {
 			}
-			// APIを使ってグループにプレイヤーを入れる方法がわからない。なのでかなり無茶苦茶
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
-					"lp user " + uuidstr + " parent set " + group);
-			/*
-			LPplayer.clearParents();
+			if (LPplayer == null) {
+				LPplayer = LPApi.getUserManager().getUser(uuidstr);
+				if (LPplayer == null) {
+					throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
+				}
+			}
 			LPplayer.setPrimaryGroup(group);
-			*/
 		}
 	}
 
