@@ -1,11 +1,14 @@
 package com.jaoafa.MyMaid3.Event;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.jaoafa.MyMaid3.Lib.AFKPlayer;
@@ -49,5 +52,26 @@ public class Event_AFK extends MyMaidLibrary implements Listener {
 		}
 		afkplayer.end();
 		TitleAPI.clearTitle(player);
+	}
+
+	@EventHandler
+	public void OnEvent_InvClose(InventoryCloseEvent event) {
+		if (!(event.getPlayer() instanceof Player)) {
+			return;
+		}
+		Player player = (Player) event.getPlayer();
+		AFKPlayer afkplayer = new AFKPlayer(player);
+		if (!afkplayer.isAFK()) {
+			return;
+		}
+		ItemStack is = player.getInventory().getHelmet();
+		if (is.getType() != Material.ICE) {
+			return;
+		}
+
+		if (!Achievementjao.getAchievement(player, new AchievementType(40))) {
+			player.sendMessage(AchievementAPI.getPrefix() + "実績の解除中に問題が発生しました。もう一度お試しください。");
+			return;
+		}
 	}
 }
