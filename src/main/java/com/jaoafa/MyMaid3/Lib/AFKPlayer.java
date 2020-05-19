@@ -27,23 +27,26 @@ public class AFKPlayer {
 	private BukkitTask Task = null;
 	private ItemStack HeadItem = null;
 	private long LastActionTime = -1L;
+	private String message = null;
 
 	public AFKPlayer(Player player) {
 		if (players.containsKey(player.getName())) {
 			AFKPlayer afkplayer = players.get(player.getName());
-			this.player = afkplayer.getPlayer();
 			this.isAFKing = afkplayer.isAFK();
 			this.AFKStartTime = afkplayer.getAFKStartTime();
 			this.Task = afkplayer.getTask();
 			this.HeadItem = afkplayer.getHeadItem();
 			this.LastActionTime = afkplayer.getLastActionTime();
-			return;
 		}
 		this.player = player;
 		players.put(player.getName(), this);
 	}
 
 	public void start() {
+		start(null);
+	}
+
+	public void start(String message) {
 		if (isAFK()) {
 			return;
 		}
@@ -62,7 +65,12 @@ public class AFKPlayer {
 		TitleAPI.sendTitle(player, 0, 99999999, 0, ChatColor.RED + "AFK NOW!",
 				ChatColor.BLUE + "" + ChatColor.BOLD + "When you are back, please enter the command '/afk' or Move.");
 
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is afk!");
+		if (message != null) {
+			Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is afk! (" + message + ")");
+		} else {
+			Bukkit.broadcastMessage(ChatColor.DARK_GRAY + player.getName() + " is afk!");
+		}
+		this.message = message;
 
 		try {
 			Task = new Task_AFKING(player).runTaskTimer(Main.getJavaPlugin(), 0L, 5L);
@@ -79,7 +87,13 @@ public class AFKPlayer {
 		}
 
 		if (Main.ServerChatChannel != null) {
-			Main.ServerChatChannel.sendMessage(MyMaidLibrary.DiscordEscape(player.getName()) + " is afk!").queue();
+			if (message != null) {
+				Main.ServerChatChannel
+						.sendMessage(MyMaidLibrary.DiscordEscape(player.getName()) + " is afk! (`" + message + "`)")
+						.queue();
+			} else {
+				Main.ServerChatChannel.sendMessage(MyMaidLibrary.DiscordEscape(player.getName()) + " is afk!").queue();
+			}
 		}
 	}
 
@@ -162,5 +176,9 @@ public class AFKPlayer {
 
 	public ItemStack getHeadItem() {
 		return HeadItem;
+	}
+
+	public String getMessage() {
+		return message;
 	}
 }

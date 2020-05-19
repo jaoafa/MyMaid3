@@ -35,11 +35,16 @@ public class Cmd_AFK extends MyMaidLibrary implements CommandExecutor, CommandPr
 			}
 			Player player = Bukkit.getPlayerExact(args[0]);
 			if (player == null) {
-				SendMessage(sender, cmd, "指定されたプレイヤー「" + args[0] + "」は見つかりませんでした。");
-
-				Player any_chance_player = Bukkit.getPlayer(args[0]);
-				if (any_chance_player != null) {
-					SendMessage(sender, cmd, "もしかして: " + any_chance_player.getName());
+				if (!(sender instanceof Player)) {
+					SendMessage(sender, cmd, "このコマンドはゲーム内から実行してください。");
+					return true;
+				}
+				AFKPlayer afkplayer = new AFKPlayer((Player) sender);
+				String message = String.join(" ", args);
+				if (!afkplayer.isAFK()) {
+					afkplayer.start(message);
+				} else {
+					SendMessage(sender, cmd, "あなたは現在AFK状態です。AFKにメッセージを設定するには、一度AFKを解除してください。");
 				}
 				return true;
 			}
@@ -85,6 +90,9 @@ public class Cmd_AFK extends MyMaidLibrary implements CommandExecutor, CommandPr
 				if (afkplayer.getLastActionTime() != -1L) {
 					String actionTime = MyMaidLibrary.sdfFormat(new Date(afkplayer.getLastActionTime() * 1000));
 					SendMessage(sender, cmd, "このプレイヤーの最終アクションは " + actionTime + " です。");
+					if (afkplayer.getMessage() != null) {
+						SendMessage(sender, cmd, "プレイヤーが設定したAFKメッセージ: " + afkplayer.getMessage());
+					}
 				}
 			}
 			return true;
@@ -113,6 +121,7 @@ public class Cmd_AFK extends MyMaidLibrary implements CommandExecutor, CommandPr
 		return new ArrayList<String>() {
 			{
 				add("/afk: AFK(Away From Keyboard)モードをオン・オフにします。(トグル)");
+				add("/afk <Message>: AFK(Away From Keyboard)モードをメッセージ付きでオンにします。");
 				add("/afk <Player>: 指定したPlayerのAFK情報を表示します。");
 			}
 		};
