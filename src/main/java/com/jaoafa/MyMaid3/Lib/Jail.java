@@ -333,7 +333,7 @@ public class Jail extends MyMaidLibrary {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM jail WHERE status = ?");
-			statement.setString(1, "punishing");
+			statement.setBoolean(1, true);
 			ResultSet res = statement.executeQuery();
 			while (res.next()) {
 				Jail jail = new Jail(UUID.fromString(res.getString("uuid")));
