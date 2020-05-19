@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.jaoafa.MyMaid3.Main;
@@ -23,22 +23,14 @@ import com.jaoafa.MyMaid3.Task.Task_CoOLD;
 
 public class Event_CoOLD extends MyMaidLibrary implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlace(BlockPlaceEvent event) {
-		Block block = event.getBlock();
-		Location loc = block.getLocation();
-		Player player = event.getPlayer();
-
-		if (!Main.coOLDEnabler.containsKey(player.getUniqueId())) {
+	public void onInteract(PlayerInteractEvent event) {
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
 			return;
 		}
-		event.setCancelled(true);
-
-		sendBlockEditData(player, loc);
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onBreak(BlockBreakEvent event) {
-		Block block = event.getBlock();
+		Block block = event.getClickedBlock();
+		if (block == null) {
+			return;
+		}
 		Location loc = block.getLocation();
 		Player player = event.getPlayer();
 

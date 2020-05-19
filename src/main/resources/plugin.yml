@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.05.17_00.55
+version: 2020.05.19_16.53
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -107,6 +107,11 @@ commands:
       MyMaid3のリリース情報を表示します。
     usage: /mymaid3
     permission: mymaid.mymaid3
+  selclick:
+    description: >
+      簡易SelectionClear機能の有効化・無効化ができます。
+    usage: /selclick
+    permission: mymaid.selclick
   tempmute:
     description: >
       一時的にすべてのチャットをミュートするかどうかを設定します。Admin・Moderatorのみ使用できます。
