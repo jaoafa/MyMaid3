@@ -65,7 +65,10 @@ public class Event_AFK extends MyMaidLibrary implements Listener {
 			return;
 		}
 		ItemStack is = player.getInventory().getHelmet();
-		if (is.getType() != Material.ICE) {
+		if (is == null) {
+			return;
+		}
+		if (is.getType() == Material.ICE) {
 			return;
 		}
 
