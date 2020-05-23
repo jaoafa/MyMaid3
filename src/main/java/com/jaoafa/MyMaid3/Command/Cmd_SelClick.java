@@ -20,10 +20,6 @@ public class Cmd_SelClick extends MyMaidLibrary implements CommandExecutor, Comm
 			return true;
 		}
 		Player player = (Player) sender;
-		if (!isAM(player)) {
-			SendMessage(sender, cmd, "あなたの権限ではこのコマンドを使用することはできません。");
-			return true;
-		}
 
 		if (SelClickManager.isEnable(player)) {
 			SelClickManager.setStatus(player, false);
