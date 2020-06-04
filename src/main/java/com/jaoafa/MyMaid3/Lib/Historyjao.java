@@ -66,7 +66,7 @@ public class Historyjao extends MyMaidLibrary {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement(
-					"UPDATE jail SET disabled = ? WHERE uuid = ? AND id = ? ORDER BY id DESC");
+					"UPDATE jaoHistory SET disabled = ? WHERE uuid = ? AND id = ? ORDER BY id DESC");
 			statement.setBoolean(1, true);
 			statement.setString(2, player.getUniqueId().toString());
 			statement.setInt(3, id);
@@ -85,7 +85,7 @@ public class Historyjao extends MyMaidLibrary {
 		DBSync(false);
 	}
 
-	private void DBSync(boolean force) {
+	public void DBSync(boolean force) {
 		if (!force && ((DBSyncTime + 30 * 60 * 1000) > System.currentTimeMillis())) {
 			return; // 30分未経過
 		}

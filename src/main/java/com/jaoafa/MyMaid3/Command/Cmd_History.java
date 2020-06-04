@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.Historyjao;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
 public class Cmd_History extends MyMaidLibrary implements CommandExecutor, CommandPremise {
 	@Override
@@ -26,15 +25,6 @@ public class Cmd_History extends MyMaidLibrary implements CommandExecutor, Comma
 			return true;
 		}
 		// jaoHistory
-		if (sender instanceof Player) {
-			Player commander = (Player) sender;
-			String group = PermissionsManager.getPermissionMainGroup(commander);
-			if (!group.equalsIgnoreCase("Regular") && !group.equalsIgnoreCase("Moderator")
-					&& !group.equalsIgnoreCase("Admin")) {
-				SendMessage(sender, cmd, ChatColor.GREEN + "このコマンドは、あなたの権限では使用できません。");
-				return true;
-			}
-		}
 
 		if (args.length >= 2 && args[0].equalsIgnoreCase("status")) {
 			// /history status mine_book000
@@ -60,15 +50,14 @@ public class Cmd_History extends MyMaidLibrary implements CommandExecutor, Comma
 		// /history status mine_book000
 		if (sender instanceof Player) {
 			Player commander = (Player) sender;
-			String group = PermissionsManager.getPermissionMainGroup(commander);
-			if (!group.equalsIgnoreCase("Regular") && !group.equalsIgnoreCase("Moderator")
-					&& !group.equalsIgnoreCase("Admin")) {
+			if (!isAMR(commander)) {
 				SendMessage(sender, cmd, ChatColor.GREEN + "このコマンドは、あなたの権限では使用できません。");
 				return;
 			}
 		}
 		OfflinePlayer offplayer = getOfflinePlayer(args[1]);
 		Historyjao histjao = new Historyjao(offplayer);
+		histjao.DBSync(true);
 		if (histjao.isFound()) {
 			SendMessage(sender, cmd, "jaoHistoryにデータが見つかりました。");
 			for (Historyjao.HistoryData histdata : histjao.getHistoryDatas()) {
@@ -84,9 +73,7 @@ public class Cmd_History extends MyMaidLibrary implements CommandExecutor, Comma
 		// /history add mine_book000 test a b c
 		if (sender instanceof Player) {
 			Player commander = (Player) sender;
-			String group = PermissionsManager.getPermissionMainGroup(commander);
-			if (!group.equalsIgnoreCase("Regular") && !group.equalsIgnoreCase("Moderator")
-					&& !group.equalsIgnoreCase("Admin")) {
+			if (!isAMR(commander)) {
 				SendMessage(sender, cmd, ChatColor.GREEN + "このコマンドは、あなたの権限では使用できません。");
 				return;
 			}
@@ -105,9 +92,7 @@ public class Cmd_History extends MyMaidLibrary implements CommandExecutor, Comma
 		// /history disable mine_book000 1
 		if (sender instanceof Player) {
 			Player commander = (Player) sender;
-			String group = PermissionsManager.getPermissionMainGroup(commander);
-			if (!group.equalsIgnoreCase("Regular") && !group.equalsIgnoreCase("Moderator")
-					&& !group.equalsIgnoreCase("Admin")) {
+			if (!isAMR(commander)) {
 				SendMessage(sender, cmd, ChatColor.GREEN + "このコマンドは、あなたの権限では使用できません。");
 				return;
 			}
