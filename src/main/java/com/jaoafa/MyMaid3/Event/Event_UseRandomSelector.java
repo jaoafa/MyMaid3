@@ -23,6 +23,6 @@ public class Event_UseRandomSelector extends MyMaidLibrary implements Listener {
 		}
 
 		event.setCancelled(true);
-		SendMessage(player, "CmdLengthLimiter", "あなたの権限では@rセレクターの使用はできません。");
+		SendMessage(player, "UseRandomSelector", "あなたの権限では@rセレクターの使用はできません。");
 	}
 }
