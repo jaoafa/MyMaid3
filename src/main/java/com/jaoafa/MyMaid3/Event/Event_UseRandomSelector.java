@@ -7,23 +7,22 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
-public class Event_CommandLengthLimiter extends MyMaidLibrary implements Listener {
+public class Event_UseRandomSelector extends MyMaidLibrary implements Listener {
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
 		String command = event.getMessage();
 		Player player = event.getPlayer();
 
-		if (isAMRV(player)) {
-			// Default以外
+		if (isAMR(player)) {
+			// Default, Verified以外
 			return;
 		}
 
-		if (command.length() < 100) {
-			// 100文字未満
+		if (!command.contains("@r")) {
 			return;
 		}
 
 		event.setCancelled(true);
-		SendMessage(player, "CmdLengthLimiter", "あなたの権限では100バイトを超えるコマンドの実行はできません。");
+		SendMessage(player, "CmdLengthLimiter", "あなたの権限では@rセレクターの使用はできません。");
 	}
 }
