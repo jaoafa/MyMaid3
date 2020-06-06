@@ -115,6 +115,11 @@
 			<id>jSA2 maven-repo</id>
 			<url>https://raw.github.com/jaoafa/jao-Super-Achievement2/master/mvn-repo</url>
 		</repository>
+		<!-- MinecraftJPVoteMissFiller -->
+		<repository>
+			<id>MinecraftJPVoteMissFiller maven-repo</id>
+			<url>https://raw.github.com/jaoafa/MinecraftJPVoteMissFiller/master/mvn-repo</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<!--Spigot-API -->
@@ -265,6 +270,13 @@
 			<groupId>biz.source_code</groupId>
 			<artifactId>base64coder</artifactId>
 			<version>2010-12-19</version>
+		</dependency>
+		<!-- MinecraftJPVoteMissFiller -->
+		<dependency>
+			<groupId>com.jaoafa</groupId>
+			<artifactId>MinecraftJPVoteMissFiller</artifactId>
+			<version>0.0.1</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
