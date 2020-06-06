@@ -32,7 +32,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 	public void onVoteMissFillerEvent(VoteMissFillerEvent event) {
 		String player = event.getStringPlayer();
 		Main.getJDA().getTextChannelById(499922840871632896L)
-				.sendMessage(":mailbox_with_mail: **投票自動補填通知**: " + player + "の投票が受信されていなかったため、自動補填を行います。");
+				.sendMessage(":mailbox_with_mail: **投票自動補填通知**: " + player + "の投票が受信されていなかったため、自動補填を行います。").queue();
 		VoteReceive(player);
 	}
 
@@ -79,8 +79,9 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 		Bukkit.broadcastMessage(
 				"[MyMaid] " + ChatColor.GREEN + "プレイヤー「" + name + "」が投票をしました！(現在の投票数:" + newVote + "回)");
 		Bukkit.broadcastMessage("[MyMaid] " + ChatColor.GREEN + "投票をよろしくお願いします！ https://jaoafa.com/vote");
-		Main.ServerChatChannel.sendMessage("プレイヤー「" + DiscordEscape(name) + "」が投票をしました！(現在の投票数:" + newVote + "回)");
-		Main.ServerChatChannel.sendMessage("投票をよろしくお願いします！ https://jaoafa.com/vote");
+		Main.ServerChatChannel.sendMessage("プレイヤー「" + DiscordEscape(name) + "」が投票をしました！(現在の投票数:" + newVote + "回)")
+				.queue();
+		Main.ServerChatChannel.sendMessage("投票をよろしくお願いします！ https://jaoafa.com/vote").queue();
 
 		successNotify(name, oldVote, newVote);
 	}
@@ -107,11 +108,11 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
 	void missedNotify(String name, String reason) {
 		Main.getJDA().getTextChannelById(499922840871632896L)
-				.sendMessage(":x: <@221991565567066112> `" + name + "`の`投票特典付与処理に失敗しました: `" + reason + "`");
+				.sendMessage(":x: <@221991565567066112> `" + name + "`の`投票特典付与処理に失敗しました: `" + reason + "`").queue();
 	}
 
 	void successNotify(String name, int oldVote, int newVote) {
 		Main.getJDA().getTextChannelById(499922840871632896L)
-				.sendMessage(":o: `" + name + "`の`投票特典付与処理に成功しました: " + oldVote + "回 -> " + newVote + "回");
+				.sendMessage(":o: `" + name + "`の`投票特典付与処理に成功しました: " + oldVote + "回 -> " + newVote + "回").queue();
 	}
 }
