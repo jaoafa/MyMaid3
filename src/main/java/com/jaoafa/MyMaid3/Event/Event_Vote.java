@@ -108,11 +108,11 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
 	void missedNotify(String name, String reason) {
 		Main.getJDA().getTextChannelById(499922840871632896L)
-				.sendMessage(":x: <@221991565567066112> `" + name + "`の`投票特典付与処理に失敗しました: `" + reason + "`").queue();
+				.sendMessage(":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました: `" + reason + "`").queue();
 	}
 
 	void successNotify(String name, int oldVote, int newVote) {
 		Main.getJDA().getTextChannelById(499922840871632896L)
-				.sendMessage(":o: `" + name + "`の`投票特典付与処理に成功しました: " + oldVote + "回 -> " + newVote + "回").queue();
+				.sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました: " + oldVote + "回 -> " + newVote + "回").queue();
 	}
 }
