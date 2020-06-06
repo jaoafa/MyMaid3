@@ -42,7 +42,7 @@ public class Event_ServerLeave {
 			return;
 		}
 		if (player != null) {
-			PermissionsManager.setPermissionsGroup(uuid, "Default");
+			PermissionsManager.setPermissionsGroup(uuid, "default");
 
 			try {
 				Connection conn = Main.getMySQLDBManager().getConnection();

@@ -185,7 +185,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 		jda.getTextChannelById(597419057251090443L).sendMessage(
 				":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！ MinecraftID: `" + player.getName() + "`")
 				.queue();
-		PermissionsManager.setPermissionsGroup(player, "Verified");
+		PermissionsManager.setPermissionsGroup(player, "verified");
 
 		guild.addRoleToMember(member, guild.getRoleById(604011598952136853L)).queue(); // MinecraftConnected
 		guild.addRoleToMember(member, guild.getRoleById(597405176969560064L)).queue(); // Verified
