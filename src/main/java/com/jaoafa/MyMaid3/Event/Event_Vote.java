@@ -45,6 +45,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 		// nameからuuidを取得する
 		UUID uuid = getUUID(MySQLDBManager, name);
 		if (uuid == null) {
+			missedNotify(name, "UUID取得失敗");
 			return;
 		}
 
