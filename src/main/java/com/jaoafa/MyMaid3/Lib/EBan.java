@@ -78,6 +78,10 @@ public class EBan extends MyMaidLibrary {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 
+		if (isBanned()) {
+			return false;
+		}
+
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement(
@@ -136,7 +140,7 @@ public class EBan extends MyMaidLibrary {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
-					.prepareStatement("UPDATE eban SET status = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1;");
+					.prepareStatement("UPDATE eban SET status = ? WHERE uuid = ?;");
 			statement.setString(1, "end");
 			statement.setString(2, player.getUniqueId().toString());
 			statement.executeUpdate();

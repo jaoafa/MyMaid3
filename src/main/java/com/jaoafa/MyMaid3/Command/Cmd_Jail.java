@@ -92,6 +92,10 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandExecutor, CommandP
 		String reason = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 		OfflinePlayer offplayer = getOfflinePlayer(args[1]);
 		Jail jail = new Jail(offplayer);
+		if (jail.isBanned()) {
+			SendMessage(sender, cmd, ChatColor.GREEN + "このプレイヤーは現在Jailされているため、実行できません。");
+			return;
+		}
 		if (jail.addBan(sender.getName(), reason)) {
 			SendMessage(sender, cmd, ChatColor.GREEN + "実行に成功しました。");
 		} else {

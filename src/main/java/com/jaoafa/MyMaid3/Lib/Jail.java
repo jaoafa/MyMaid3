@@ -85,6 +85,10 @@ public class Jail extends MyMaidLibrary {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 
+		if (isBanned()) {
+			return false;
+		}
+
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement(
@@ -141,7 +145,7 @@ public class Jail extends MyMaidLibrary {
 		try {
 			Connection conn = Main.MySQLDBManager.getConnection();
 			PreparedStatement statement = conn
-					.prepareStatement("UPDATE jail SET status = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1;");
+					.prepareStatement("UPDATE jail SET status = ? WHERE uuid = ?");
 			statement.setBoolean(1, false);
 			statement.setString(2, player.getUniqueId().toString());
 			statement.executeUpdate();

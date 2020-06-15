@@ -86,6 +86,10 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
 		String reason = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 		OfflinePlayer offplayer = getOfflinePlayer(args[1]);
 		EBan eban = new EBan(offplayer);
+		if (eban.isBanned()) {
+			SendMessage(sender, cmd, ChatColor.GREEN + "このプレイヤーは現在EBanされているため、実行できません。");
+			return;
+		}
 		if (eban.addBan(sender.getName(), reason)) {
 			SendMessage(sender, cmd, ChatColor.RED + "実行に成功しました。");
 		} else {
