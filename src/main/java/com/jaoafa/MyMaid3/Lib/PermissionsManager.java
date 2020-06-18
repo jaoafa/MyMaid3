@@ -17,6 +17,7 @@ import com.jaoafa.MyMaid3.Main;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 
@@ -345,18 +346,32 @@ public class PermissionsManager implements Listener {
 			if (group == null) {
 				throw new InternalError("Groupがnullです。");
 			}
-			LPplayer.setPrimaryGroup(groupname);
+
+			DataMutateResult result = LPplayer.setPrimaryGroup(group.getName());
+
+			if (!result.wasSuccessful()) {
+				System.out.println("setPermissionsGroup: " + result.name());
+				boolean bool = Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + player.getUniqueId().toString() + " parent set " + group.getName());
+				if (bool) {
+					System.out.println("setPermissionsGroup lp command: Successful");
+				} else {
+					System.out.println("setPermissionsGroup lp command: Failed");
+				}
+			}
+
+			LPApi.getUserManager().saveUser(LPplayer);
 		}
 	}
 
-	public static void setPermissionsGroup(String uuidstr, String group) {
+	public static void setPermissionsGroup(String uuidstr, String groupname) {
 		// 権限管理プラグインが自動選択されてなかったら、自動選択する。
 		if (SelectPermissionsPlugin == null)
 			checkPermissionsPluginAutoSelecter();
 
 		if (uuidstr == null)
 			throw new InternalError("uuidstrがnullです。");
-		if (group == null)
+		if (groupname == null)
 			throw new InternalError("グループ名がnullです。");
 
 		if (isSelectPermissionsPlugin(PermissionsPlugin.PermissionsEx)) {
@@ -385,7 +400,25 @@ public class PermissionsManager implements Listener {
 					throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
 				}
 			}
-			LPplayer.setPrimaryGroup(group);
+			Group group = LPApi.getGroupManager().getGroup(groupname);
+			if (group == null) {
+				throw new InternalError("Groupがnullです。");
+			}
+
+			DataMutateResult result = LPplayer.setPrimaryGroup(group.getName());
+
+			if (!result.wasSuccessful()) {
+				System.out.println("setPermissionsGroup: " + result.name());
+				boolean bool = Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+						"lp user " + uuidstr + " parent set " + group.getName());
+				if (bool) {
+					System.out.println("setPermissionsGroup lp command: Successful");
+				} else {
+					System.out.println("setPermissionsGroup lp command: Failed");
+				}
+			}
+
+			LPApi.getUserManager().saveUser(LPplayer);
 		}
 	}
 
