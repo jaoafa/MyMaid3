@@ -44,12 +44,14 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener {
 							+ ChatColor.RESET + ChatColor.WHITE + "Access denied.\n"
 							+ ChatColor.RESET + ChatColor.WHITE + "Your reputation is below this server's threshold.";
 					event.disallow(Result.KICK_BANNED, message);
+					res.close();
 					return;
 				}
 				if (reputation != 10) {
 					sendAMR(ChatColor.RED + "[MCBansChecker] " + ChatColor.GREEN + name + " reputation: " + reputation);
 				}
 			}
+			res.close();
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -73,8 +75,11 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener {
 						+ ChatColor.RESET + ChatColor.WHITE + "Ban type: " + type + "\n"
 						+ ChatColor.RESET + ChatColor.WHITE + "http://mcbans.com/ban/" + banid;
 				event.disallow(Result.KICK_BANNED, message);
+				res.close();
+				statement.close();
 				return;
 			}
+			res.close();
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

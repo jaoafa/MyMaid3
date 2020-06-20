@@ -47,7 +47,6 @@ public class Main extends JavaPlugin {
 	public static TextChannel ReportChannel = null;
 	public static TextChannel ServerChatChannel = null;
 	public static TextChannel jaotanChannel = null;
-	public static String MCBansRepAPI = null;
 	public static String BugReportWebhookUrl = null;
 	public static String FeedbackWebhookUrl = null;
 	public static Map<UUID, BukkitTask> coOLDEnabler = new HashMap<>();
@@ -130,12 +129,6 @@ public class Main extends JavaPlugin {
 			getLogger().warning("MyMaid3プラグインを終了します。");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
-		}
-
-		if (config.contains("MCBansRepAPI")) {
-			MCBansRepAPI = config.getString("MCBansRepAPI");
-		} else {
-			getLogger().warning("コンフィグにMCBansRepAPIが記載されていなかったため、Reputationチェック処理は動作しません。");
 		}
 
 		try {
