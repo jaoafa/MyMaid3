@@ -2,12 +2,14 @@ package com.jaoafa.MyMaid3.Event;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -15,6 +17,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
@@ -147,6 +150,33 @@ public class Event_SandBoxRegularOnly extends MyMaidLibrary implements Listener 
 				|| group.equalsIgnoreCase("Admin")) {
 			return; // RMA除外
 		}
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			return;
+		}
+		Player player = event.getPlayer();
+		World world = player.getWorld();
+
+		if ((player.getInventory().getItemInMainHand() == null
+				|| player.getInventory().getItemInMainHand().getType() == Material.AIR)
+				&& (player.getInventory().getItemInOffHand() == null
+						|| player.getInventory().getItemInOffHand().getType() == Material.AIR)) {
+			return;
+		}
+
+		if (!world.getName().equalsIgnoreCase("SandBox")) {
+			return; // SandBoxのみ
+		}
+		String group = PermissionsManager.getPermissionMainGroup(player);
+		if (group.equalsIgnoreCase("Regular") || group.equalsIgnoreCase("Moderator")
+				|| group.equalsIgnoreCase("Admin")) {
+			return; // RMA除外
+		}
+		player.sendMessage("[SandBox] " + ChatColor.RED + "あなたの権限ではSandBoxに干渉することはできません。");
 		event.setCancelled(true);
 	}
 }
