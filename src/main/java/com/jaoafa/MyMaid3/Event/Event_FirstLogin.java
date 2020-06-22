@@ -30,7 +30,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 		MCBans mcbans = null;
 		try {
 			mcbans = new MCBans(player);
-			if (mcbans.getReputation() != -1D) {
+			if (mcbans.isFound()) {
 				reputation = String.valueOf(mcbans.getReputation());
 			} else {
 				reputation = "null";
@@ -59,16 +59,16 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 				Main.getJDA().getSelfUser().getAvatarUrl());
 		Main.getJDA().getTextChannelById(597423444501463040L).sendMessage(builder.build()).queue();
 
-		if (mcbans.getGlobalCount() > 0 || mcbans.getLocalCount() > 0) {
+		if (mcbans != null && (mcbans.getGlobalCount() > 0 || mcbans.getLocalCount() > 0)) {
 			int[] global_ids = mcbans.getGlobalBanIds();
 			int[] local_ids = mcbans.getLocalBanIds();
 
 			EmbedBuilder embed = new EmbedBuilder();
-			builder.setTitle("MCBans DATA : " + player.getName(),
+			embed.setTitle("MCBans DATA : " + player.getName(),
 					"https://www.mcbans.com/player/" + player.getUniqueId().toString().replace("-", "") + "/");
-			builder.setColor(Color.RED);
-			builder.setDescription("Global: " + mcbans.getGlobalCount() + " / Local: " + mcbans.getLocalCount());
-			builder.setTimestamp(Instant.now());
+			embed.setColor(Color.RED);
+			embed.setDescription("Global: " + mcbans.getGlobalCount() + " / Local: " + mcbans.getLocalCount());
+			embed.setTimestamp(Instant.now());
 
 			for (int id : global_ids) {
 				try {
