@@ -30,7 +30,11 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 		MCBans mcbans = null;
 		try {
 			mcbans = new MCBans(player);
-			reputation = String.valueOf(mcbans.getReputation());
+			if (mcbans.getReputation() != -1D) {
+				reputation = String.valueOf(mcbans.getReputation());
+			} else {
+				reputation = "null";
+			}
 		} catch (IOException e) {
 			reputation = "null";
 		}
