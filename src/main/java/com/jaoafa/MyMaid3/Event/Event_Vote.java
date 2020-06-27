@@ -25,6 +25,11 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 	public void onVotifierEvent(VotifierEvent event) {
 		Vote vote = event.getVote();
 		String name = vote.getUsername();
+		System.out.println("onVotifierEvent[MyMaid3]: " + vote.getUsername() + " " + vote.getAddress() + " "
+				+ vote.getServiceName() + " " + vote.getTimeStamp());
+		if (!vote.getAddress().equalsIgnoreCase("minecraft.jp")) {
+			return;
+		}
 		VoteReceive(name);
 	}
 

@@ -63,7 +63,7 @@ public class MCBans {
 			local_ids[i] = local_ids_array.getInt(i);
 		}
 
-		updated_at = data.getString("update_at");
+		updated_at = data.getString("updated_at");
 
 		isFound = true;
 	}
