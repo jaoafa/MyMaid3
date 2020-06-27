@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import com.jaoafa.MinecraftJPVoteMissFiller.PlayerVoteData_Monocraft;
 import com.jaoafa.MinecraftJPVoteMissFiller.CustomEvent.VoteMissFillerEvent;
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
@@ -25,12 +26,16 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 	public void onVotifierEvent(VotifierEvent event) {
 		Vote vote = event.getVote();
 		String name = vote.getUsername();
+		String service = vote.getServiceName();
 		System.out.println("onVotifierEvent[MyMaid3]: " + vote.getUsername() + " " + vote.getAddress() + " "
 				+ vote.getServiceName() + " " + vote.getTimeStamp());
-		if (!vote.getAddress().equalsIgnoreCase("minecraft.jp")) {
+		if (service.equalsIgnoreCase("minecraft.jp")) {
+			VoteReceive(name);
+			return;
+		} else if (service.equalsIgnoreCase("monocraft.net")) {
+			VoteReceiveMonocraftNet(name);
 			return;
 		}
-		VoteReceive(name);
 	}
 
 	@EventHandler
@@ -44,20 +49,20 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 	void VoteReceive(String name) {
 		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
 		if (MySQLDBManager == null) {
-			missedNotify(name, "MySQLDBManager == null");
+			missedNotifyMinecraftJP(name, "MySQLDBManager == null");
 			return;
 		}
 		// nameからuuidを取得する
 		UUID uuid = getUUID(MySQLDBManager, name);
 		if (uuid == null) {
-			missedNotify(name, "UUID取得失敗");
+			missedNotifyMinecraftJP(name, "UUID取得失敗");
 			return;
 		}
 
 		OfflinePlayer offplayer = Bukkit.getOfflinePlayer(uuid);
 
 		if (offplayer == null || offplayer.getName() == null) {
-			missedNotify(name, "OfflinePlayer取得失敗");
+			missedNotifyMinecraftJP(name, "OfflinePlayer取得失敗");
 			return;
 		}
 
@@ -77,19 +82,70 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
 			newVote = pvd.get();
 		} catch (ClassNotFoundException | SQLException | NullPointerException e) {
-			missedNotify(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
+			missedNotifyMinecraftJP(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
 			e.printStackTrace();
 			return;
 		}
 
 		Bukkit.broadcastMessage(
-				"[MyMaid] " + ChatColor.GREEN + "プレイヤー「" + name + "」が投票をしました！(現在の投票数:" + newVote + "回)");
+				"[MyMaid] " + ChatColor.GREEN + "プレイヤー「" + name + "」がminecraft.jpで投票をしました！(現在の投票数:" + newVote + "回)");
 		Bukkit.broadcastMessage("[MyMaid] " + ChatColor.GREEN + "投票をよろしくお願いします！ https://jaoafa.com/vote");
-		Main.ServerChatChannel.sendMessage("プレイヤー「" + DiscordEscape(name) + "」が投票をしました！(現在の投票数:" + newVote + "回)")
+		Main.ServerChatChannel
+				.sendMessage("プレイヤー「" + DiscordEscape(name) + "」がminecraft.jpで投票をしました！(現在の投票数:" + newVote + "回)")
 				.queue();
 		Main.ServerChatChannel.sendMessage("投票をよろしくお願いします！ https://jaoafa.com/vote").queue();
 
-		successNotify(name, oldVote, newVote);
+		successNotifyMinecraftJP(name, oldVote, newVote);
+	}
+
+	void VoteReceiveMonocraftNet(String name) {
+		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		if (MySQLDBManager == null) {
+			missedNotifyMonocraftNet(name, "MySQLDBManager == null");
+			return;
+		}
+		// nameからuuidを取得する
+		UUID uuid = getUUID(MySQLDBManager, name);
+		if (uuid == null) {
+			missedNotifyMonocraftNet(name, "UUID取得失敗");
+			return;
+		}
+
+		OfflinePlayer offplayer = Bukkit.getOfflinePlayer(uuid);
+
+		if (offplayer == null || offplayer.getName() == null) {
+			missedNotifyMonocraftNet(name, "OfflinePlayer取得失敗");
+			return;
+		}
+
+		if (!offplayer.getName().equals(name)) {
+			name += "(" + offplayer.getName() + ")";
+		}
+
+		int oldVote = -1;
+		int newVote = -1;
+		try {
+			PlayerVoteData_Monocraft pvd = new PlayerVoteData_Monocraft(offplayer);
+			oldVote = pvd.get();
+
+			pvd.add();
+
+			newVote = pvd.get();
+		} catch (ClassNotFoundException | SQLException | NullPointerException e) {
+			missedNotifyMonocraftNet(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
+			e.printStackTrace();
+			return;
+		}
+
+		Bukkit.broadcastMessage(
+				"[MyMaid] " + ChatColor.GREEN + "プレイヤー「" + name + "」がmonocraft.netで投票をしました！(現在の投票数:" + newVote + "回)");
+		Bukkit.broadcastMessage("[MyMaid] " + ChatColor.GREEN + "投票をよろしくお願いします！ https://jaoafa.com/monovote");
+		Main.ServerChatChannel
+				.sendMessage("プレイヤー「" + DiscordEscape(name) + "」がmonocraft.netで投票をしました！(現在の投票数:" + newVote + "回)")
+				.queue();
+		Main.ServerChatChannel.sendMessage("投票をよろしくお願いします！ https://jaoafa.com/monovote").queue();
+
+		successNotifyMonocraftNet(name, oldVote, newVote);
 	}
 
 	UUID getUUID(MySQLDBManager MySQLDBManager, String name) {
@@ -114,11 +170,32 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
 	void missedNotify(String name, String reason) {
 		Main.getJDA().getTextChannelById(499922840871632896L)
-				.sendMessage(":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました: `" + reason + "`").queue();
+				.sendMessage(":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました: `" + reason + "`")
+				.queue();
 	}
 
-	void successNotify(String name, int oldVote, int newVote) {
+	void missedNotifyMinecraftJP(String name, String reason) {
 		Main.getJDA().getTextChannelById(499922840871632896L)
-				.sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました: " + oldVote + "回 -> " + newVote + "回").queue();
+				.sendMessage(":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました(minecraft.jp): `" + reason + "`")
+				.queue();
+	}
+
+	void missedNotifyMonocraftNet(String name, String reason) {
+		Main.getJDA().getTextChannelById(499922840871632896L)
+				.sendMessage(
+						":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました(monocraft.net): `" + reason + "`")
+				.queue();
+	}
+
+	void successNotifyMinecraftJP(String name, int oldVote, int newVote) {
+		Main.getJDA().getTextChannelById(499922840871632896L)
+				.sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました(minecraft.jp): " + oldVote + "回 -> " + newVote + "回")
+				.queue();
+	}
+
+	void successNotifyMonocraftNet(String name, int oldVote, int newVote) {
+		Main.getJDA().getTextChannelById(499922840871632896L)
+				.sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました(monocraft.net): " + oldVote + "回 -> " + newVote + "回")
+				.queue();
 	}
 }
