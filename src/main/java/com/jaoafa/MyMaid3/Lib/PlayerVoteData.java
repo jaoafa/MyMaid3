@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -362,6 +363,54 @@ public class PlayerVoteData extends MyMaidLibrary {
 			Connection conn = MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("UPDATE vote SET player = ? WHERE uuid = ?");
 			statement.setString(1, offplayer.getName());
+			statement.setString(2, offplayer.getUniqueId().toString());// uuid
+			statement.executeUpdate();
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ChatColor getCustomColor() {
+		if (offplayer == null)
+			throw new NullPointerException("We could not get the player.");
+		try {
+			if (!exists())
+				return null;
+
+			MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+			if (MySQLDBManager == null) {
+				return null;
+			}
+			Connection conn = MySQLDBManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote WHERE uuid = ?");
+			statement.setString(1, offplayer.getUniqueId().toString());// uuid
+			ResultSet res = statement.executeQuery();
+			if (res.next()) {
+				String color_str = res.getString("color");
+				return ChatColor.valueOf(color_str);
+			} else {
+				return null;
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public void setCustomColor(ChatColor color) {
+		if (offplayer == null)
+			throw new NullPointerException("We could not get the player.");
+		try {
+			if (!exists())
+				return;
+
+			MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+			if (MySQLDBManager == null) {
+				return;
+			}
+			Connection conn = MySQLDBManager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("UPDATE vote SET color = ? WHERE uuid = ?");
+			statement.setString(1, color.name());
 			statement.setString(2, offplayer.getUniqueId().toString());// uuid
 			statement.executeUpdate();
 		} catch (SQLException | ClassNotFoundException e) {
