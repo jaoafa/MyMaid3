@@ -41,10 +41,12 @@ public class Cmd_Tmt extends MyMaidLibrary implements CommandExecutor, CommandPr
 		inv.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
 
 		dropOrAddItem(loc, inv, inv.getLeggings());
-		inv.setChestplate(new ItemStack(Material.LEATHER_LEGGINGS));
+		inv.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
 
 		dropOrAddItem(loc, inv, inv.getBoots());
-		inv.setChestplate(new ItemStack(Material.LEATHER_BOOTS));
+		inv.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+
+		player.updateInventory();
 
 		SendMessage(sender, cmd, "はいどうぞ。");
 		return true;
