@@ -1,6 +1,7 @@
 package com.jaoafa.MyMaid3.Event;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -64,6 +65,17 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
 			Main.getJDA()
 					.getTextChannelById(618569153422426113L)
 					.sendMessage("__**[CPDefectSearcher|onPlace]**__ throwed `Exception`!\n"
+							+ "Class: `" + e.getClass().getName() + "`\n"
+							+ "Message: `" + e.getMessage() + "`\n"
+							+ "Location: `" + loc.toString() + "`\n"
+							+ "Block: `" + block.getType().name() + "`\n"
+							+ "Player: `" + player.getName() + "`")
+					.queue();
+		} catch (Throwable e) {
+			Main.getJDA()
+					.getTextChannelById(618569153422426113L)
+					.sendMessage("__**[CPDefectSearcher|onPlace]**__ throwed `Throwable`!\n"
+							+ "Class: `" + e.getClass().getName() + "`\n"
 							+ "Message: `" + e.getMessage() + "`\n"
 							+ "Location: `" + loc.toString() + "`\n"
 							+ "Block: `" + block.getType().name() + "`\n"
@@ -106,58 +118,50 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
 		}
 	}
 
-	public static byte[] convertByteData(Object data) throws NotSerializableException {
+	public static byte[] convertByteData(Object data) throws NotSerializableException, IOException {
 		byte[] result = null;
-		try {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
-			oos.writeObject(data);
-			oos.flush();
-			oos.close();
-			bos.close();
-			result = bos.toByteArray();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+		oos.writeObject(data);
+		oos.flush();
+		oos.close();
+		bos.close();
+		result = bos.toByteArray();
 		return result;
 	}
 
 	public static List<Object> processMeta(BlockState block) {
 		List<Object> meta = new ArrayList<Object>();
-		try {
-			if (block instanceof CommandBlock) {
-				CommandBlock command_block = (CommandBlock) block;
-				String command = command_block.getCommand();
-				if (command.length() > 0) {
-					meta.add(command);
-				}
-			} else if (block instanceof Banner) {
-				Banner banner = (Banner) block;
-				meta.add(banner.getBaseColor());
-				List<Pattern> patterns = banner.getPatterns();
-				for (Pattern pattern : patterns) {
-					meta.add(pattern.serialize());
-				}
-			} else if (block instanceof ShulkerBox) {
-				ShulkerBox shulkerBox = (ShulkerBox) block;
-				ItemStack[] inventory = shulkerBox.getInventory().getStorageContents();
-				int slot = 0;
-				for (ItemStack itemStack : inventory) {
-					if (itemStack != null && !itemStack.getType().equals(Material.AIR)) {
-						Map<Integer, Object> itemMap = new HashMap<Integer, Object>();
-						ItemStack item = itemStack.clone();
-						List<List<Map<String, Object>>> metadata = getItemMeta(item, item.getType(), slot);
-						item.setItemMeta(null);
-						itemMap.put(Integer.valueOf(0), item.serialize());
-						itemMap.put(Integer.valueOf(1), metadata);
-						meta.add(itemMap);
-					}
-					slot++;
-				}
-
+		if (block instanceof CommandBlock) {
+			CommandBlock command_block = (CommandBlock) block;
+			String command = command_block.getCommand();
+			if (command.length() > 0) {
+				meta.add(command);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else if (block instanceof Banner) {
+			Banner banner = (Banner) block;
+			meta.add(banner.getBaseColor());
+			List<Pattern> patterns = banner.getPatterns();
+			for (Pattern pattern : patterns) {
+				meta.add(pattern.serialize());
+			}
+		} else if (block instanceof ShulkerBox) {
+			ShulkerBox shulkerBox = (ShulkerBox) block;
+			ItemStack[] inventory = shulkerBox.getInventory().getStorageContents();
+			int slot = 0;
+			for (ItemStack itemStack : inventory) {
+				if (itemStack != null && !itemStack.getType().equals(Material.AIR)) {
+					Map<Integer, Object> itemMap = new HashMap<Integer, Object>();
+					ItemStack item = itemStack.clone();
+					List<List<Map<String, Object>>> metadata = getItemMeta(item, item.getType(), slot);
+					item.setItemMeta(null);
+					itemMap.put(Integer.valueOf(0), item.serialize());
+					itemMap.put(Integer.valueOf(1), metadata);
+					meta.add(itemMap);
+				}
+				slot++;
+			}
+
 		}
 		if (meta.size() == 0) {
 			meta = null;
