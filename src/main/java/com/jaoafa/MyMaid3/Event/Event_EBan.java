@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -30,6 +31,25 @@ import com.jaoafa.MyMaid3.Lib.EBan;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
 public class Event_EBan implements Listener {
+	@EventHandler
+	public void onEvent_ChatLiquidBounce(AsyncPlayerChatEvent event) {
+		Player player = event.getPlayer();
+		EBan eban = new EBan(player);
+		eban.DBSync();
+
+		if (!eban.isBanned()) {
+			return;
+		}
+		if (!event.getMessage().contains("LiquidBounce Client | liquidbounce.net")) {
+			return;
+		}
+
+		eban.addBan("jaotan", "禁止クライアント「LiquidBounce」使用の疑い。");
+		event.setCancelled(true);
+
+		// 必要に応じて自動ChatJail。
+	}
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void OnEvent_LoginEBanCheck(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
