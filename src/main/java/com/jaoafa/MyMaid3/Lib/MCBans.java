@@ -140,7 +140,7 @@ public class MCBans {
 			type = data.getString("type");
 			lostrep = data.getDouble("lostrep");
 			date = data.getString("date");
-			ban_updated_at = data.getString("update_at");
+			ban_updated_at = data.getString("updated_at");
 		}
 
 		public int getBanID() {
