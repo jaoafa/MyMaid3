@@ -29,7 +29,6 @@ import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 import com.jaoafa.MyMaid3.Lib.TPSChecker;
-import com.jaoafa.MyMaid3.Task.Task_AFK;
 import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
 import com.jaoafa.MyMaid3.Task.Task_NewStep;
 import com.jaoafa.MyMaid3.Task.Task_TPSTimings;
@@ -254,7 +253,7 @@ public class Main extends JavaPlugin {
 	}
 
 	private void scheduleTask() {
-		new Task_AFK().runTaskTimerAsynchronously(this, 0L, 1200L);
+		//new Task_AFK().runTaskTimerAsynchronously(this, 0L, 1200L);
 		new Task_AutoRemoveTeam().runTaskTimer(this, 0L, 1200L);
 		new Task_TPSTimings(this).runTaskLater(this, 1200L);
 		new Task_NewStep().runTaskTimerAsynchronously(this, 0L, 1200L);

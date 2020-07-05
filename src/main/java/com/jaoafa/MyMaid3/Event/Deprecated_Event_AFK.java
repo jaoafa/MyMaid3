@@ -17,7 +17,7 @@ import com.jaoafa.jaoSuperAchievement2.API.AchievementAPI;
 import com.jaoafa.jaoSuperAchievement2.API.Achievementjao;
 import com.jaoafa.jaoSuperAchievement2.Lib.AchievementType;
 
-public class Event_AFK extends MyMaidLibrary implements Listener {
+public class Deprecated_Event_AFK extends MyMaidLibrary implements Listener {
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
