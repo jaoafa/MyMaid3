@@ -16,7 +16,7 @@ import com.jaoafa.MyMaid3.Lib.AFKPlayer;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
-public class Cmd_AFK extends MyMaidLibrary implements CommandExecutor, CommandPremise {
+public class Deprecated_Cmd_AFK extends MyMaidLibrary implements CommandExecutor, CommandPremise {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {

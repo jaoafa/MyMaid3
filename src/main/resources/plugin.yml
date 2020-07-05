@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.06.18_16.48
+version: 2020.07.05_21.55
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -15,15 +15,13 @@ softdepend:
   - ViaVersion
   - LunaChat
 commands:
-  afk:
+  brb:
     description: >
-      AFK(Away From
-      Keyboard)モードをオン・オフにします。
+      バリアブロックをプレイヤーのメインハンドのアイテムと置き換えます。
     usage: |
-      /afk: AFK(Away From Keyboard)モードをオン・オフにします。(トグル)
-      /afk <Message>: AFK(Away From Keyboard)モードをメッセージ付きでオンにします。
-      /afk <Player>: 指定したPlayerのAFK情報を表示します。
-    permission: mymaid.afk
+      /brb: バリアブロックをコマンド実行者のメインハンドのアイテムと置き換えます。
+      /brb <Player>: バリアブロックを指定したプレイヤーのメインハンドのアイテムと置き換えます。
+    permission: mymaid.brb
   bug:
     description: 'バグ報告を行います。メッセージは公式Discordサーバの#develop_todoに送られます。'
     usage: '/bug <Message>'
@@ -33,6 +31,13 @@ commands:
       偽のプレイヤーをしゃべらせます。
     usage: '/chat <FakePlayer> <Message>'
     permission: mymaid.chat
+  cmdb:
+    description: >
+      コマンドブロックをプレイヤーのメインハンドのアイテムと置き換えます。
+    usage: |
+      /cmdb: コマンドブロックをコマンド実行者のメインハンドのアイテムと置き換えます。
+      /cmdb <Player>: コマンドブロックを指定したプレイヤーのメインハンドのアイテムと置き換えます。
+    permission: mymaid.cmdb
   coold:
     description: >
       旧CoreProtectの情報を取得します。
@@ -128,6 +133,10 @@ commands:
       testmentのエイリアスコマンドです。
     usage: '/testment <Testment>'
     permission: mymaid.testment
+  tmt:
+    description: あなたはmine_book000です。
+    usage: /tmt
+    permission: mymaid.tmt
   tpalias:
     description: >
       TeleportAliasの設定をします。Admin・Moderatorのみ利用できます。

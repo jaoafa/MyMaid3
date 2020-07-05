@@ -42,6 +42,9 @@ if (file_exists(CommandLocation) && is_dir(CommandLocation)) {
     if ($dh = opendir(CommandLocation)) {
         while (($file = readdir($dh)) !== false) {
             if ($file != "." && $file != ".." && is_file(CommandLocation . $file)) {
+                if (mb_substr($file, 0, 4) != "Cmd_") {
+                    continue;
+                }
                 $java = file_get_contents(CommandLocation . $file);
                 if (preg_match("/public class Cmd_(.+?) /", $java, $m) == 0 || !isset($m[1])) {
                     echo "[" . $file . "] commandName get error\n";
