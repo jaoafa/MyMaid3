@@ -154,7 +154,7 @@ public class Event_SandBoxRegularOnly extends MyMaidLibrary implements Listener 
 	}
 
 	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
+	public void onInteractRight(PlayerInteractEvent event) {
 		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			return;
 		}
@@ -177,6 +177,33 @@ public class Event_SandBoxRegularOnly extends MyMaidLibrary implements Listener 
 			return; // RMA除外
 		}
 		player.sendMessage("[SandBox] " + ChatColor.RED + "あなたの権限ではSandBoxに干渉することはできません。");
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onInteractLeft(PlayerInteractEvent event) {
+		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			return;
+		}
+		Player player = event.getPlayer();
+		World world = player.getWorld();
+
+		if ((player.getInventory().getItemInMainHand() == null
+				|| player.getInventory().getItemInMainHand().getType() != Material.FLINT_AND_STEEL)
+				&& (player.getInventory().getItemInOffHand() == null
+						|| player.getInventory().getItemInOffHand().getType() != Material.FLINT_AND_STEEL)) {
+			return;
+		}
+
+		if (!world.getName().equalsIgnoreCase("SandBox")) {
+			return; // SandBoxのみ
+		}
+		String group = PermissionsManager.getPermissionMainGroup(player);
+		if (group.equalsIgnoreCase("Regular") || group.equalsIgnoreCase("Moderator")
+				|| group.equalsIgnoreCase("Admin")) {
+			return; // RMA除外
+		}
+		player.sendMessage("[SandBox] " + ChatColor.RED + "あなたの権限ではSandBoxで着火することはできません。");
 		event.setCancelled(true);
 	}
 }
