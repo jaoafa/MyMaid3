@@ -189,9 +189,9 @@ public class Event_SandBoxRegularOnly extends MyMaidLibrary implements Listener 
 		World world = player.getWorld();
 
 		if ((player.getInventory().getItemInMainHand() == null
-				|| player.getInventory().getItemInMainHand().getType() != Material.FLINT_AND_STEEL)
+				|| player.getInventory().getItemInMainHand().getType() == Material.AIR)
 				&& (player.getInventory().getItemInOffHand() == null
-						|| player.getInventory().getItemInOffHand().getType() != Material.FLINT_AND_STEEL)) {
+						|| player.getInventory().getItemInOffHand().getType() == Material.AIR)) {
 			return;
 		}
 
@@ -203,7 +203,7 @@ public class Event_SandBoxRegularOnly extends MyMaidLibrary implements Listener 
 				|| group.equalsIgnoreCase("Admin")) {
 			return; // RMA除外
 		}
-		player.sendMessage("[SandBox] " + ChatColor.RED + "あなたの権限ではSandBoxで着火することはできません。");
+		player.sendMessage("[SandBox] " + ChatColor.RED + "あなたの権限ではSandBoxに干渉することはできません。");
 		event.setCancelled(true);
 	}
 }
