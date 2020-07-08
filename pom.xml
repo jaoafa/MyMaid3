@@ -271,12 +271,5 @@
 			<artifactId>base64coder</artifactId>
 			<version>2010-12-19</version>
 		</dependency>
-		<!-- MinecraftJPVoteMissFiller -->
-		<dependency>
-			<groupId>com.jaoafa</groupId>
-			<artifactId>MinecraftJPVoteMissFiller</artifactId>
-			<version>0.0.1</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 </project>

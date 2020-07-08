@@ -12,7 +12,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import com.jaoafa.MinecraftJPVoteMissFiller.CustomEvent.VoteMissFillerEvent;
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
@@ -36,14 +35,6 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 			VoteReceiveMonocraftNet(name);
 			return;
 		}
-	}
-
-	@EventHandler
-	public void onVoteMissFillerEvent(VoteMissFillerEvent event) {
-		String player = event.getStringPlayer();
-		Main.getJDA().getTextChannelById(499922840871632896L)
-				.sendMessage(":mailbox_with_mail: **投票自動補填通知**: " + player + "の投票が受信されていなかったため、自動補填を行います。").queue();
-		VoteReceive(player);
 	}
 
 	void VoteReceive(String name) {
