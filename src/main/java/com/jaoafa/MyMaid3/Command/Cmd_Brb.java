@@ -29,13 +29,13 @@ public class Cmd_Brb extends MyMaidLibrary implements CommandExecutor, CommandPr
 			}
 			Player player = (Player) sender;
 
-			ItemStack is = new ItemStack(Material.COMMAND);
+			ItemStack is = new ItemStack(Material.BARRIER);
 
 			PlayerInventory inv = player.getInventory();
 			ItemStack main = inv.getItemInMainHand();
 
 			inv.setItemInMainHand(is);
-			SendMessage(sender, cmd, "コマンドブロックをメインハンドのアイテムと置きかえました。");
+			SendMessage(sender, cmd, "バリアブロックをメインハンドのアイテムと置きかえました。");
 
 			if (main != null && main.getType() != Material.AIR) {
 				if (player.getInventory().firstEmpty() == -1) {
