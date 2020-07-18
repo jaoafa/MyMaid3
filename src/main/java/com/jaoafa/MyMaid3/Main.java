@@ -33,7 +33,6 @@ import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
 import com.jaoafa.MyMaid3.Task.Task_NewStep;
 import com.jaoafa.MyMaid3.Task.Task_TPSTimings;
 
-import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -99,10 +98,9 @@ public class Main extends JavaPlugin {
 		}
 
 		try {
-			JDABuilder jdabuilder = new JDABuilder(AccountType.BOT)
+			JDABuilder jdabuilder = JDABuilder.createDefault(config.getString("discordtoken"))
 					.setAutoReconnect(true)
 					.setBulkDeleteSplittingEnabled(false)
-					.setToken(config.getString("discordtoken"))
 					.setContextEnabled(false)
 					.setEventManager(new AnnotatedEventManager());
 

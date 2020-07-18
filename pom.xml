@@ -120,6 +120,14 @@
 			<id>MinecraftJPVoteMissFiller maven-repo</id>
 			<url>https://raw.github.com/jaoafa/MinecraftJPVoteMissFiller/master/mvn-repo</url>
 		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	    <repository>
+	        <id>sk89q-repo</id>
+	        <url>https://maven.enginehub.org/repo/</url>
+	    </repository>
 	</repositories>
 	<dependencies>
 		<!--Spigot-API -->
@@ -166,28 +174,24 @@
 		</dependency>
 		<!-- TitleAPI -->
 		<dependency>
-			<groupId>com.connorlinfoot</groupId>
+			<groupId>com.github.ConnorLinfoot</groupId>
 			<artifactId>TitleAPI</artifactId>
-			<version>1.7.5</version>
-			<classifier>shaded</classifier>
-			<systemPath>${basedir}/lib/TitleAPI.jar</systemPath>
-			<scope>system</scope>
+			<version>1.7.6</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- WorldGuard -->
 		<dependency>
 			<groupId>com.sk89q.worldguard</groupId>
-			<artifactId>worldguard</artifactId>
-			<version>6.2.1;84bc322</version>
-			<systemPath>${basedir}/lib/worldguard-6.2.1.jar</systemPath>
-			<scope>system</scope>
+			<artifactId>worldguard-legacy</artifactId>
+			<version>6.2</version>
+        	<scope>provided</scope>
 		</dependency>
 		<!-- WorldEdit -->
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
-			<artifactId>worldedit</artifactId>
-			<version>6.1.8-SNAPSHOT;cd4729f</version>
-			<systemPath>${basedir}/lib/worldedit-bukkit-6.1.7.3.jar</systemPath>
-			<scope>system</scope>
+			<artifactId>worldedit-bukkit</artifactId>
+			<version>6.1.4-SNAPSHOT</version>
+            <scope>provided</scope>
 		</dependency>
 		<!-- MCBans -->
 		<dependency>
@@ -207,7 +211,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>4.0.0_54</version>
+			<version>4.2.0_180</version>
 			<exclusions>
 				<exclusion>
 					<groupId>club.minnced</groupId>
@@ -223,7 +227,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20190722</version>
+			<version>20200518</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -244,7 +248,7 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>4.1.0</version>
+			<version>4.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>us.myles</groupId>

@@ -11,12 +11,12 @@ import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 
 public class Event_ServerLeave {
 	@SubscribeEvent
-	public void onMemberLeaveEvent(GuildMemberLeaveEvent event) {
+	public void onMemberLeaveEvent(GuildMemberRemoveEvent event) {
 		if (event.getGuild().getIdLong() != 597378876556967936L) {
 			return; // jMS Gamers Clubのみ
 		}
