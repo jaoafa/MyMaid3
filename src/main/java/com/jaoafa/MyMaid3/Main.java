@@ -38,6 +38,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class Main extends JavaPlugin {
 	private static Main Main = null;
@@ -99,6 +100,8 @@ public class Main extends JavaPlugin {
 
 		try {
 			JDABuilder jdabuilder = JDABuilder.createDefault(config.getString("discordtoken"))
+					.setEnabledIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES,
+							GatewayIntent.GUILD_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGE_TYPING)
 					.setAutoReconnect(true)
 					.setBulkDeleteSplittingEnabled(false)
 					.setContextEnabled(false)
