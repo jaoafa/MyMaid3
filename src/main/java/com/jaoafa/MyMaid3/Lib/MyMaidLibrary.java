@@ -106,6 +106,14 @@ public class MyMaidLibrary {
 		}
 	}
 
+	public static boolean isA(Player player) {
+		String group = PermissionsManager.getPermissionMainGroup(player);
+		if (!group.equalsIgnoreCase("Admin")) {
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean isAM(Player player) {
 		String group = PermissionsManager.getPermissionMainGroup(player);
 		if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")) {
