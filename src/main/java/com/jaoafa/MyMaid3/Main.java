@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -100,8 +101,7 @@ public class Main extends JavaPlugin {
 
 		try {
 			JDABuilder jdabuilder = JDABuilder.createDefault(config.getString("discordtoken"))
-					.setEnabledIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES,
-							GatewayIntent.GUILD_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGE_TYPING)
+					.setEnabledIntents(Arrays.asList(GatewayIntent.values()))
 					.setAutoReconnect(true)
 					.setBulkDeleteSplittingEnabled(false)
 					.setContextEnabled(false)
