@@ -8,6 +8,20 @@
 このプロジェクトは、[jao Minecraft Server](https://jaoafa.com)で導入されている Spigot/Bukkit プラグイン「MyMaid3」のソースコード公開場所です。[jaoafa/MyMaid](https://github.com/jaoafa/MyMaid)・[jaoafa/MyMaid2](https://github.com/jaoafa/MyMaid2)の後継です。  
 [jao Minecraft Server](https://jaoafa.com/)に関係するサーバのみで使用され、それ以外でのサーバでの使用は原則禁止しています。
 
+## MyMaidとはなんですか？
+
+MyMaidとは、jao Minecraft Serverにおける独自のプラグインで特にどれに特化したといった制約を持たせずに総合プラグイン的に製作しているものです。`わたしたちの「めいど」をここに。`をキャッチフレーズとし、メイドさんのようにMinecraftを楽しく出来るような補助的役割を基本として制作しています。
+
+## 開発者は誰ですか？
+
+表面上はjao Minecraft Server 開発部としていますが、実質的には[Tomachi](https://github.com/book000)が全ての開発を担っています。
+
+## 開発仕様
+
+- masterブランチにコミットされると、GitHub Actionsによりビルドされます。ビルドに失敗した場合Discordへ通知が飛びます。
+- masterブランチにコミットされると、自動的にサーバ側でビルドされビルドに成功すれば本番環境の`MinecraftServerDir/plugins/update/`にビルド成果物が配置されます。再起動時に自動的にアップデートされます。
+- バージョン表記は本番環境でのビルド処理によって、`yyyy.mm.dd_hh.mm_最終コミットsha8桁`に変更されます。
+
 ## ライセンス
 
 ライセンスは**独自のライセンスである[jaoLicense](https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md)を適用**します。
