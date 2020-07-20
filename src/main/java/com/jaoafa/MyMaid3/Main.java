@@ -260,7 +260,6 @@ public class Main extends JavaPlugin {
 	}
 
 	private void existClassCheck() {
-		existClass("com.jaoafa.MyMaid3.Lib.AFKPlayer");
 		existClass("com.jaoafa.MyMaid3.Lib.Jail");
 		existClass("com.jaoafa.MyMaid3.Lib.EBan");
 		existClass("com.jaoafa.MyMaid3.Lib.TeleportAlias");
