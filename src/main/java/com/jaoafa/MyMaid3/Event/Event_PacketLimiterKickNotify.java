@@ -2,6 +2,7 @@ package com.jaoafa.MyMaid3.Event;
 
 import java.awt.Color;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,6 +31,7 @@ public class Event_PacketLimiterKickNotify extends MyMaidLibrary implements List
 			String location = loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " "
 					+ loc.getBlockZ();
 			embed.addField("座標", location, false);
+			event.getPlayer().teleport(Bukkit.getWorld("Jao_Afa").getSpawnLocation());
 
 			Main.getJDA().getTextChannelById(597423444501463040L).sendMessage(embed.build()).queue();
 		}
