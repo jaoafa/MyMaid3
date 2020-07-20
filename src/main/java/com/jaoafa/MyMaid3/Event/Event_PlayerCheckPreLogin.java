@@ -54,9 +54,10 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
 		}
 
 		String permission = getPermissionGroup(uuid);
-
-		Main.getJavaPlugin().getLogger().info("Country: " + country.getName() + " (" + country.getIsoCode() + ")");
-		Main.getJavaPlugin().getLogger().info("City: " + city.getName() + " (" + city.getGeoNameId() + ")");
+		if (country != null && city != null) {
+			Main.getJavaPlugin().getLogger().info("Country: " + country.getName() + " (" + country.getIsoCode() + ")");
+			Main.getJavaPlugin().getLogger().info("City: " + city.getName() + " (" + city.getGeoNameId() + ")");
+		}
 		Main.getJavaPlugin().getLogger().info("Permission: " + permission);
 
 		// 「jaotan」というプレイヤー名は禁止
