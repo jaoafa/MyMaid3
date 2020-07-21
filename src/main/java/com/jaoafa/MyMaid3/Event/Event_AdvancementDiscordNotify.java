@@ -58,7 +58,7 @@ public class Event_AdvancementDiscordNotify extends MyMaidLibrary implements Lis
 				String iconUrl = "https://minotar.net/helm/{uuid}/{size}"
 						.replace("{uuid}", player.getUniqueId().toString().replace("-", ""))
 						.replace("{size}", "128");
-				builder.setAuthor(player.getName(), url, iconUrl);
+				builder.setAuthor(player.getName() + " has made the advancement " + obj.getString(key), url, iconUrl);
 				builder.setColor(Color.PINK);
 
 				Main.ServerChatChannel.sendMessage(builder.build()).queue();
