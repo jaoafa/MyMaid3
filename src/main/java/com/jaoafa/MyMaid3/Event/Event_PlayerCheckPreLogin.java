@@ -75,7 +75,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
 					ChatColor.WHITE + "海外からのログインと判定されました。\n"
 							+ ChatColor.RESET + ChatColor.AQUA + "当サーバでは、日本国外からのログインを禁止しています。",
 					"Region restricted",
-					country + " " + city);
+					countryName + " " + cityName);
 			return;
 		}
 
