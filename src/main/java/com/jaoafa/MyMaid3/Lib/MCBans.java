@@ -29,6 +29,7 @@ public class MCBans {
 		Request request = new Request.Builder().url(url).get().build();
 		Response response = client.newCall(request).execute();
 		if (response.code() != 200) {
+			response.close();
 			return;
 		}
 		JSONObject json = new JSONObject(response.body().string());
@@ -116,6 +117,7 @@ public class MCBans {
 			Request request = new Request.Builder().url(url).get().build();
 			Response response = client.newCall(request).execute();
 			if (response.code() != 200) {
+				response.close();
 				return;
 			}
 			JSONObject json = new JSONObject(response.body().string());
