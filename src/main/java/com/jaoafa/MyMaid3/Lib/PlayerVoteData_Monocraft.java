@@ -80,8 +80,13 @@ public class PlayerVoteData_Monocraft {
 		statement.setInt(1, getID());
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
-			return res.getInt("count");
+			int count = res.getInt("count");
+			res.close();
+			statement.close();
+			return count;
 		} else {
+			res.close();
+			statement.close();
 			throw new UnsupportedOperationException("Could not get VoteCount.");
 		}
 	}
@@ -119,15 +124,21 @@ public class PlayerVoteData_Monocraft {
 				if (checktype) {
 					if (lasttime > today9) {
 						// 投票済み？
+						res.close();
+						statement.close();
 						return false;
 					}
 				} else {
 					if (lasttime > yesterday9) {
 						// 投票済み？
+						res.close();
+						statement.close();
 						return false;
 					}
 				}
 			}
+			res.close();
+			statement.close();
 		} catch (UnsupportedOperationException | NullPointerException | NumberFormatException | SQLException e) {
 			e.printStackTrace();
 			return false; // エラー発生したらその日の初めての投票ではないとみなす。ただしエラー通知はする
@@ -222,6 +233,7 @@ public class PlayerVoteData_Monocraft {
 		statement.setTimestamp(4, Timestamp.from(Instant.now()));
 		statement.setTimestamp(5, Timestamp.from(Instant.now()));
 		int count = statement.executeUpdate();
+		statement.close();
 		if (count != 0) {
 			return true;
 		} else {
@@ -249,8 +261,12 @@ public class PlayerVoteData_Monocraft {
 		statement.setString(1, offplayer.getUniqueId().toString()); // uuid
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
+			res.close();
+			statement.close();
 			return true;
 		} else {
+			res.close();
+			statement.close();
 			return false;
 		}
 	}
@@ -278,6 +294,7 @@ public class PlayerVoteData_Monocraft {
 		statement.setTimestamp(2, Timestamp.from(Instant.now()));
 		statement.setInt(3, getID());
 		int upcount = statement.executeUpdate();
+		statement.close();
 		if (upcount != 0) {
 			return true;
 		} else {
@@ -305,8 +322,13 @@ public class PlayerVoteData_Monocraft {
 		statement.setString(1, offplayer.getUniqueId().toString()); // uuid
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
-			return res.getInt("id");
+			int id = res.getInt("id");
+			res.close();
+			statement.close();
+			return id;
 		} else {
+			res.close();
+			statement.close();
 			throw new UnsupportedOperationException("Could not get ID.");
 		}
 	}
@@ -329,6 +351,7 @@ public class PlayerVoteData_Monocraft {
 			statement.setString(1, offplayer.getName());
 			statement.setString(2, offplayer.getUniqueId().toString());// uuid
 			statement.executeUpdate();
+			statement.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}

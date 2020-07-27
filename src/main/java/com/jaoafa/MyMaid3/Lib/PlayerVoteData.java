@@ -84,8 +84,13 @@ public class PlayerVoteData extends MyMaidLibrary {
 		statement.setInt(1, getID());
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
-			return res.getInt("count");
+			int count = res.getInt("count");
+			res.close();
+			statement.close();
+			return count;
 		} else {
+			res.close();
+			statement.close();
 			throw new UnsupportedOperationException("Could not get VoteCount.");
 		}
 	}
@@ -126,15 +131,21 @@ public class PlayerVoteData extends MyMaidLibrary {
 				if (checktype) {
 					if (lasttime > today9) {
 						// 投票済み？
+						res.close();
+						statement.close();
 						return false;
 					}
 				} else {
 					if (lasttime > yesterday9) {
 						// 投票済み？
+						res.close();
+						statement.close();
 						return false;
 					}
 				}
 			}
+			res.close();
+			statement.close();
 		} catch (UnsupportedOperationException | NullPointerException | NumberFormatException | SQLException e) {
 			e.printStackTrace();
 			return false; // エラー発生したらその日の初めての投票ではないとみなす。ただしエラー通知はする
@@ -173,8 +184,12 @@ public class PlayerVoteData extends MyMaidLibrary {
 			} catch (NumberFormatException e) {
 				throw new NumberFormatException("最終投票日時が正常に取得できませんでした。");
 			}
+			res.close();
+			statement.close();
 			return unixtime;
 		} else {
+			res.close();
+			statement.close();
 			throw new UnsupportedOperationException("Could not get Vote LastTime.");
 		}
 	}
@@ -247,8 +262,10 @@ public class PlayerVoteData extends MyMaidLibrary {
 		statement.setString(6, date);
 		int count = statement.executeUpdate();
 		if (count != 0) {
+			statement.close();
 			return true;
 		} else {
+			statement.close();
 			return false;
 		}
 	}
@@ -275,8 +292,12 @@ public class PlayerVoteData extends MyMaidLibrary {
 		statement.setString(1, offplayer.getUniqueId().toString()); // uuid
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
+			res.close();
+			statement.close();
 			return true;
 		} else {
+			res.close();
+			statement.close();
 			return false;
 		}
 	}
@@ -310,8 +331,10 @@ public class PlayerVoteData extends MyMaidLibrary {
 		statement.setInt(4, getID());
 		int upcount = statement.executeUpdate();
 		if (upcount != 0) {
+			statement.close();
 			return true;
 		} else {
+			statement.close();
 			return false;
 		}
 	}
@@ -338,8 +361,13 @@ public class PlayerVoteData extends MyMaidLibrary {
 		statement.setString(1, offplayer.getUniqueId().toString()); // uuid
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
-			return res.getInt("id");
+			int id = res.getInt("id");
+			res.close();
+			statement.close();
+			return id;
 		} else {
+			res.close();
+			statement.close();
 			throw new UnsupportedOperationException("Could not get ID.");
 		}
 	}
@@ -365,6 +393,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			statement.setString(1, offplayer.getName());
 			statement.setString(2, offplayer.getUniqueId().toString());// uuid
 			statement.executeUpdate();
+			statement.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -387,8 +416,12 @@ public class PlayerVoteData extends MyMaidLibrary {
 			ResultSet res = statement.executeQuery();
 			if (res.next()) {
 				String color_str = res.getString("color");
+				res.close();
+				statement.close();
 				return ChatColor.valueOf(color_str);
 			} else {
+				res.close();
+				statement.close();
 				return null;
 			}
 		} catch (SQLException | ClassNotFoundException e) {
@@ -413,6 +446,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			statement.setString(1, color.name());
 			statement.setString(2, offplayer.getUniqueId().toString());// uuid
 			statement.executeUpdate();
+			statement.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
