@@ -21,6 +21,7 @@ public class MyMaidConfig {
 	private static Map<UUID, BukkitTask> coOLDEnabler = new HashMap<>();
 	private static Map<UUID, Location> coOLDLoc = new HashMap<>();
 	private static MySQLDBManager MySQLDBManager_COOLD = null;
+	private static boolean DedRaining = true;
 
 	public static JDA getJDA() {
 		return JDA;
@@ -112,6 +113,14 @@ public class MyMaidConfig {
 
 	public static void setMySQLDBManager_COOLD(MySQLDBManager mySQLDBManager_COOLD) {
 		MySQLDBManager_COOLD = mySQLDBManager_COOLD;
+	}
+
+	public static boolean isDedRaining() {
+		return DedRaining;
+	}
+
+	public static void setDedRaining(boolean dedRaining) {
+		DedRaining = dedRaining;
 	}
 
 }
