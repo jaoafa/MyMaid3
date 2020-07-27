@@ -8,8 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 import club.minnced.discord.webhook.WebhookClient;
@@ -29,7 +29,7 @@ public class Cmd_Feedback extends MyMaidLibrary implements CommandExecutor, Comm
 		}
 		String message = String.join(" ", args) + "\nby `" + sender.getName() + "`";
 
-		WebhookClientBuilder builder = new WebhookClientBuilder(Main.FeedbackWebhookUrl);
+		WebhookClientBuilder builder = new WebhookClientBuilder(MyMaidConfig.getFeedbackWebhookUrl());
 		builder.setThreadFactory((job) -> {
 			Thread thread = new Thread(job);
 			thread.setName("MyMaid3Feedback");

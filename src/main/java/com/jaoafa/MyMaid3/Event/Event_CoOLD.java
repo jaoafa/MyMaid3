@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Task.Task_CoOLD;
@@ -34,7 +35,7 @@ public class Event_CoOLD extends MyMaidLibrary implements Listener {
 		Location loc = block.getLocation();
 		Player player = event.getPlayer();
 
-		if (!Main.coOLDEnabler.containsKey(player.getUniqueId())) {
+		if (!MyMaidConfig.getCoOLDEnabler().containsKey(player.getUniqueId())) {
 			return;
 		}
 		event.setCancelled(true);
@@ -50,9 +51,9 @@ public class Event_CoOLD extends MyMaidLibrary implements Listener {
 			return;
 		}
 
-		if (Main.coOLDEnabler.get(player.getUniqueId()) != null
-				&& !Main.coOLDEnabler.get(player.getUniqueId()).isCancelled()) {
-			Main.coOLDEnabler.get(player.getUniqueId()).cancel();
+		if (MyMaidConfig.getCoOLDEnabler().get(player.getUniqueId()) != null
+				&& !MyMaidConfig.getCoOLDEnabler().get(player.getUniqueId()).isCancelled()) {
+			MyMaidConfig.getCoOLDEnabler().get(player.getUniqueId()).cancel();
 		}
 
 		File file = new File(Main.getJavaPlugin().getDataFolder(), "coold.yml");
@@ -63,13 +64,13 @@ public class Event_CoOLD extends MyMaidLibrary implements Listener {
 		}
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		try {
-			if (Main.MySQLDBManager_COOLD == null) {
-				Main.MySQLDBManager_COOLD = new MySQLDBManager(
+			if (MyMaidConfig.getMySQLDBManager_COOLD() == null) {
+				MyMaidConfig.setMySQLDBManager_COOLD(new MySQLDBManager(
 						config.getString("sqlserver"),
 						config.getString("sqlport"),
 						config.getString("sqldatabase"),
 						config.getString("sqluser"),
-						config.getString("sqlpassword"));
+						config.getString("sqlpassword")));
 			}
 		} catch (ClassNotFoundException e) {
 			player.sendMessage(
@@ -79,7 +80,7 @@ public class Event_CoOLD extends MyMaidLibrary implements Listener {
 
 		player.sendMessage("[CoreProtectOLD] " + ChatColor.LIGHT_PURPLE + "Please wait...");
 		BukkitTask task = new Task_CoOLD(player, loc, 1).runTaskAsynchronously(Main.getJavaPlugin());
-		Main.coOLDEnabler.put(player.getUniqueId(), task);
-		Main.coOLDLoc.put(player.getUniqueId(), loc);
+		MyMaidConfig.putCoOLDEnabler(player.getUniqueId(), task);
+		MyMaidConfig.putCoOLDLoc(player.getUniqueId(), loc);
 	}
 }

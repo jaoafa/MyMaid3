@@ -13,8 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.jaoafa.MyMaid3.Main;
-
 public class PlayerVoteData_Monocraft {
 	OfflinePlayer offplayer;
 
@@ -74,7 +72,7 @@ public class PlayerVoteData_Monocraft {
 			throw new NullPointerException("We could not get the player.");
 		if (!exists())
 			return 0;
-		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+		MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
 		Connection conn = sqlmanager.getConnection();
 		PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote_monocraft WHERE id = ?");
 		statement.setInt(1, getID());
@@ -98,7 +96,7 @@ public class PlayerVoteData_Monocraft {
 	public static boolean TodayFirstVote() {
 		// 仮
 		try {
-			MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+			MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
 			Connection conn = sqlmanager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote_monocraft");
 			ResultSet res = statement.executeQuery();
@@ -161,7 +159,7 @@ public class PlayerVoteData_Monocraft {
 			throw new NullPointerException("We could not get the player.");
 		if (!exists())
 			return -1L;
-		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+		MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
 		Connection conn = sqlmanager.getConnection();
 		PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote_monocraft WHERE id = ?");
 		statement.setInt(1, getID());
@@ -223,7 +221,7 @@ public class PlayerVoteData_Monocraft {
 			throw new NullPointerException("We could not get the player.");
 		if (exists())
 			return false;
-		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+		MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
 		Connection conn = sqlmanager.getConnection();
 		PreparedStatement statement = conn.prepareStatement(
 				"INSERT INTO vote_monocraft (player, uuid, count, first, last) VALUES (?, ?, ?, ?, ?);");
@@ -254,7 +252,7 @@ public class PlayerVoteData_Monocraft {
 			throws SQLException, ClassNotFoundException, NullPointerException, UnsupportedOperationException {
 		if (offplayer == null)
 			throw new NullPointerException("We could not get the player.");
-		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+		MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
 		Connection conn = sqlmanager.getConnection();
 		PreparedStatement statement = conn
 				.prepareStatement("SELECT * FROM vote_monocraft WHERE uuid = ? ORDER BY id DESC");
@@ -286,7 +284,7 @@ public class PlayerVoteData_Monocraft {
 			return true;
 		}
 		int next = get() + 1;
-		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+		MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
 		Connection conn = sqlmanager.getConnection();
 		PreparedStatement statement = conn
 				.prepareStatement("UPDATE vote_monocraft SET count = ?, last = ? WHERE id = ?");
@@ -315,7 +313,7 @@ public class PlayerVoteData_Monocraft {
 			throws SQLException, ClassNotFoundException, NullPointerException, UnsupportedOperationException {
 		if (offplayer == null)
 			throw new NullPointerException("We could not get the player.");
-		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+		MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
 		Connection conn = sqlmanager.getConnection();
 		PreparedStatement statement = conn
 				.prepareStatement("SELECT * FROM vote_monocraft WHERE uuid = ? ORDER BY id DESC");
@@ -345,7 +343,7 @@ public class PlayerVoteData_Monocraft {
 			if (!exists())
 				return;
 
-			MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+			MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
 			Connection conn = sqlmanager.getConnection();
 			PreparedStatement statement = conn.prepareStatement("UPDATE vote_monocraft SET player = ? WHERE uuid = ?");
 			statement.setString(1, offplayer.getName());

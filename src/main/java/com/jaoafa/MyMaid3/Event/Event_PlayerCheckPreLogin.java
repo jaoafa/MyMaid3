@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.ErrorReporter;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.maxmind.geoip2.DatabaseReader;
@@ -83,7 +84,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
 		final String finalCity = cityName;
 		new BukkitRunnable() {
 			public void run() {
-				MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+				MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 				if (MySQLDBManager == null) {
 					return;
 				}
@@ -146,7 +147,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
 				ChatColor.RED + "[Login Denied! - Reason: " + reason + "]\n"
 						+ ChatColor.RESET + message
 						+ ChatColor.RESET + ChatColor.WHITE + "もしこの判定が誤判定と思われる場合は、公式Discordへお問い合わせください。");
-		Main.jaotanChannel.sendMessage(
+		MyMaidConfig.getJaotanChannel().sendMessage(
 				"[MyMaid3-PreLoginCheck] " + event.getName() + " -> `" + reason + "`").queue();
 	}
 
@@ -155,7 +156,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
 				ChatColor.RED + "[Login Denied! - Reason: " + reason + "]\n"
 						+ ChatColor.RESET + message + "\n"
 						+ ChatColor.RESET + ChatColor.WHITE + "もしこの判定が誤判定と思われる場合は、公式Discordへお問い合わせください。");
-		Main.jaotanChannel.sendMessage(
+		MyMaidConfig.getJaotanChannel().sendMessage(
 				"[MyMaid3-PreLoginCheck] " + event.getName() + " -> `" + reason + " (" + data + ")`").queue();
 	}
 }

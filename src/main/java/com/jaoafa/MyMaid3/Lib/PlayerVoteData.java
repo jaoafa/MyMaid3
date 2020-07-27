@@ -14,8 +14,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.jaoafa.MyMaid3.Main;
-
 public class PlayerVoteData extends MyMaidLibrary {
 	OfflinePlayer offplayer;
 
@@ -75,7 +73,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			throw new NullPointerException("We could not get the player.");
 		if (!exists())
 			return 0;
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			return 0;
 		}
@@ -101,7 +99,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 	 */
 	public static boolean TodayFirstVote() {
 		try {
-			MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+			MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 			if (MySQLDBManager == null) {
 				return false;
 			}
@@ -168,7 +166,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			throw new NullPointerException("We could not get the player.");
 		if (!exists())
 			return -1L;
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			return -1L;
 		}
@@ -243,7 +241,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			throw new NullPointerException("We could not get the player.");
 		if (exists())
 			return false;
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			return false;
 		}
@@ -283,7 +281,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			throws SQLException, ClassNotFoundException, NullPointerException, UnsupportedOperationException {
 		if (offplayer == null)
 			throw new NullPointerException("We could not get the player.");
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			return false;
 		}
@@ -318,7 +316,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 		}
 		int next = get() + 1;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			return false;
 		}
@@ -352,7 +350,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			throws SQLException, ClassNotFoundException, NullPointerException, UnsupportedOperationException {
 		if (offplayer == null)
 			throw new NullPointerException("We could not get the player.");
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			throw new UnsupportedOperationException("Could not get ID.");
 		}
@@ -384,7 +382,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			if (!exists())
 				return;
 
-			MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+			MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 			if (MySQLDBManager == null) {
 				return;
 			}
@@ -406,7 +404,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			if (!exists())
 				return null;
 
-			MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+			MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 			if (MySQLDBManager == null) {
 				return null;
 			}
@@ -437,7 +435,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 			if (!exists())
 				return;
 
-			MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+			MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 			if (MySQLDBManager == null) {
 				return;
 			}

@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -61,7 +62,7 @@ public class Event_AdvancementDiscordNotify extends MyMaidLibrary implements Lis
 				builder.setAuthor(player.getName() + " has made the advancement " + obj.getString(key), url, iconUrl);
 				builder.setColor(Color.PINK);
 
-				Main.ServerChatChannel.sendMessage(builder.build()).queue();
+				MyMaidConfig.getServerChatChannel().sendMessage(builder.build()).queue();
 			}
 
 			String toString(InputStream is) throws IOException {

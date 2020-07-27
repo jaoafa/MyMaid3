@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.Historyjao;
 import com.jaoafa.MyMaid3.Lib.Historyjao.HistoryData;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -57,7 +58,7 @@ public class Event_AMHistoryNotify extends MyMaidLibrary implements Listener {
 					eb.addField("[" + hist.id + "] " + sdfFormat(hist.getCreatedAt()), hist.message, false);
 				}
 
-				Main.getJDA().getTextChannelById(597423444501463040L).sendMessage(eb.build());
+				MyMaidConfig.getJDA().getTextChannelById(597423444501463040L).sendMessage(eb.build());
 			}
 		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}

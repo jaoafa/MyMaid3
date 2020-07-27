@@ -7,12 +7,8 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
@@ -20,12 +16,12 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.jaoafa.MyMaid3.DiscordEvent.Event_Ready;
 import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerLeave;
 import com.jaoafa.MyMaid3.Lib.ClassFinder;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 import com.jaoafa.MyMaid3.Lib.TPSChecker;
@@ -33,25 +29,13 @@ import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
 import com.jaoafa.MyMaid3.Task.Task_NewStep;
 import com.jaoafa.MyMaid3.Task.Task_TPSTimings;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class Main extends JavaPlugin {
 	private static Main Main = null;
-	private static JDA JDA = null;
-	public static MySQLDBManager MySQLDBManager = null;
-	public static TextChannel ReportChannel = null;
-	public static TextChannel ServerChatChannel = null;
-	public static TextChannel jaotanChannel = null;
-	public static String BugReportWebhookUrl = null;
-	public static String FeedbackWebhookUrl = null;
-	public static Map<UUID, BukkitTask> coOLDEnabler = new HashMap<>();
-	public static Map<UUID, Location> coOLDLoc = new HashMap<>();
-	public static MySQLDBManager MySQLDBManager_COOLD = null;
 
 	/**
 	 * プラグインが起動したときに呼び出し
@@ -108,7 +92,7 @@ public class Main extends JavaPlugin {
 
 			jdabuilder = registDiscordEvent(jdabuilder);
 
-			JDA = jdabuilder.build().awaitReady();
+			MyMaidConfig.setJDA(jdabuilder.build().awaitReady());
 		} catch (Exception e) {
 			getLogger().warning("Discordへの接続に失敗しました。(" + e.getMessage() + ")");
 			getLogger().warning("MyMaid3プラグインを終了します。");
@@ -117,10 +101,10 @@ public class Main extends JavaPlugin {
 		}
 
 		if (config.contains("bugreportwebhookurl")) {
-			BugReportWebhookUrl = config.getString("bugreportwebhookurl");
+			MyMaidConfig.setBugReportWebhookUrl(config.getString("bugreportwebhookurl"));
 		}
 		if (config.contains("feedbackwebhookurl")) {
-			FeedbackWebhookUrl = config.getString("feedbackwebhookurl");
+			MyMaidConfig.setFeedbackWebhookUrl(config.getString("feedbackwebhookurl"));
 		}
 
 		if (!config.contains("sqlserver") || !config.contains("sqlport") || !config.contains("sqldatabase")
@@ -132,12 +116,12 @@ public class Main extends JavaPlugin {
 		}
 
 		try {
-			MySQLDBManager = new MySQLDBManager(
+			MyMaidConfig.setMySQLDBManager(new MySQLDBManager(
 					config.getString("sqlserver"),
 					config.getString("sqlport"),
 					config.getString("sqldatabase"),
 					config.getString("sqluser"),
-					config.getString("sqlpassword"));
+					config.getString("sqlpassword")));
 		} catch (ClassNotFoundException e) {
 			getLogger().warning("MySQLへの接続に失敗しました。(MySQL接続するためのクラスが見つかりません)");
 			getLogger().warning("MyMaid3プラグインを終了します。");
@@ -280,8 +264,8 @@ public class Main extends JavaPlugin {
 	}
 
 	public static void DiscordExceptionError(Class<?> clazz, MessageChannel channel, Throwable exception) {
-		if (channel == null && ReportChannel != null) {
-			channel = ReportChannel;
+		if (channel == null && MyMaidConfig.getReportChannel() != null) {
+			channel = MyMaidConfig.getReportChannel();
 		} else if (channel == null) {
 			System.out.println("DiscordExceptionError: channel == null and Main.ReportChannel == null.");
 			System.out.println("DiscordExceptionError did not work properly!");
@@ -313,17 +297,5 @@ public class Main extends JavaPlugin {
 
 	public static void setMain(Main main) {
 		Main = main;
-	}
-
-	public static void setJDA(JDA jda) {
-		JDA = jda;
-	}
-
-	public static JDA getJDA() {
-		return JDA;
-	}
-
-	public static MySQLDBManager getMySQLDBManager() {
-		return MySQLDBManager;
 	}
 }

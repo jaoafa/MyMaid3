@@ -8,9 +8,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.Historyjao;
 import com.jaoafa.MyMaid3.Lib.Historyjao.HistoryData;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 public class Event_History extends MyMaidLibrary implements Listener {
@@ -39,7 +39,7 @@ public class Event_History extends MyMaidLibrary implements Listener {
 			return;
 		}
 
-		Main.getJDA().getTextChannelById(597423444501463040L)
+		MyMaidConfig.getJDA().getTextChannelById(597423444501463040L)
 				.sendMessage("**-----: Historyjao DATA / `" + player.getName() + "` :-----**\n"
 						+ "```" + String.join("\n", data) + "```")
 				.queue();

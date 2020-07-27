@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 
-import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 
@@ -25,7 +25,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener {
 		String name = event.getName();
 		UUID uuid = event.getUniqueId();
 
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			return;
 		}

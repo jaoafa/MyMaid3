@@ -13,8 +13,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandPremise {
@@ -49,7 +49,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandP
 
 		Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdf.format(new Date()) + "]" + color + "■" + ChatColor.WHITE
 				+ args[0] + ": " + text);
-		Main.ServerChatChannel
+		MyMaidConfig.getServerChatChannel()
 				.sendMessage("**" + DiscordEscape(args[0]) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
 				.queue();
 		//DiscordSend("**" + args[0] + "**: " + text);

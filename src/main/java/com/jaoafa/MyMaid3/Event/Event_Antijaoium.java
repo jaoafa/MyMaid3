@@ -39,9 +39,9 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.EBan;
 import com.jaoafa.MyMaid3.Lib.Jail;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Task.Task_jaoiumAutoJailRelease;
@@ -777,12 +777,13 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
 			ItemDataUrl = ItemData.get(player.getName());
 			ItemData.remove(player.getName());
 		}
-		Main.getJDA().getTextChannelById(597423444501463040L).sendMessage("**jaoium Location & Reason Notice**\n"
-				+ "Player: " + player.getName() + "\n"
-				+ "Location: " + loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " "
-				+ loc.getBlockZ() + "\n"
-				+ "Reason: ``" + reason + "``\n"
-				+ "ItemData: " + ItemDataUrl);
+		MyMaidConfig.getJDA().getTextChannelById(597423444501463040L)
+				.sendMessage("**jaoium Location & Reason Notice**\n"
+						+ "Player: " + player.getName() + "\n"
+						+ "Location: " + loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " "
+						+ loc.getBlockZ() + "\n"
+						+ "Reason: ``" + reason + "``\n"
+						+ "ItemData: " + ItemDataUrl);
 	}
 
 	Map<String, String> ItemData = new HashMap<>();
@@ -813,7 +814,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
 		String code = yaml.saveToString();
 		String name = "MyMaid3 Antijaoium jaoium ItemData & Command";
 		try {
-			MySQLDBManager MySQLDBManager = Main.getMySQLDBManager();
+			MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 			Connection conn = MySQLDBManager.getConnection();
 			PreparedStatement statement = conn.prepareStatement(
 					"INSERT INTO cmd (player, uuid, title, command) VALUES (?, ?, ?, ?);",

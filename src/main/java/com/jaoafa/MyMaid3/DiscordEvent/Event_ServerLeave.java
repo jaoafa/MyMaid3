@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.ErrorReporter;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -25,7 +25,7 @@ public class Event_ServerLeave {
 		String player = null;
 		String uuid = null;
 		try {
-			Connection conn = Main.getMySQLDBManager().getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("SELECT * FROM discordlink WHERE disid = ? AND disabled = ?");
 			statement.setString(1, user.getId());
@@ -45,7 +45,7 @@ public class Event_ServerLeave {
 			PermissionsManager.setPermissionsGroup(uuid, "default");
 
 			try {
-				Connection conn = Main.getMySQLDBManager().getConnection();
+				Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 				PreparedStatement statement = conn
 						.prepareStatement("UPDATE discordlink SET disabled = ? WHERE disid = ?");
 				statement.setInt(1, 1);

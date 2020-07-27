@@ -18,7 +18,6 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.jaoSuperAchievement2.API.AchievementAPI;
 import com.jaoafa.jaoSuperAchievement2.API.Achievementjao;
 import com.jaoafa.jaoSuperAchievement2.Lib.AchievementType;
@@ -81,7 +80,7 @@ public class Jail extends MyMaidLibrary {
 	 */
 	public boolean addBan(String banned_by, String reason) {
 		DBSync();
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 
@@ -90,7 +89,7 @@ public class Jail extends MyMaidLibrary {
 		}
 
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn.prepareStatement(
 					"INSERT INTO jail (player, uuid, banned_by, reason) VALUES (?, ?, ?, ?);");
 			statement.setString(1, player.getName());
@@ -112,7 +111,7 @@ public class Jail extends MyMaidLibrary {
 				"__**Jail[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
 						+ "」によって「" + DiscordEscape(reason) + "」という理由でJailされました。")
 				.queue();
-		Main.ServerChatChannel.sendMessage(
+		MyMaidConfig.getServerChatChannel().sendMessage(
 				"__**Jail[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
 						+ "」によって「" + DiscordEscape(reason) + "」という理由でJailされました。")
 				.queue();
@@ -139,11 +138,11 @@ public class Jail extends MyMaidLibrary {
 	 */
 	public boolean removeBan(String removePlayerName) {
 		DBSync();
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("UPDATE jail SET status = ? WHERE uuid = ?");
 			statement.setBoolean(1, false);
@@ -162,7 +161,7 @@ public class Jail extends MyMaidLibrary {
 				"__**Jail[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のJailを「"
 						+ DiscordEscape(removePlayerName) + "」によって解除されました。")
 				.queue();
-		Main.ServerChatChannel.sendMessage(
+		MyMaidConfig.getServerChatChannel().sendMessage(
 				"__**Jail[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のJailを「"
 						+ DiscordEscape(removePlayerName) + "」によって解除されました。")
 				.queue();
@@ -180,14 +179,14 @@ public class Jail extends MyMaidLibrary {
 
 	public boolean setTestment(String testment) {
 		DBSync();
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		if (!isBanned()) {
 			return false;
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("UPDATE jail SET testment = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1;");
 			statement.setString(1, testment);
@@ -207,7 +206,7 @@ public class Jail extends MyMaidLibrary {
 				"__**Jail[遺言]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(testment)
 						+ "」という遺言を残しました。")
 				.queue();
-		Main.ServerChatChannel
+		MyMaidConfig.getServerChatChannel()
 				.sendMessage("__**Jail[遺言]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「"
 						+ DiscordEscape(testment) + "」という遺言を残しました。")
 				.queue();
@@ -281,11 +280,11 @@ public class Jail extends MyMaidLibrary {
 		if (!force && ((DBSyncTime + 30 * 60 * 1000) > System.currentTimeMillis())) {
 			return; // 30分未経過
 		}
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("SELECT * FROM jail WHERE uuid = ? ORDER BY id DESC LIMIT 1");
 			statement.setString(1, player.getUniqueId().toString());
@@ -331,11 +330,11 @@ public class Jail extends MyMaidLibrary {
 	 */
 	public static Set<Jail> getList() {
 		Set<Jail> JailList = new HashSet<>();
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM jail WHERE status = ?");
 			statement.setBoolean(1, true);
 			ResultSet res = statement.executeQuery();
@@ -379,12 +378,12 @@ public class Jail extends MyMaidLibrary {
 			if (group.equalsIgnoreCase("Regular") || group.equalsIgnoreCase("Moderator")
 					|| group.equalsIgnoreCase("Admin")) {
 
-				return Main.getJDA().getTextChannelById(690854369783971881L); // #rma_jail
+				return MyMaidConfig.getJDA().getTextChannelById(690854369783971881L); // #rma_jail
 			} else {
-				return Main.getJDA().getTextChannelById(709399145575874690L); // #jail
+				return MyMaidConfig.getJDA().getTextChannelById(709399145575874690L); // #jail
 			}
 		} catch (IllegalArgumentException e) {
-			return Main.getJDA().getTextChannelById(709399145575874690L); // #jaotan
+			return MyMaidConfig.getJDA().getTextChannelById(709399145575874690L); // #jaotan
 		}
 	}
 }

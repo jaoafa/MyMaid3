@@ -12,7 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 import com.jaoafa.MyMaid3.Lib.PlayerVoteData;
@@ -38,7 +38,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 	}
 
 	void VoteReceive(String name) {
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			missedNotifyMinecraftJP(name, "MySQLDBManager == null");
 			return;
@@ -81,16 +81,16 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 		Bukkit.broadcastMessage(
 				"[MyMaid] " + ChatColor.GREEN + "プレイヤー「" + name + "」がminecraft.jpで投票をしました！(現在の投票数:" + newVote + "回)");
 		Bukkit.broadcastMessage("[MyMaid] " + ChatColor.GREEN + "投票をよろしくお願いします！ https://jaoafa.com/vote");
-		Main.ServerChatChannel
+		MyMaidConfig.getServerChatChannel()
 				.sendMessage("プレイヤー「" + DiscordEscape(name) + "」がminecraft.jpで投票をしました！(現在の投票数:" + newVote + "回)")
 				.queue();
-		Main.ServerChatChannel.sendMessage("投票をよろしくお願いします！ https://jaoafa.com/vote").queue();
+		MyMaidConfig.getServerChatChannel().sendMessage("投票をよろしくお願いします！ https://jaoafa.com/vote").queue();
 
 		successNotifyMinecraftJP(name, oldVote, newVote);
 	}
 
 	void VoteReceiveMonocraftNet(String name) {
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			missedNotifyMonocraftNet(name, "MySQLDBManager == null");
 			return;
@@ -131,10 +131,10 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 		Bukkit.broadcastMessage(
 				"[MyMaid] " + ChatColor.GREEN + "プレイヤー「" + name + "」がmonocraft.netで投票をしました！(現在の投票数:" + newVote + "回)");
 		Bukkit.broadcastMessage("[MyMaid] " + ChatColor.GREEN + "投票をよろしくお願いします！ https://jaoafa.com/monovote");
-		Main.ServerChatChannel
+		MyMaidConfig.getServerChatChannel()
 				.sendMessage("プレイヤー「" + DiscordEscape(name) + "」がmonocraft.netで投票をしました！(現在の投票数:" + newVote + "回)")
 				.queue();
-		Main.ServerChatChannel.sendMessage("投票をよろしくお願いします！ https://jaoafa.com/monovote").queue();
+		MyMaidConfig.getServerChatChannel().sendMessage("投票をよろしくお願いします！ https://jaoafa.com/monovote").queue();
 
 		successNotifyMonocraftNet(name, oldVote, newVote);
 	}
@@ -160,32 +160,32 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 	}
 
 	void missedNotify(String name, String reason) {
-		Main.getJDA().getTextChannelById(499922840871632896L)
+		MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
 				.sendMessage(":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました: `" + reason + "`")
 				.queue();
 	}
 
 	void missedNotifyMinecraftJP(String name, String reason) {
-		Main.getJDA().getTextChannelById(499922840871632896L)
+		MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
 				.sendMessage(":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました(minecraft.jp): `" + reason + "`")
 				.queue();
 	}
 
 	void missedNotifyMonocraftNet(String name, String reason) {
-		Main.getJDA().getTextChannelById(499922840871632896L)
+		MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
 				.sendMessage(
 						":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました(monocraft.net): `" + reason + "`")
 				.queue();
 	}
 
 	void successNotifyMinecraftJP(String name, int oldVote, int newVote) {
-		Main.getJDA().getTextChannelById(499922840871632896L)
+		MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
 				.sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました(minecraft.jp): " + oldVote + "回 -> " + newVote + "回")
 				.queue();
 	}
 
 	void successNotifyMonocraftNet(String name, int oldVote, int newVote) {
-		Main.getJDA().getTextChannelById(499922840871632896L)
+		MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
 				.sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました(monocraft.net): " + oldVote + "回 -> " + newVote + "回")
 				.queue();
 	}

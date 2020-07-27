@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Task.Task_CoOLD;
 
@@ -35,7 +36,7 @@ public class Cmd_Coold extends MyMaidLibrary implements CommandExecutor, Command
 
 		if (args.length >= 2 && args[0].equalsIgnoreCase("l")) {
 			// /coold l <PAGE>
-			if (!Main.coOLDLoc.containsKey(player.getUniqueId())) {
+			if (!MyMaidConfig.getCoOLDLoc().containsKey(player.getUniqueId())) {
 				SendMessage(sender, cmd, "先に/coold iをしてブロック情報を取得してからページ処理してください。");
 				return true;
 			}
@@ -45,23 +46,23 @@ public class Cmd_Coold extends MyMaidLibrary implements CommandExecutor, Command
 			}
 
 			player.sendMessage("[CoreProtectOLD] " + ChatColor.LIGHT_PURPLE + "Please wait...");
-			Location loc = Main.coOLDLoc.get(player.getUniqueId());
+			Location loc = MyMaidConfig.getCoOLDLoc().get(player.getUniqueId());
 			BukkitTask task = new Task_CoOLD(player, loc, Integer.valueOf(args[1]))
 					.runTaskAsynchronously(Main.getJavaPlugin());
-			Main.coOLDEnabler.put(player.getUniqueId(), task);
+			MyMaidConfig.putCoOLDEnabler(player.getUniqueId(), task);
 			return true;
 		}
 
-		if (!Main.coOLDEnabler.containsKey(player.getUniqueId())) {
-			Main.coOLDEnabler.put(player.getUniqueId(), null);
+		if (!MyMaidConfig.getCoOLDEnabler().containsKey(player.getUniqueId())) {
+			MyMaidConfig.putCoOLDEnabler(player.getUniqueId(), null);
 
 			SendMessage(sender, cmd, "CP OLD - Inspector now enabled.");
 		} else {
-			if (Main.coOLDEnabler.get(player.getUniqueId()) != null
-					&& !Main.coOLDEnabler.get(player.getUniqueId()).isCancelled()) {
-				Main.coOLDEnabler.get(player.getUniqueId()).cancel();
+			if (MyMaidConfig.getCoOLDEnabler().get(player.getUniqueId()) != null
+					&& !MyMaidConfig.getCoOLDEnabler().get(player.getUniqueId()).isCancelled()) {
+				MyMaidConfig.getCoOLDEnabler().get(player.getUniqueId()).cancel();
 			}
-			Main.coOLDEnabler.remove(player.getUniqueId());
+			MyMaidConfig.removeCoOLDEnabler(player.getUniqueId());
 
 			SendMessage(sender, cmd, "CP OLD - Inspector now disabled.");
 		}

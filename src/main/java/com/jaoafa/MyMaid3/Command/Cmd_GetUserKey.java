@@ -14,8 +14,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 
@@ -32,7 +32,7 @@ public class Cmd_GetUserKey extends MyMaidLibrary implements CommandExecutor, Co
 		}
 		Player player = (Player) sender;
 		UUID uuid = player.getUniqueId();
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			SendMessage(player, cmd, "データベースサーバに接続できません。時間をおいて再度お試しください。");
 			return true;

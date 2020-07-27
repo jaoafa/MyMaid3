@@ -10,8 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.ErrorReporter;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 
@@ -26,7 +26,7 @@ public class Event_SignLogger extends MyMaidLibrary implements Listener {
 		String line4 = event.getLine(3);
 		String text = String.join("", event.getLines());
 
-		MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 		if (MySQLDBManager == null) {
 			return;
 		}

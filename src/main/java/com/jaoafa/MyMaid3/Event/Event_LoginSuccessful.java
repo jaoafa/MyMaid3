@@ -14,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.ErrorReporter;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 
@@ -25,7 +26,7 @@ public class Event_LoginSuccessful extends MyMaidLibrary implements Listener {
 
 		new BukkitRunnable() {
 			public void run() {
-				MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+				MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 				if (MySQLDBManager == null) {
 					return;
 				}

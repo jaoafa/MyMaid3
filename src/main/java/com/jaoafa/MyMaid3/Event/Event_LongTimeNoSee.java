@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
 
@@ -28,7 +29,7 @@ public class Event_LongTimeNoSee extends MyMaidLibrary implements Listener {
 		new BukkitRunnable() {
 			public void run() {
 				try {
-					MySQLDBManager MySQLDBManager = Main.MySQLDBManager;
+					MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
 					if (MySQLDBManager == null) {
 						return;
 					}
@@ -84,7 +85,7 @@ public class Event_LongTimeNoSee extends MyMaidLibrary implements Listener {
 											+ ChatColor.WHITE + "jaotan" + ": " + player.getName() + "さん、お久しぶりです！"
 											+ builder.toString()
 											+ "ぶりですね！");
-							Main.ServerChatChannel.sendMessage(
+							MyMaidConfig.getServerChatChannel().sendMessage(
 									"**jaotan**: " + player.getName() + "さん、お久しぶりです！" + builder.toString() + "ぶりですね！")
 									.queue();
 						}

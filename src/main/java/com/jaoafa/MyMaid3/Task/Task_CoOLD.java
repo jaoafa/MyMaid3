@@ -13,7 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 
 public class Task_CoOLD extends BukkitRunnable {
 	Player player;
@@ -28,7 +28,7 @@ public class Task_CoOLD extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		if (Main.MySQLDBManager_COOLD == null) {
+		if (MyMaidConfig.getMySQLDBManager_COOLD() == null) {
 			player.sendMessage(
 					"[CoreProtectOLD] " + ChatColor.LIGHT_PURPLE + "MySQLへの接続に失敗しました。(MySQLDBManager_COOLD null)");
 			return;
@@ -44,7 +44,7 @@ public class Task_CoOLD extends BukkitRunnable {
 				+ ChatColor.GRAY + "(x" + loc.getBlockX() + "/y" + loc.getBlockY() + "/z" + loc.getBlockZ() + ")");
 
 		try {
-			Connection conn = Main.MySQLDBManager_COOLD.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager_COOLD().getConnection();
 
 			PreparedStatement statement = conn.prepareStatement(
 					"SELECT * FROM co_block WHERE wid = ? AND type != 3 AND x = ? AND y = ? AND z = ? ORDER BY rowid LIMIT ?, ?");
@@ -102,7 +102,7 @@ public class Task_CoOLD extends BukkitRunnable {
 	}
 
 	String getUserName(int userid) throws SQLException {
-		Connection conn = Main.MySQLDBManager_COOLD.getConnection();
+		Connection conn = MyMaidConfig.getMySQLDBManager_COOLD().getConnection();
 		PreparedStatement statement = conn.prepareStatement("SELECT * FROM co_user WHERE rowid = ?");
 		statement.setInt(1, userid);
 		ResultSet res = statement.executeQuery();

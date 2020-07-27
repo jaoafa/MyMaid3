@@ -35,7 +35,7 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 
-import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
@@ -53,7 +53,7 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
 			List<Object> meta = processMeta(state);
 			convertByteData(meta);
 		} catch (NotSerializableException e) {
-			Main.getJDA()
+			MyMaidConfig.getJDA()
 					.getTextChannelById(618569153422426113L)
 					.sendMessage("__**[CPDefectSearcher|onPlace]**__ throwed `NotSerializableException`!\n"
 							+ "Message: `" + e.getMessage() + "`\n"
@@ -62,7 +62,7 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
 							+ "Player: `" + player.getName() + "`")
 					.queue();
 		} catch (Exception e) {
-			Main.getJDA()
+			MyMaidConfig.getJDA()
 					.getTextChannelById(618569153422426113L)
 					.sendMessage("__**[CPDefectSearcher|onPlace]**__ throwed `Exception`!\n"
 							+ "Class: `" + e.getClass().getName() + "`\n"
@@ -72,7 +72,7 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
 							+ "Player: `" + player.getName() + "`")
 					.queue();
 		} catch (Throwable e) {
-			Main.getJDA()
+			MyMaidConfig.getJDA()
 					.getTextChannelById(618569153422426113L)
 					.sendMessage("__**[CPDefectSearcher|onPlace]**__ throwed `Throwable`!\n"
 							+ "Class: `" + e.getClass().getName() + "`\n"
@@ -98,7 +98,7 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
 			List<Object> meta = processMeta(state);
 			convertByteData(meta);
 		} catch (NotSerializableException e) {
-			Main.getJDA()
+			MyMaidConfig.getJDA()
 					.getTextChannelById(618569153422426113L)
 					.sendMessage("__**[CPDefectSearcher|onBreak]**__ throwed `NotSerializableException`!\n"
 							+ "Message: `" + e.getMessage() + "`\n"
@@ -107,7 +107,7 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
 							+ "Player: `" + player.getName() + "`")
 					.queue();
 		} catch (Exception e) {
-			Main.getJDA()
+			MyMaidConfig.getJDA()
 					.getTextChannelById(618569153422426113L)
 					.sendMessage("__**[CPDefectSearcher|onBreak]**__ throwed `Exception`!\n"
 							+ "Message: `" + e.getMessage() + "`\n"

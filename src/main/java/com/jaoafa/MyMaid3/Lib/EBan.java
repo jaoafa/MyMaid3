@@ -19,8 +19,6 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 
-import com.jaoafa.MyMaid3.Main;
-
 /**
  * EBanライブラリ
  * @author tomachi
@@ -74,7 +72,7 @@ public class EBan extends MyMaidLibrary {
 	 */
 	public boolean addBan(String banned_by, String reason) {
 		DBSync();
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 
@@ -83,7 +81,7 @@ public class EBan extends MyMaidLibrary {
 		}
 
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn.prepareStatement(
 					"INSERT INTO eban (player, uuid, banned_by, reason, status) VALUES (?, ?, ?, ?, ?);");
 			statement.setString(1, player.getName());
@@ -101,11 +99,11 @@ public class EBan extends MyMaidLibrary {
 
 		Bukkit.broadcastMessage(
 				"[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でEBanされました。");
-		Main.jaotanChannel.sendMessage(
+		MyMaidConfig.getJaotanChannel().sendMessage(
 				"__**EBan[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
 						+ "」によって「" + reason + "」という理由でEBanされました。")
 				.queue();
-		Main.ServerChatChannel.sendMessage(
+		MyMaidConfig.getServerChatChannel().sendMessage(
 				"__**EBan[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
 						+ "」によって「" + reason + "」という理由でEBanされました。")
 				.queue();
@@ -131,14 +129,14 @@ public class EBan extends MyMaidLibrary {
 	 */
 	public boolean removeBan(String removePlayerName) {
 		DBSync();
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		if (!isBanned()) {
 			return false;
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("UPDATE eban SET status = ? WHERE uuid = ?;");
 			statement.setString(1, "end");
@@ -158,11 +156,11 @@ public class EBan extends MyMaidLibrary {
 							+ ChatColor.WHITE + ": " + "じゃあな…！");
 		}
 		Bukkit.broadcastMessage("[EBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」のEBanを解除しました。");
-		Main.jaotanChannel.sendMessage(
+		MyMaidConfig.getJaotanChannel().sendMessage(
 				"__**EBan[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のEBanを「"
 						+ DiscordEscape(removePlayerName) + "」によって解除されました。")
 				.queue();
-		Main.ServerChatChannel
+		MyMaidConfig.getServerChatChannel()
 				.sendMessage(
 						"__**EBan[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のEBanを「"
 								+ DiscordEscape(removePlayerName) + "」によって解除されました。")
@@ -233,11 +231,11 @@ public class EBan extends MyMaidLibrary {
 		if (!force && ((DBSyncTime + 30 * 60 * 1000) > System.currentTimeMillis())) {
 			return; // 30分未経過
 		}
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("SELECT * FROM eban WHERE uuid = ? ORDER BY id DESC LIMIT 1");
 			statement.setString(1, player.getUniqueId().toString());
@@ -280,11 +278,11 @@ public class EBan extends MyMaidLibrary {
 	 */
 	public static Set<EBan> getList() {
 		Set<EBan> EBanList = new HashSet<>();
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM eban WHERE status = ?");
 			statement.setString(1, "punishing");
 			ResultSet res = statement.executeQuery();

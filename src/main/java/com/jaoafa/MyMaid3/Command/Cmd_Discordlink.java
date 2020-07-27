@@ -12,9 +12,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.ErrorReporter;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.PermissionsManager;
 
@@ -51,7 +51,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 		Connection conn;
 
 		try {
-			conn = Main.getMySQLDBManager().getConnection();
+			conn = MyMaidConfig.getMySQLDBManager().getConnection();
 
 			// 指定されたAuthKeyは存在するか？
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM discordlink_waiting WHERE authkey = ?");
@@ -141,7 +141,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 		}
 
 		// DiscordアカウントがDiscordチャンネルから退出していないかどうか
-		JDA jda = Main.getJDA();
+		JDA jda = MyMaidConfig.getJDA();
 		Guild guild = jda.getGuildById(597378876556967936L);
 		Member member = guild.getMemberById(disid);
 		if (member == null) {

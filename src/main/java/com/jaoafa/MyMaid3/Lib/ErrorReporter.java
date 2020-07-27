@@ -9,18 +9,16 @@ import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.util.Date;
 
-import com.jaoafa.MyMaid3.Main;
-
 import net.dv8tion.jda.api.EmbedBuilder;
 
 public class ErrorReporter {
 	public static void report(Throwable exception) {
 		exception.printStackTrace();
-		if (Main.ReportChannel == null) {
+		if (MyMaidConfig.getReportChannel() == null) {
 			System.out.println("Main.ReportChannel == null error.");
 			return;
 		}
-		if (Main.getJDA() == null) {
+		if (MyMaidConfig.getJDA() == null) {
 			System.out.println("Main.getClient() == null error.");
 			return;
 		}
@@ -37,7 +35,7 @@ public class ErrorReporter {
 			builder.addField("Message", "```" + exception.getMessage() + "```", false);
 			builder.addField("Cause", "```" + exception.getCause() + "```", false);
 			builder.setTimestamp(Instant.now());
-			Main.ReportChannel.sendMessage(builder.build()).queue();
+			MyMaidConfig.getReportChannel().sendMessage(builder.build()).queue();
 		} catch (Exception e) {
 			try {
 				String text = "MyMaid3 Discord Error Reporter (" + MyMaidLibrary.sdfFormat(new Date()) + ")\n"
@@ -49,7 +47,7 @@ public class ErrorReporter {
 						+ exception.getCause();
 				InputStream stream = new ByteArrayInputStream(
 						text.getBytes("utf-8"));
-				Main.ReportChannel.sendFile(stream, "Mainreport" + System.currentTimeMillis() + ".txt");
+				MyMaidConfig.getReportChannel().sendFile(stream, "Mainreport" + System.currentTimeMillis() + ".txt");
 			} catch (UnsupportedEncodingException ex) {
 				return;
 			}

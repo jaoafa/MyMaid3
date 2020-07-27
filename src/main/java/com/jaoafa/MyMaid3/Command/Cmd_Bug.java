@@ -17,6 +17,7 @@ import org.json.JSONException;
 
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 import club.minnced.discord.webhook.WebhookClient;
@@ -150,7 +151,7 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandExecutor, CommandPr
 	private void sendMessage(String mesg, Player player) {
 		String message = mesg + "\nby `" + player.getName() + "`";
 
-		WebhookClientBuilder builder = new WebhookClientBuilder(Main.BugReportWebhookUrl);
+		WebhookClientBuilder builder = new WebhookClientBuilder(MyMaidConfig.getBugReportWebhookUrl());
 		builder.setThreadFactory((job) -> {
 			Thread thread = new Thread(job);
 			thread.setName("MyMaid3BugReporter");

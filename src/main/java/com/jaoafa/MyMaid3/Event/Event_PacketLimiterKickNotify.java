@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
 
-import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -33,7 +33,7 @@ public class Event_PacketLimiterKickNotify extends MyMaidLibrary implements List
 			embed.addField("座標", location, false);
 			event.getPlayer().teleport(Bukkit.getWorld("Jao_Afa").getSpawnLocation());
 
-			Main.getJDA().getTextChannelById(597423444501463040L).sendMessage(embed.build()).queue();
+			MyMaidConfig.getJDA().getTextChannelById(597423444501463040L).sendMessage(embed.build()).queue();
 		}
 	}
 }

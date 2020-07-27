@@ -13,8 +13,6 @@ import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 
-import com.jaoafa.MyMaid3.Main;
-
 public class Historyjao extends MyMaidLibrary {
 	static Map<UUID, Historyjao> data = new HashMap<>();
 
@@ -39,11 +37,11 @@ public class Historyjao extends MyMaidLibrary {
 	}
 
 	public boolean add(String message) {
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn.prepareStatement(
 					"INSERT INTO jaoHistory (player, uuid, message, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP);");
 			statement.setString(1, player.getName());
@@ -60,11 +58,11 @@ public class Historyjao extends MyMaidLibrary {
 	}
 
 	public boolean disable(int id) {
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn.prepareStatement(
 					"UPDATE jaoHistory SET disabled = ? WHERE uuid = ? AND id = ? ORDER BY id DESC");
 			statement.setBoolean(1, true);
@@ -89,11 +87,11 @@ public class Historyjao extends MyMaidLibrary {
 		if (!force && ((DBSyncTime + 30 * 60 * 1000) > System.currentTimeMillis())) {
 			return; // 30分未経過
 		}
-		if (Main.MySQLDBManager == null) {
+		if (MyMaidConfig.getMySQLDBManager() == null) {
 			throw new IllegalStateException("Main.MySQLDBManager == null");
 		}
 		try {
-			Connection conn = Main.MySQLDBManager.getConnection();
+			Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
 			PreparedStatement statement = conn
 					.prepareStatement("SELECT * FROM jaoHistory WHERE uuid = ?");
 			statement.setString(1, player.getUniqueId().toString());

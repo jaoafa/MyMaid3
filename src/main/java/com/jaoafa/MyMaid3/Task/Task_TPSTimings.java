@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.TPSChecker;
 
 public class Task_TPSTimings extends BukkitRunnable {
@@ -31,7 +31,7 @@ public class Task_TPSTimings extends BukkitRunnable {
 			if (timingsChecking) {
 				// 5分後
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "timings paste");
-				Main.ReportChannel.sendMessage("timings pasted. " + OldTps1m + " -> " + tps1m);
+				MyMaidConfig.getReportChannel().sendMessage("timings pasted. " + OldTps1m + " -> " + tps1m);
 				timingsChecking = false;
 				cancel();
 				new Task_TPSTimings(plugin, OldTps1m, timingsChecking).runTaskLater(plugin, 1200L);

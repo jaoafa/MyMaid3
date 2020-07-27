@@ -12,8 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.MCBans;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -55,9 +55,9 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 		builder.setTimestamp(Instant.now());
 		builder.setThumbnail(
 				"https://crafatar.com/renders/body/" + player.getUniqueId().toString() + ".png?overlay=true&scale=10");
-		builder.setAuthor(Main.getJDA().getSelfUser().getName(), null,
-				Main.getJDA().getSelfUser().getAvatarUrl());
-		Main.getJDA().getTextChannelById(597423444501463040L).sendMessage(builder.build()).queue();
+		builder.setAuthor(MyMaidConfig.getJDA().getSelfUser().getName(), null,
+				MyMaidConfig.getJDA().getSelfUser().getAvatarUrl());
+		MyMaidConfig.getJDA().getTextChannelById(597423444501463040L).sendMessage(builder.build()).queue();
 
 		if (mcbans != null && (mcbans.getGlobalCount() > 0 || mcbans.getLocalCount() > 0)) {
 			int[] global_ids = mcbans.getGlobalBanIds();
@@ -99,7 +99,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
 				}
 			}
 
-			Main.getJDA().getTextChannelById(597423444501463040L).sendMessage(embed.build()).queue();
+			MyMaidConfig.getJDA().getTextChannelById(597423444501463040L).sendMessage(embed.build()).queue();
 		}
 	}
 }
