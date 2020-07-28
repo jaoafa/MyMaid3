@@ -11,7 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
@@ -41,31 +43,35 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener 
 		if (!firstLoginer.contains(player.getUniqueId())) {
 			return;
 		}
-		firstLoginer.remove(player.getUniqueId());
-		String url = "https://api.jaoafa.com/cities/getblockimg?uuid=" + player.getUniqueId().toString();
+		new BukkitRunnable() {
+			public void run() {
+				firstLoginer.remove(player.getUniqueId());
+				String url = "https://api.jaoafa.com/cities/getblockimg?uuid=" + player.getUniqueId().toString();
 
-		TextChannel channel = MyMaidConfig.getJaotanChannel();
-		try {
-			OkHttpClient client = new OkHttpClient().newBuilder()
-					.connectTimeout(60, TimeUnit.SECONDS)
-					.readTimeout(60, TimeUnit.SECONDS)
-					.build();
-			Request request = new Request.Builder().url(url).build();
+				TextChannel channel = MyMaidConfig.getJaotanChannel();
+				try {
+					OkHttpClient client = new OkHttpClient().newBuilder()
+							.connectTimeout(60, TimeUnit.SECONDS)
+							.readTimeout(60, TimeUnit.SECONDS)
+							.build();
+					Request request = new Request.Builder().url(url).build();
 
-			Response response = client.newCall(request).execute();
-			if (response.code() != 200 && response.code() != 302) {
-				System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + response.code() + " "
-						+ response.body().string());
-				response.close();
-				return;
+					Response response = client.newCall(request).execute();
+					if (response.code() != 200 && response.code() != 302) {
+						System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + response.code() + " "
+								+ response.body().string());
+						response.close();
+						return;
+					}
+
+					channel.sendFile(response.body().byteStream(), player.getUniqueId().toString() + ".png")
+							.append("新規プレイヤー「" + player.getName() + "」のブロック編集マップ").queue();
+					response.close();
+				} catch (IOException ex) {
+					System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + ex.getMessage());
+					return;
+				}
 			}
-
-			channel.sendFile(response.body().byteStream(), player.getUniqueId().toString() + ".png")
-					.append("新規プレイヤー「" + player.getName() + "」のブロック編集マップ").queue();
-			response.close();
-		} catch (IOException ex) {
-			System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + ex.getMessage());
-			return;
-		}
+		}.runTaskAsynchronously(Main.getJavaPlugin());
 	}
 }
