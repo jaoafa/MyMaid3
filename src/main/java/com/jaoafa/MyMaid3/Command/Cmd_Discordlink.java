@@ -143,7 +143,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 		// DiscordアカウントがDiscordチャンネルから退出していないかどうか
 		JDA jda = MyMaidConfig.getJDA();
 		Guild guild = jda.getGuildById(597378876556967936L);
-		Member member = guild.getMemberById(disid);
+		Member member = guild.retrieveMemberById(disid).complete();
 		if (member == null) {
 			SendMessage(sender, cmd, "アカウントリンク要求をしたDiscordアカウントは既に当サーバのDiscordチャンネルから退出しています。");
 			return true;
