@@ -1,0 +1,71 @@
+package com.jaoafa.MyMaid3.Event;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
+import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
+
+import net.dv8tion.jda.api.entities.TextChannel;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener {
+	Set<UUID> firstLoginer = new HashSet<>();
+
+	@EventHandler
+	public void OnEvent_FirstLogin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		if (player.hasPlayedBefore()) {
+			if (firstLoginer.contains(player.getUniqueId())) {
+				firstLoginer.remove(player.getUniqueId());
+			}
+			return;
+		}
+		firstLoginer.add(player.getUniqueId());
+	}
+
+	@EventHandler
+	public void OnEvent_Quit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		if (!firstLoginer.contains(player.getUniqueId())) {
+			return;
+		}
+		firstLoginer.remove(player.getUniqueId());
+		String url = "https://api.jaoafa.com/cities/getblockimg?uuid=" + player.getUniqueId().toString();
+
+		TextChannel channel = MyMaidConfig.getJaotanChannel();
+		try {
+			OkHttpClient client = new OkHttpClient().newBuilder()
+					.connectTimeout(60, TimeUnit.SECONDS)
+					.readTimeout(60, TimeUnit.SECONDS)
+					.build();
+			Request request = new Request.Builder().url(url).build();
+
+			Response response = client.newCall(request).execute();
+			if (response.code() != 200 && response.code() != 302) {
+				System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + response.code() + " "
+						+ response.body().string());
+				response.close();
+				return;
+			}
+
+			channel.sendFile(response.body().byteStream(), player.getUniqueId().toString() + ".png")
+					.append("新規プレイヤー「" + player.getName() + "」のブロック編集マップ").queue();
+			response.close();
+		} catch (IOException ex) {
+			System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + ex.getMessage());
+			return;
+		}
+	}
+}
