@@ -34,6 +34,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener 
 			}
 			return;
 		}
+		System.out.println("NewPlayerAutoBlMap: 初ログインユーザーがログイン");
 		firstLoginer.add(player.getUniqueId());
 	}
 
@@ -43,6 +44,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener 
 		if (!firstLoginer.contains(player.getUniqueId())) {
 			return;
 		}
+		System.out.println("NewPlayerAutoBlMap: 初ログインユーザーがログアウト");
 		new BukkitRunnable() {
 			public void run() {
 				firstLoginer.remove(player.getUniqueId());
@@ -63,6 +65,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener 
 						response.close();
 						return;
 					}
+					System.out.println("NewPlayerAutoBlMap: ブロック編集マップ取得完了");
 
 					channel.sendFile(response.body().byteStream(), player.getUniqueId().toString() + ".png")
 							.append("新規プレイヤー「" + player.getName() + "」のブロック編集マップ").queue();

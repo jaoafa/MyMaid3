@@ -1,6 +1,6 @@
 name: MyMaid3
 main: com.jaoafa.MyMaid3.Main
-version: 2020.07.05_21.55
+version: 2020.07.29_18.20
 description: General Plugin Version 3
 author: mine_book000
 database: true
@@ -55,6 +55,14 @@ commands:
       DedBullを飲み、暗視を付けます。または効果を消します。
     usage: /dedbull
     permission: mymaid.dedbull
+  dedrain:
+    description: >
+      雨を降らせたり降らせなかったりします。
+    usage: |
+      /dedrain: 現在の設定状態を表示します。
+      /dedrain on: 雨を降らせないようにします。(デフォルト)
+      /dedrain off: 雨を降らせれるようにします。10分で自動的に無効化されます。
+    permission: mymaid.dedrain
   discordlink:
     description: >
       DiscordアカウントとMinecraftアカウントを紐づけます。
@@ -108,6 +116,12 @@ commands:
       /jail status <Target>: TargetのJail情報を表示します。
       /jail testment <Testment>: 遺言を記録します。
     permission: mymaid.jail
+  link:
+    description: >
+      linkコマンドはjMS Gamers
+      Clubで実行するのだ。
+    usage: /link
+    permission: mymaid.link
   mymaid3:
     description: >
       MyMaid3のリリース情報を表示します。
