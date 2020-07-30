@@ -68,7 +68,12 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener 
 					System.out.println("NewPlayerAutoBlMap: ブロック編集マップ取得完了");
 
 					channel.sendFile(response.body().byteStream(), player.getUniqueId().toString() + ".png")
-							.append("新規プレイヤー「" + player.getName() + "」のブロック編集マップ").queue();
+							.append("新規プレイヤー「" + player.getName() + "」のブロック編集マップ").queue(msg -> {
+								System.out.println("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
+							}, failure -> {
+								System.out.println("NewPlayerAutoBlMap: メッセージ送信失敗 (" + failure.getMessage() + ")");
+								failure.printStackTrace();
+							});
 					response.close();
 				} catch (IOException ex) {
 					System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + ex.getMessage());
