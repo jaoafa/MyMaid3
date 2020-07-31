@@ -29,9 +29,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener 
 	public void OnEvent_FirstLogin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		if (player.hasPlayedBefore()) {
-			if (firstLoginer.contains(player.getUniqueId())) {
-				firstLoginer.remove(player.getUniqueId());
-			}
+			firstLoginer.remove(player.getUniqueId());
 			return;
 		}
 		System.out.println("NewPlayerAutoBlMap: 初ログインユーザーがログイン");
@@ -65,19 +63,24 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener 
 						response.close();
 						return;
 					}
+					if(response.body() == null){
+						System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: response.body() is null.");
+						response.close();
+						return;
+					}
 					System.out.println("NewPlayerAutoBlMap: ブロック編集マップ取得完了");
 
 					channel.sendFile(response.body().byteStream(), player.getUniqueId().toString() + ".png")
-							.append("新規プレイヤー「" + player.getName() + "」のブロック編集マップ").queue(msg -> {
+							.append(String.format("新規プレイヤー「%s」のブロック編集マップ", player.getName())).queue(msg -> {
 								System.out.println("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
+								response.close();
 							}, failure -> {
 								System.out.println("NewPlayerAutoBlMap: メッセージ送信失敗 (" + failure.getMessage() + ")");
 								failure.printStackTrace();
+								response.close();
 							});
-					response.close();
 				} catch (IOException ex) {
 					System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + ex.getMessage());
-					return;
 				}
 			}
 		}.runTaskAsynchronously(Main.getJavaPlugin());
