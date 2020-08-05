@@ -13,7 +13,7 @@ import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 
 public class Event_CommandTP extends MyMaidLibrary implements Listener {
 	@EventHandler
-	public void onGameModeCommand(PlayerCommandPreprocessEvent event) {
+	public void onTeleportCommand(PlayerCommandPreprocessEvent event) {
 		String command = event.getMessage();
 		Player player = event.getPlayer();
 		String[] args = command.split(" ", 0);
