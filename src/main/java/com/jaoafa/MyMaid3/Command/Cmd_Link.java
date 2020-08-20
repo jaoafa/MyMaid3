@@ -14,7 +14,7 @@ public class Cmd_Link extends MyMaidLibrary implements CommandExecutor, CommandP
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		sender.sendMessage(
-				"linkコマンドはMinecraftサーバ内ではなくjMS Gamers ClubのMinecraftサーバ内で実行してね！そこでコマンドが発行されるから、そのコマンドをMinecraftサーバ内で打ち込んでね！");
+				"linkコマンドはMinecraftサーバ内ではなくjMS Gamers ClubのDiscordサーバ内で実行してね！そこでコマンドが発行されるから、そのコマンドをMinecraftサーバ内で打ち込んでね！");
 		return true;
 	}
 
