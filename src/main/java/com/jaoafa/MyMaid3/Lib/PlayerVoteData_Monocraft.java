@@ -100,7 +100,7 @@ public class PlayerVoteData_Monocraft {
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote_monocraft");
 			ResultSet res = statement.executeQuery();
 			while (res.next()) {
-				long last = Long.parseLong(res.getString("last"));
+				long last = res.getTimestamp("last").getTime() / 1000L;
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
