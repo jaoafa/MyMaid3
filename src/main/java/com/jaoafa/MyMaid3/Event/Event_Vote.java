@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+import com.jaoafa.jaoSuperAchievement2.API.AchievementAPI;
+import com.jaoafa.jaoSuperAchievement2.API.Achievementjao;
+import com.jaoafa.jaoSuperAchievement2.Lib.AchievementType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -63,16 +66,21 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
 		//boolean first = PlayerVoteData.TodayFirstVote();
 
-		int oldVote = -1;
-		int newVote = -1;
+		int oldVote;
+		int newVote;
+		boolean isTodayFirst;
 		try {
 			PlayerVoteData pvd = new PlayerVoteData(offplayer);
 			oldVote = pvd.get();
 
+			isTodayFirst = PlayerVoteData.isTodayFirstVote();
+
 			pvd.add();
 
 			newVote = pvd.get();
-		} catch (ClassNotFoundException | SQLException | NullPointerException e) {
+
+
+		} catch (SQLException | NullPointerException e) {
 			missedNotifyMinecraftJP(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
 			e.printStackTrace();
 			return;
@@ -87,6 +95,23 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 		MyMaidConfig.getServerChatChannel().sendMessage("投票をよろしくお願いします！ https://jaoafa.com/vote").queue();
 
 		successNotifyMinecraftJP(name, oldVote, newVote);
+
+		if(isTodayFirst){
+			Achievementjao.getAchievement(offplayer, new AchievementType(54)); // 筆頭株主 - 誰よりも早くjao鯖に投票
+		}
+		Achievementjao.getAchievement(offplayer, new AchievementType(55)); // 期待の新人 - 初めての投票
+		if(newVote >= 10){
+			Achievementjao.getAchievement(offplayer, new AchievementType(56)); // 安定株主 - 10回投票
+		}
+		if(newVote >= 20){
+			Achievementjao.getAchievement(offplayer, new AchievementType(59)); // VIPPERな俺 - 20回投票
+		}
+		if(newVote >= 100){
+			Achievementjao.getAchievement(offplayer, new AchievementType(57)); // 大株主 - 100回投票
+		}
+		if(newVote >= 1000){
+			Achievementjao.getAchievement(offplayer, new AchievementType(58)); // 伝説の株主 - 1000回投票
+		}
 	}
 
 	void VoteReceiveMonocraftNet(String name) {
@@ -113,16 +138,19 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 			name += "(" + offplayer.getName() + ")";
 		}
 
-		int oldVote = -1;
-		int newVote = -1;
+		int oldVote;
+		int newVote;
+		boolean isTodayFirst;
 		try {
 			PlayerVoteData_Monocraft pvd = new PlayerVoteData_Monocraft(offplayer);
 			oldVote = pvd.get();
 
+			isTodayFirst = PlayerVoteData_Monocraft.isTodayFirstVote();
+
 			pvd.add();
 
 			newVote = pvd.get();
-		} catch (ClassNotFoundException | SQLException | NullPointerException e) {
+		} catch (SQLException | NullPointerException e) {
 			missedNotifyMonocraftNet(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
 			e.printStackTrace();
 			return;
@@ -137,6 +165,20 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 		MyMaidConfig.getServerChatChannel().sendMessage("投票をよろしくお願いします！ https://jaoafa.com/monovote").queue();
 
 		successNotifyMonocraftNet(name, oldVote, newVote);
+
+		if(isTodayFirst){
+			Achievementjao.getAchievement(offplayer, new AchievementType(54)); // 筆頭株主 - 誰よりも早くjao鯖に投票
+		}
+		Achievementjao.getAchievement(offplayer, new AchievementType(55)); // 期待の新人 - 初めての投票
+		if(newVote >= 10){
+			Achievementjao.getAchievement(offplayer, new AchievementType(56)); // 安定株主 - 10回投票
+		}
+		if(newVote >= 100){
+			Achievementjao.getAchievement(offplayer, new AchievementType(57)); // 大株主 - 100回投票
+		}
+		if(newVote >= 1000){
+			Achievementjao.getAchievement(offplayer, new AchievementType(58)); // 伝説の株主 - 1000回投票
+		}
 	}
 
 	UUID getUUID(MySQLDBManager MySQLDBManager, String name) {
