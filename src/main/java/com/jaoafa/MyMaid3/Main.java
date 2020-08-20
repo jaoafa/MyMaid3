@@ -7,7 +7,9 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 
+import com.jaoafa.MyMaid3.Task.Task_DisableInvisible;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
@@ -90,7 +92,7 @@ public class Main extends JavaPlugin {
 					.setContextEnabled(false)
 					.setEventManager(new AnnotatedEventManager());
 
-			jdabuilder = registDiscordEvent(jdabuilder);
+			registDiscordEvent(jdabuilder);
 
 			MyMaidConfig.setJDA(jdabuilder.build().awaitReady());
 		} catch (Exception e) {
@@ -126,7 +128,6 @@ public class Main extends JavaPlugin {
 			getLogger().warning("MySQLへの接続に失敗しました。(MySQL接続するためのクラスが見つかりません)");
 			getLogger().warning("MyMaid3プラグインを終了します。");
 			getServer().getPluginManager().disablePlugin(this);
-			return;
 		}
 	}
 
@@ -184,11 +185,10 @@ public class Main extends JavaPlugin {
 				CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
 
 				boolean bool = cmd.register(commandMap);
-				getLogger().info(commandName + " register: " + Boolean.valueOf(bool));
+				getLogger().info(commandName + " register: " + bool);
 			}
 		} catch (Exception e) { // ClassFinder.findClassesがそもそもException出すので仕方ないという判断で。
 			e.printStackTrace();
-			return;
 		}
 	}
 
@@ -206,7 +206,7 @@ public class Main extends JavaPlugin {
 					continue;
 				}
 
-				Constructor<?> construct = (Constructor<?>) clazz.getConstructor();
+				Constructor<?> construct = clazz.getConstructor();
 				Object instance = construct.newInstance();
 
 				if (instance instanceof Listener) {
@@ -217,16 +217,13 @@ public class Main extends JavaPlugin {
 					} catch (ClassCastException e) {
 						// commandexecutor not implemented
 						getLogger().info(clazz.getSimpleName() + ": Listener not implemented [1]");
-						continue;
 					}
 				} else {
 					getLogger().info(clazz.getSimpleName() + ": Listener not implemented [2]");
-					continue;
 				}
 			}
 		} catch (Exception e) { // ClassFinder.findClassesがそもそもException出すので仕方ないという判断で。
 			e.printStackTrace();
-			return;
 		}
 	}
 
@@ -238,9 +235,10 @@ public class Main extends JavaPlugin {
 
 	private void scheduleTask() {
 		//new Task_AFK().runTaskTimerAsynchronously(this, 0L, 1200L);
-		new Task_AutoRemoveTeam().runTaskTimer(this, 0L, 1200L);
-		new Task_TPSTimings(this).runTaskLater(this, 1200L);
-		new Task_NewStep().runTaskTimerAsynchronously(this, 0L, 1200L);
+		new Task_AutoRemoveTeam().runTaskTimer(this, 0L, 1200L); // per 1 minute
+		new Task_TPSTimings(this).runTaskLater(this, 1200L); // per 1 minute
+		new Task_NewStep().runTaskTimerAsynchronously(this, 0L, 1200L); // per 1 minute
+		new Task_DisableInvisible().runTaskTimer(this, 0L, 1200L); // per 1 minute
 	}
 
 	private void existClassCheck() {
@@ -275,16 +273,11 @@ public class Main extends JavaPlugin {
 		PrintWriter pw = new PrintWriter(sw);
 		exception.printStackTrace(pw);
 		pw.flush();
-		try {
-			InputStream is = new ByteArrayInputStream(sw.toString().getBytes("utf-8"));
-			channel.sendMessage(":pencil:おっと！MyMaid3のDiscord関連でなにか問題が発生したようです！ <@221991565567066112>\\n**ErrorMsg**: `"
-					+ exception.getMessage()
-					+ "`\n**Class**: `" + clazz.getName() + " (" + exception.getClass().getName() + ")`").queue();
-			channel.sendFile(is, "stacktrace.txt").queue();
-		} catch (UnsupportedEncodingException ex) {
-			channel.sendMessage(":pencil:<@221991565567066112> おっと！メッセージ送信時に問題が発生したみたいです！\n**ErrorMsg**: `"
-					+ ex.getMessage() + "`\n**Class**: `" + clazz.getName() + "`").queue();
-		}
+		InputStream is = new ByteArrayInputStream(sw.toString().getBytes(StandardCharsets.UTF_8));
+		channel.sendMessage(":pencil:おっと！MyMaid3のDiscord関連でなにか問題が発生したようです！ <@221991565567066112>\\n**ErrorMsg**: `"
+				+ exception.getMessage()
+				+ "`\n**Class**: `" + clazz.getName() + " (" + exception.getClass().getName() + ")`").queue();
+		channel.sendFile(is, "stacktrace.txt").queue();
 	}
 
 	public static JavaPlugin getJavaPlugin() {
