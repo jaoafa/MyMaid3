@@ -89,6 +89,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 				SendMessage(sender, cmd, "すでにあなたのMinecraftアカウントと接続されています。");
 				return true;
 			}
+			res.next();
 			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
