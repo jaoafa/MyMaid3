@@ -1,12 +1,10 @@
 package com.jaoafa.MyMaid3.DiscordEvent;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
-import com.jaoafa.jaoSuperAchievement2.API.AchievementAPI;
 import com.jaoafa.jaoSuperAchievement2.API.Achievementjao;
 import com.jaoafa.jaoSuperAchievement2.Lib.AchievementType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import org.bukkit.Bukkit;
@@ -18,14 +16,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class ServerChatListCmd {
+public class Event_ServerChatListCmd {
     @SubscribeEvent
     public void onListCommand(MessageReceivedEvent event) {
         JDA jda = event.getJDA();
         if (!event.isFromType(ChannelType.TEXT)) {
             return;
         }
-        if(event.isWebhookMessage()){
+        if (event.isWebhookMessage()) {
             return;
         }
         Guild guild = event.getGuild();

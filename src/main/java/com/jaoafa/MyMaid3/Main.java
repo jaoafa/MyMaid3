@@ -1,15 +1,17 @@
 package com.jaoafa.MyMaid3;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-
+import com.jaoafa.MyMaid3.DiscordEvent.Event_Ready;
+import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerChatListCmd;
+import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerLeave;
+import com.jaoafa.MyMaid3.Lib.*;
+import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
 import com.jaoafa.MyMaid3.Task.Task_DisableInvisible;
+import com.jaoafa.MyMaid3.Task.Task_NewStep;
+import com.jaoafa.MyMaid3.Task.Task_TPSTimings;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
@@ -19,22 +21,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.jaoafa.MyMaid3.DiscordEvent.Event_Ready;
-import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerLeave;
-import com.jaoafa.MyMaid3.Lib.ClassFinder;
-import com.jaoafa.MyMaid3.Lib.CommandPremise;
-import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
-import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
-import com.jaoafa.MyMaid3.Lib.PermissionsManager;
-import com.jaoafa.MyMaid3.Lib.TPSChecker;
-import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
-import com.jaoafa.MyMaid3.Task.Task_NewStep;
-import com.jaoafa.MyMaid3.Task.Task_TPSTimings;
-
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
-import net.dv8tion.jda.api.requests.GatewayIntent;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 
 public class Main extends JavaPlugin {
 	private static Main Main = null;
@@ -230,6 +223,7 @@ public class Main extends JavaPlugin {
 	private JDABuilder registDiscordEvent(JDABuilder d) {
 		d.addEventListeners(new Event_Ready());
 		d.addEventListeners(new Event_ServerLeave());
+		d.addEventListeners(new Event_ServerChatListCmd());
 		return d;
 	}
 
