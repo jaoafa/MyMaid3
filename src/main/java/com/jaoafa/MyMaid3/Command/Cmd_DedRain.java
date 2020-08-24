@@ -1,17 +1,21 @@
 package com.jaoafa.MyMaid3.Command;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
+import com.jaoafa.MyMaid3.Main;
+import com.jaoafa.MyMaid3.Task.Task_DedRain;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cmd_DedRain extends MyMaidLibrary implements CommandExecutor, CommandPremise {
+	static BukkitTask task;
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
@@ -28,11 +32,14 @@ public class Cmd_DedRain extends MyMaidLibrary implements CommandExecutor, Comma
 				// /dedrain on
 				MyMaidConfig.setDedRaining(true);
 				SendMessage(sender, cmd, "現在のDedRain設定は「オン」です。");
+				task.cancel();
 				return true;
 			} else if (args[0].equalsIgnoreCase("off")) {
 				// /dedrain off
 				MyMaidConfig.setDedRaining(false);
 				SendMessage(sender, cmd, "現在のDedRain設定は「オフ」です。");
+				SendMessage(sender, cmd, "10分後、自動的にオンになります。");
+				task = new Task_DedRain().runTaskLater(Main.getJavaPlugin(), 12000);
 				return true;
 			}
 		}
