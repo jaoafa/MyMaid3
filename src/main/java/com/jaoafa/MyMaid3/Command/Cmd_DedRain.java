@@ -5,6 +5,8 @@ import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Main;
 import com.jaoafa.MyMaid3.Task.Task_DedRain;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,6 +34,10 @@ public class Cmd_DedRain extends MyMaidLibrary implements CommandExecutor, Comma
 				// /dedrain on
 				MyMaidConfig.setDedRaining(true);
 				SendMessage(sender, cmd, "現在のDedRain設定は「オン」です。");
+				for (World world : Bukkit.getWorlds()) {
+					world.setThundering(false);
+					world.setStorm(false);
+				}
 				task.cancel();
 				return true;
 			} else if (args[0].equalsIgnoreCase("off")) {

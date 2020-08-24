@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
@@ -66,6 +67,11 @@ public class Main extends JavaPlugin {
 			return;
 
 		TPSChecker.OnEnable_TPSSetting();
+
+		for (World world : Bukkit.getWorlds()) {
+			world.setThundering(false);
+			world.setStorm(false);
+		}
 	}
 
 	private void loadConfig() {
