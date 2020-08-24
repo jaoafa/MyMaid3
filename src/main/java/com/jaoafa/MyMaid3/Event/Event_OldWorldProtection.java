@@ -65,6 +65,10 @@ public class Event_OldWorldProtection extends MyMaidLibrary implements Listener 
 		if (!Arrays.asList(worldNames).contains(world.getName())) {
 			return;
 		}
+		if(player == null){
+			event.setCancelled(true);
+			return;
+		}
 		if (isA(player)) {
 			player.sendMessage("[OldWorldProtection] " + ChatColor.GREEN + "旧ワールドでのブロック着火は許可されていません。");
 			return;
