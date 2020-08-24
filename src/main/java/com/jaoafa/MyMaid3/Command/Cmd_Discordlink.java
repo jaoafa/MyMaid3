@@ -1,26 +1,20 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.*;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.jaoafa.MyMaid3.Lib.CommandPremise;
-import com.jaoafa.MyMaid3.Lib.ErrorReporter;
-import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
-import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import com.jaoafa.MyMaid3.Lib.PermissionsManager;
-
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 
 public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, CommandPremise {
 
@@ -67,6 +61,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 			name = res.getString("name");
 			disid = res.getString("disid");
 			discriminator = res.getString("discriminator");
+			res.close();
 			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
@@ -89,7 +84,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 				SendMessage(sender, cmd, "すでにあなたのMinecraftアカウントと接続されています。");
 				return true;
 			}
-			res.next();
+			res.close();
 			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
@@ -111,6 +106,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 				SendMessage(sender, cmd, "すでにあなたのMinecraftアカウントは別のDiscordアカウントに接続されています。");
 				return true;
 			}
+			res.close();
 			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
@@ -132,6 +128,7 @@ public class Cmd_Discordlink extends MyMaidLibrary implements CommandExecutor, C
 				SendMessage(sender, cmd, "アカウントリンク要求をしたDiscordアカウントは既に他のMinecraftアカウントと接続されています。");
 				return true;
 			}
+			res.close();
 			statement.close();
 		} catch (SQLException e) {
 			ErrorReporter.report(e);
