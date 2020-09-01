@@ -1,17 +1,13 @@
 package com.jaoafa.MyMaid3.Lib;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.sql.*;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class PlayerVoteData_Monocraft {
 	OfflinePlayer offplayer;
@@ -260,14 +256,30 @@ public class PlayerVoteData_Monocraft {
 		statement.setInt(3, getID());
 		int upcount = statement.executeUpdate();
 		statement.close();
+		addLog(next);
 		return upcount != 0;
+	}
+
+	private void addLog(int count) throws SQLException {
+		if (offplayer == null)
+			throw new NullPointerException("We could not get the player.");
+		MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
+		Connection conn = sqlmanager.getConnection();
+		PreparedStatement statement = conn
+				.prepareStatement("INSERT INTO votelog_success_mono (player, uuid, count, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP);");
+		statement.setString(1, offplayer.getName());
+		statement.setString(2, offplayer.getUniqueId().toString());
+		statement.setInt(3, count);
+		statement.executeUpdate();
+		statement.close();
 	}
 
 	/**
 	 * プレイヤーのIDを取得します。
+	 *
 	 * @return 所持しているjaoポイント
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
-	 * @throws NullPointerException 内部でNullPointerExceptionが発生した場合
+	 * @throws SQLException                  内部でSQLExceptionが発生した場合
+	 * @throws NullPointerException          内部でNullPointerExceptionが発生した場合
 	 * @throws UnsupportedOperationException 内部でUnsupportedOperationExceptionが発生した場合
 	 * @author mine_book000
 	 */
