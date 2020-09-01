@@ -27,21 +27,21 @@ public class Event_ServerChatListCmd {
             return;
         }
         Guild guild = event.getGuild();
-        if(guild.getIdLong() != 597378876556967936L){
+        if (guild.getIdLong() != 597378876556967936L) {
             return;
         }
         MessageChannel channel = event.getChannel();
-        if(channel.getIdLong() != MyMaidConfig.getServerChatChannel().getIdLong()){
+        if (channel.getIdLong() != MyMaidConfig.getServerChatChannel().getIdLong()) {
             return;
         }
         Member member = event.getMember();
-        if(member == null){
+        if (member == null) {
             return;
         }
         Message message = event.getMessage();
         String text = message.getContentRaw();
 
-        if(!text.equalsIgnoreCase("/list")){
+        if (!text.equalsIgnoreCase("/list")) {
             return;
         }
 
@@ -52,7 +52,7 @@ public class Event_ServerChatListCmd {
             statement.setString(1, member.getId());
             statement.setBoolean(2, false);
             ResultSet res = statement.executeQuery();
-            if(!res.next()){
+            if (!res.next()) {
                 return;
             }
 
@@ -62,7 +62,7 @@ public class Event_ServerChatListCmd {
 
             res.close();
             statement.close();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

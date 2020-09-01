@@ -9,11 +9,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Task_DisableInvisible extends BukkitRunnable {
     @Override
     public void run() {
-        for(Player player : Bukkit.getOnlinePlayers()){
-            if(MyMaidLibrary.isAMR(player)){
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (MyMaidLibrary.isAMR(player)) {
                 return;
             }
-            if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)){
+            if (player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 player.removePotionEffect(PotionEffectType.INVISIBILITY);
             }
         }

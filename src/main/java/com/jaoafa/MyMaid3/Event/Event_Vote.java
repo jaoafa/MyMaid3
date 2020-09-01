@@ -1,27 +1,21 @@
 package com.jaoafa.MyMaid3.Event;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.UUID;
-
-import com.jaoafa.jaoSuperAchievement2.API.AchievementAPI;
+import com.jaoafa.MyMaid3.Lib.*;
 import com.jaoafa.jaoSuperAchievement2.API.Achievementjao;
 import com.jaoafa.jaoSuperAchievement2.Lib.AchievementType;
+import com.vexsoftware.votifier.model.Vote;
+import com.vexsoftware.votifier.model.VotifierEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
-import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import com.jaoafa.MyMaid3.Lib.MySQLDBManager;
-import com.jaoafa.MyMaid3.Lib.PlayerVoteData;
-import com.jaoafa.MyMaid3.Lib.PlayerVoteData_Monocraft;
-import com.vexsoftware.votifier.model.Vote;
-import com.vexsoftware.votifier.model.VotifierEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
 
 public class Event_Vote extends MyMaidLibrary implements Listener {
 	@EventHandler
@@ -96,20 +90,20 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
 		successNotifyMinecraftJP(name, oldVote, newVote);
 
-		if(isTodayFirst){
+		if (isTodayFirst) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(54)); // 筆頭株主 - 誰よりも早くjao鯖に投票
 		}
 		Achievementjao.getAchievement(offplayer, new AchievementType(55)); // 期待の新人 - 初めての投票
-		if(newVote >= 10){
+		if (newVote >= 10) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(56)); // 安定株主 - 10回投票
 		}
-		if(newVote >= 20){
+		if (newVote >= 20) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(59)); // VIPPERな俺 - 20回投票
 		}
-		if(newVote >= 100){
+		if (newVote >= 100) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(57)); // 大株主 - 100回投票
 		}
-		if(newVote >= 1000){
+		if (newVote >= 1000) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(58)); // 伝説の株主 - 1000回投票
 		}
 	}
@@ -166,17 +160,17 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
 		successNotifyMonocraftNet(name, oldVote, newVote);
 
-		if(isTodayFirst){
+		if (isTodayFirst) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(54)); // 筆頭株主 - 誰よりも早くjao鯖に投票
 		}
 		Achievementjao.getAchievement(offplayer, new AchievementType(55)); // 期待の新人 - 初めての投票
-		if(newVote >= 10){
+		if (newVote >= 10) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(56)); // 安定株主 - 10回投票
 		}
-		if(newVote >= 100){
+		if (newVote >= 100) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(57)); // 大株主 - 100回投票
 		}
-		if(newVote >= 1000){
+		if (newVote >= 1000) {
 			Achievementjao.getAchievement(offplayer, new AchievementType(58)); // 伝説の株主 - 1000回投票
 		}
 	}

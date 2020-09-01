@@ -8,12 +8,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class Event_DedRain extends MyMaidLibrary implements Listener {
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onRainStart(WeatherChangeEvent event) {
-		if (!event.isCancelled()) {
-			if (event.toWeatherState() && MyMaidConfig.isDedRaining()) {
-				event.setCancelled(true);
-			}
-		}
-	}
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onRainStart(WeatherChangeEvent event) {
+        if (!event.isCancelled()) {
+            if (event.toWeatherState() && MyMaidConfig.isDedRaining()) {
+                event.setCancelled(true);
+            }
+        }
+    }
 }

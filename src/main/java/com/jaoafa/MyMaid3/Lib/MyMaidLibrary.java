@@ -1,10 +1,6 @@
 package com.jaoafa.MyMaid3.Lib;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.annotation.Nullable;
-
+import com.jaoafa.MyMaid3.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,146 +8,138 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.jaoafa.MyMaid3.Main;
+import javax.annotation.Nullable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MyMaidLibrary {
-	@Nullable
-	public static JavaPlugin JavaPlugin() {
-		return Main.getJavaPlugin();
-	}
+    @Nullable
+    public static JavaPlugin JavaPlugin() {
+        return Main.getJavaPlugin();
+    }
 
-	/**
-	 * Playerに対してメッセージを送信します。
-	 * @param player Player
-	 * @param cmdName コマンド名
-	 * @param message メッセージ
-	 */
-	public static void SendMessage(Player player, String cmdName, String message) {
-		player.sendMessage("[" + cmdName + "] " + ChatColor.GREEN + message);
-	}
+    /**
+     * Playerに対してメッセージを送信します。
+     *
+     * @param player  Player
+     * @param cmdName コマンド名
+     * @param message メッセージ
+     */
+    public static void SendMessage(Player player, String cmdName, String message) {
+        player.sendMessage("[" + cmdName + "] " + ChatColor.GREEN + message);
+    }
 
-	/**
-	 * CommandSenderに対してメッセージを送信します。
-	 * @param sender CommandSender
-	 * @param cmd Commandデータ
-	 * @param message メッセージ
-	 */
-	public static void SendMessage(CommandSender sender, Command cmd, String message) {
-		sender.sendMessage("[" + cmd.getName().toUpperCase() + "] " + ChatColor.GREEN + message);
-	}
+    /**
+     * CommandSenderに対してメッセージを送信します。
+     *
+     * @param sender  CommandSender
+     * @param cmd     Commandデータ
+     * @param message メッセージ
+     */
+    public static void SendMessage(CommandSender sender, Command cmd, String message) {
+        sender.sendMessage("[" + cmd.getName().toUpperCase() + "] " + ChatColor.GREEN + message);
+    }
 
-	/**
-	 * CommandSenderに対してヘルプメッセージと使い方を送信します。
-	 * @param sender
-	 * @param cmd
-	 */
-	public void SendUsageMessage(CommandSender sender, Command cmd) {
-		SendMessage(sender, cmd, "------- " + cmd.getName() + " --------");
-		SendMessage(sender, cmd, cmd.getDescription());
-		String CMDusage = cmd.getUsage();
+    public static String sdfFormat(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return sdf.format(date);
+    }
 
-		CMDusage = CMDusage.replaceAll("<command>", cmd.getName());
+    /**
+     * 指定された期間内かどうか
+     *
+     * @param start 期間の開始
+     * @param end   期間の終了
+     * @return 期間内ならtrue、期間外ならfalse
+     * @see http://www.yukun.info/blog/2009/02/java-jsp-gregoriancalendar-period.html
+     */
+    public static boolean isPeriod(Date start, Date end) {
+        Date now = new Date();
+        if (now.after(start)) {
+            return now.before(end);
+        }
 
-		if (CMDusage.contains("\n")) {
-			String[] usages = CMDusage.split("\n");
-			for (String usage : usages) {
-				SendMessage(sender, cmd, usage);
-			}
-		} else {
-			SendMessage(sender, cmd, CMDusage);
-		}
-	}
+        return false;
+    }
 
-	public static String sdfFormat(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		return sdf.format(date);
-	}
+    public static void sendAM(String str) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            String group = PermissionsManager.getPermissionMainGroup(p);
+            if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")) {
+                continue;
+            }
+            p.sendMessage(str);
+        }
+    }
 
-	/**
-	 * 指定された期間内かどうか
-	 * @param start 期間の開始
-	 * @param end 期間の終了
-	 * @return 期間内ならtrue、期間外ならfalse
-	 * @see http://www.yukun.info/blog/2009/02/java-jsp-gregoriancalendar-period.html
-	 */
-	public static boolean isPeriod(Date start, Date end) {
-		Date now = new Date();
-		if (now.after(start)) {
-			if (now.before(end)) {
-				return true;
-			}
-		}
+    public static void sendAMR(String str) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            String group = PermissionsManager.getPermissionMainGroup(p);
+            if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
+                    && !group.equalsIgnoreCase("Regular")) {
+                continue;
+            }
+            p.sendMessage(str);
+        }
+    }
 
-		return false;
-	}
+    public static boolean isA(Player player) {
+        String group = PermissionsManager.getPermissionMainGroup(player);
+        return group.equalsIgnoreCase("Admin");
+    }
 
-	public static void sendAM(String str) {
-		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-			String group = PermissionsManager.getPermissionMainGroup(p);
-			if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")) {
-				continue;
-			}
-			p.sendMessage(str);
-		}
-	}
+    public static boolean isAM(Player player) {
+        String group = PermissionsManager.getPermissionMainGroup(player);
+        return group.equalsIgnoreCase("Admin") || group.equalsIgnoreCase("Moderator");
+    }
 
-	public static void sendAMR(String str) {
-		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-			String group = PermissionsManager.getPermissionMainGroup(p);
-			if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
-					&& !group.equalsIgnoreCase("Regular")) {
-				continue;
-			}
-			p.sendMessage(str);
-		}
-	}
+    public static boolean isAMR(Player player) {
+        String group = PermissionsManager.getPermissionMainGroup(player);
+        return group.equalsIgnoreCase("Admin") || group.equalsIgnoreCase("Moderator")
+                || group.equalsIgnoreCase("Regular");
+    }
 
-	public static boolean isA(Player player) {
-		String group = PermissionsManager.getPermissionMainGroup(player);
-		if (!group.equalsIgnoreCase("Admin")) {
-			return false;
-		}
-		return true;
-	}
+    public static boolean isAMRV(Player player) {
+        String group = PermissionsManager.getPermissionMainGroup(player);
+        return group.equalsIgnoreCase("Admin")
+                || group.equalsIgnoreCase("Moderator")
+                || group.equalsIgnoreCase("Regular")
+                || group.equalsIgnoreCase("Verified");
+    }
 
-	public static boolean isAM(Player player) {
-		String group = PermissionsManager.getPermissionMainGroup(player);
-		if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")) {
-			return false;
-		}
-		return true;
-	}
+    public static boolean isInt(String s) {
+        try {
+            Integer.valueOf(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
-	public static boolean isAMR(Player player) {
-		String group = PermissionsManager.getPermissionMainGroup(player);
-		if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
-				&& !group.equalsIgnoreCase("Regular")) {
-			return false;
-		}
-		return true;
-	}
+    public static String DiscordEscape(String text) {
+        return text == null ? "" : text.replace("_", "\\_").replace("*", "\\*").replace("~", "\\~");
+    }
 
-	public static boolean isAMRV(Player player) {
-		String group = PermissionsManager.getPermissionMainGroup(player);
-		if (!group.equalsIgnoreCase("Admin")
-				&& !group.equalsIgnoreCase("Moderator")
-				&& !group.equalsIgnoreCase("Regular")
-				&& !group.equalsIgnoreCase("Verified")) {
-			return false;
-		}
-		return true;
-	}
+    /**
+     * CommandSenderに対してヘルプメッセージと使い方を送信します。
+     *
+     * @param sender
+     * @param cmd
+     */
+    public void SendUsageMessage(CommandSender sender, Command cmd) {
+        SendMessage(sender, cmd, "------- " + cmd.getName() + " --------");
+        SendMessage(sender, cmd, cmd.getDescription());
+        String CMDusage = cmd.getUsage();
 
-	public static boolean isInt(String s) {
-		try {
-			Integer.valueOf(s);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
+        CMDusage = CMDusage.replaceAll("<command>", cmd.getName());
 
-	public static String DiscordEscape(String text) {
-		return text == null ? "" : text.replace("_", "\\_").replace("*", "\\*").replace("~", "\\~");
-	}
+        if (CMDusage.contains("\n")) {
+            String[] usages = CMDusage.split("\n");
+            for (String usage : usages) {
+                SendMessage(sender, cmd, usage);
+            }
+        } else {
+            SendMessage(sender, cmd, CMDusage);
+        }
+    }
 }

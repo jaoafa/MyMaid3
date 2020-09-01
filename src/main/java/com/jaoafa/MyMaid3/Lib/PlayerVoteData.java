@@ -19,6 +19,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 
 	/**
 	 * 指定したプレイヤーの投票データを取得します。
+	 *
 	 * @param player プレイヤー
 	 * @author mine_book000
 	 */
@@ -32,6 +33,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 
 	/**
 	 * 指定したオフラインプレイヤーの投票データを取得します。
+	 *
 	 * @param offplayer オフラインプレイヤー
 	 * @author mine_book000
 	 */
@@ -45,10 +47,11 @@ public class PlayerVoteData extends MyMaidLibrary {
 
 	/**
 	 * 指定したプレイヤーネームの投票データを取得します。
+	 *
 	 * @param name プレイヤーネーム
-	 * @deprecated プレイヤー名で検索するため、思い通りのプレイヤーを取得できない場合があります。
-	 * @exception NullPointerException プレイヤーが取得できなかったとき
+	 * @throws NullPointerException プレイヤーが取得できなかったとき
 	 * @author mine_book000
+	 * @deprecated プレイヤー名で検索するため、思い通りのプレイヤーを取得できない場合があります。
 	 */
 	@Deprecated
 	public PlayerVoteData(String name) throws NullPointerException {
@@ -61,39 +64,8 @@ public class PlayerVoteData extends MyMaidLibrary {
 	}
 
 	/**
-	 * プレイヤーの投票数を取得します。
-	 * @return プレイヤーの投票数
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
-	 * @throws UnsupportedOperationException 投票数が取得できなかったとき
-	 * @throws NullPointerException プレイヤーが取得できなかったとき
-	 */
-	public int get() throws SQLException, UnsupportedOperationException, NullPointerException {
-		if (offplayer == null)
-			throw new NullPointerException("We could not get the player.");
-		if (!exists())
-			return 0;
-		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
-		if (MySQLDBManager == null) {
-			return 0;
-		}
-		Connection conn = MySQLDBManager.getConnection();
-		PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote WHERE id = ?");
-		statement.setInt(1, getID());
-		ResultSet res = statement.executeQuery();
-		if (res.next()) {
-			int count = res.getInt("count");
-			res.close();
-			statement.close();
-			return count;
-		} else {
-			res.close();
-			statement.close();
-			throw new UnsupportedOperationException("Could not get VoteCount.");
-		}
-	}
-
-	/**
 	 * その日のうち(前日or当日AM9:00～今)に誰も投票していないかどうか調べる（その日初めての投票かどうか）
+	 *
 	 * @return 誰も投票してなければtrue
 	 */
 	public static boolean isTodayFirstVote() {
@@ -146,12 +118,46 @@ public class PlayerVoteData extends MyMaidLibrary {
 	}
 
 	/**
-	 * プレイヤーの最終投票日時をunixtimeで取得します。
-	 * @return プレイヤーの最終投票のunixtime
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
+	 * プレイヤーの投票数を取得します。
+	 *
+	 * @return プレイヤーの投票数
+	 * @throws SQLException                  内部でSQLExceptionが発生した場合
 	 * @throws UnsupportedOperationException 投票数が取得できなかったとき
-	 * @throws NullPointerException プレイヤーが取得できなかったとき
-	 * @throws NumberFormatException 最終投票日時が正常に取得できなかったとき
+	 * @throws NullPointerException          プレイヤーが取得できなかったとき
+	 */
+	public int get() throws SQLException, UnsupportedOperationException, NullPointerException {
+		if (offplayer == null)
+			throw new NullPointerException("We could not get the player.");
+		if (!exists())
+			return 0;
+		MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
+		if (MySQLDBManager == null) {
+			return 0;
+		}
+		Connection conn = MySQLDBManager.getConnection();
+		PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote WHERE id = ?");
+		statement.setInt(1, getID());
+		ResultSet res = statement.executeQuery();
+		if (res.next()) {
+			int count = res.getInt("count");
+			res.close();
+			statement.close();
+			return count;
+		} else {
+			res.close();
+			statement.close();
+			throw new UnsupportedOperationException("Could not get VoteCount.");
+		}
+	}
+
+	/**
+	 * プレイヤーの最終投票日時をunixtimeで取得します。
+	 *
+	 * @return プレイヤーの最終投票のunixtime
+	 * @throws SQLException                  内部でSQLExceptionが発生した場合
+	 * @throws UnsupportedOperationException 投票数が取得できなかったとき
+	 * @throws NullPointerException          プレイヤーが取得できなかったとき
+	 * @throws NumberFormatException         最終投票日時が正常に取得できなかったとき
 	 */
 	public Long getLastVoteUnixTime() throws SQLException, UnsupportedOperationException,
 			NullPointerException, NumberFormatException {
@@ -218,8 +224,9 @@ public class PlayerVoteData extends MyMaidLibrary {
 	/**
 	 * プレイヤーの投票数データを作成する<br>
 	 * ※初めての投票時に作成すること！
+	 *
 	 * @return 作成できたかどうか
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
+	 * @throws SQLException         内部でSQLExceptionが発生した場合
 	 * @throws NullPointerException 内部でNullPointerExceptionが発生した場合
 	 */
 	public boolean create() throws SQLException, NullPointerException {
@@ -256,9 +263,10 @@ public class PlayerVoteData extends MyMaidLibrary {
 
 	/**
 	 * プレイヤーの投票数データが存在するかどうかを確認します。
+	 *
 	 * @return 存在するかどうか
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
-	 * @throws NullPointerException 内部でNullPointerExceptionが発生した場合
+	 * @throws SQLException                  内部でSQLExceptionが発生した場合
+	 * @throws NullPointerException          内部でNullPointerExceptionが発生した場合
 	 * @throws UnsupportedOperationException 内部でUnsupportedOperationExceptionが発生した場合
 	 * @author mine_book000
 	 */
@@ -287,8 +295,9 @@ public class PlayerVoteData extends MyMaidLibrary {
 
 	/**
 	 * プレイヤーの投票数に1つ追加します。
+	 *
 	 * @return 実行できたかどうか
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
+	 * @throws SQLException         内部でSQLExceptionが発生した場合
 	 * @throws NullPointerException プレイヤーが取得できなかったとき
 	 */
 	public boolean add() throws SQLException, NullPointerException {
@@ -366,6 +375,7 @@ public class PlayerVoteData extends MyMaidLibrary {
 
 	/**
 	 * プレイヤー名を更新します。
+	 *
 	 * @author mine_book000
 	 */
 	public void changePlayerName() {

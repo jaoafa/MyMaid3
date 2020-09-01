@@ -14,6 +14,7 @@ public class PlayerVoteData_Monocraft {
 
 	/**
 	 * 指定したプレイヤーの投票データを取得します。
+	 *
 	 * @param player プレイヤー
 	 * @author mine_book000
 	 */
@@ -27,6 +28,7 @@ public class PlayerVoteData_Monocraft {
 
 	/**
 	 * 指定したオフラインプレイヤーの投票データを取得します。
+	 *
 	 * @param offplayer オフラインプレイヤー
 	 * @author mine_book000
 	 */
@@ -40,10 +42,11 @@ public class PlayerVoteData_Monocraft {
 
 	/**
 	 * 指定したプレイヤーネームの投票データを取得します。
+	 *
 	 * @param name プレイヤーネーム
-	 * @deprecated プレイヤー名で検索するため、思い通りのプレイヤーを取得できない場合があります。
-	 * @exception NullPointerException プレイヤーが取得できなかったとき
+	 * @throws NullPointerException プレイヤーが取得できなかったとき
 	 * @author mine_book000
+	 * @deprecated プレイヤー名で検索するため、思い通りのプレイヤーを取得できない場合があります。
 	 */
 	@Deprecated
 	public PlayerVoteData_Monocraft(String name) throws NullPointerException {
@@ -56,11 +59,46 @@ public class PlayerVoteData_Monocraft {
 	}
 
 	/**
+	 * その日のうちに誰も投票していないかどうか調べる（その日初めての投票かどうか）
+	 *
+	 * @return 誰も投票してなければtrue
+	 */
+	public static boolean isTodayFirstVote() {
+		// 仮
+		try {
+			MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
+			Connection conn = sqlmanager.getConnection();
+			PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote_monocraft");
+			ResultSet res = statement.executeQuery();
+			while (res.next()) {
+				long last = res.getTimestamp("last").getTime() / 1000L;
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+				long today0 = cal.getTimeInMillis() / 1000L;
+
+				if (today0 < last && last < today0 + 86400) {
+					res.close();
+					statement.close();
+					return false;
+				}
+			}
+			res.close();
+			statement.close();
+		} catch (UnsupportedOperationException | NullPointerException | NumberFormatException | SQLException e) {
+			e.printStackTrace();
+			return false; // エラー発生したらその日の初めての投票ではないとみなす。ただしエラー通知はする
+		}
+		return true; // だれも投票してなかったら、trueを返す
+	}
+
+	/**
 	 * プレイヤーの投票数を取得します。
+	 *
 	 * @return プレイヤーの投票数
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
+	 * @throws SQLException                  内部でSQLExceptionが発生した場合
 	 * @throws UnsupportedOperationException 投票数が取得できなかったとき
-	 * @throws NullPointerException プレイヤーが取得できなかったとき
+	 * @throws NullPointerException          プレイヤーが取得できなかったとき
 	 */
 	public int get() throws SQLException, UnsupportedOperationException, NullPointerException {
 		if (offplayer == null)
@@ -85,45 +123,13 @@ public class PlayerVoteData_Monocraft {
 	}
 
 	/**
-	 * その日のうちに誰も投票していないかどうか調べる（その日初めての投票かどうか）
-	 * @return 誰も投票してなければtrue
-	 */
-	public static boolean isTodayFirstVote() {
-		// 仮
-		try {
-			MySQLDBManager sqlmanager = MyMaidConfig.getMySQLDBManager();
-			Connection conn = sqlmanager.getConnection();
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM vote_monocraft");
-			ResultSet res = statement.executeQuery();
-			while (res.next()) {
-				long last = res.getTimestamp("last").getTime() / 1000L;
-				Calendar cal = Calendar.getInstance();
-				cal.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
-				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
-				long today0 = cal.getTimeInMillis() / 1000L;
-
-				if(today0 < last && last < today0 + 86400){
-					res.close();
-					statement.close();
-					return false;
-				}
-			}
-			res.close();
-			statement.close();
-		} catch (UnsupportedOperationException | NullPointerException | NumberFormatException | SQLException e) {
-			e.printStackTrace();
-			return false; // エラー発生したらその日の初めての投票ではないとみなす。ただしエラー通知はする
-		}
-		return true; // だれも投票してなかったら、trueを返す
-	}
-
-	/**
 	 * プレイヤーの最終投票日時をunixtimeで取得します。
+	 *
 	 * @return プレイヤーの最終投票のunixtime
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
+	 * @throws SQLException                  内部でSQLExceptionが発生した場合
 	 * @throws UnsupportedOperationException 投票数が取得できなかったとき
-	 * @throws NullPointerException プレイヤーが取得できなかったとき
-	 * @throws NumberFormatException 最終投票日時が正常に取得できなかったとき
+	 * @throws NullPointerException          プレイヤーが取得できなかったとき
+	 * @throws NumberFormatException         最終投票日時が正常に取得できなかったとき
 	 */
 	public Long getLastVoteUnixTime() throws SQLException, UnsupportedOperationException,
 			NullPointerException, NumberFormatException {
@@ -181,8 +187,9 @@ public class PlayerVoteData_Monocraft {
 	/**
 	 * プレイヤーの投票数データを作成する<br>
 	 * ※初めての投票時に作成すること！
+	 *
 	 * @return 作成できたかどうか
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
+	 * @throws SQLException         内部でSQLExceptionが発生した場合
 	 * @throws NullPointerException 内部でNullPointerExceptionが発生した場合
 	 */
 	public boolean create() throws SQLException, NullPointerException {
@@ -206,9 +213,10 @@ public class PlayerVoteData_Monocraft {
 
 	/**
 	 * プレイヤーの投票数データが存在するかどうかを確認します。
+	 *
 	 * @return 存在するかどうか
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
-	 * @throws NullPointerException 内部でNullPointerExceptionが発生した場合
+	 * @throws SQLException                  内部でSQLExceptionが発生した場合
+	 * @throws NullPointerException          内部でNullPointerExceptionが発生した場合
 	 * @throws UnsupportedOperationException 内部でUnsupportedOperationExceptionが発生した場合
 	 * @author mine_book000
 	 */
@@ -235,8 +243,9 @@ public class PlayerVoteData_Monocraft {
 
 	/**
 	 * プレイヤーの投票数に1つ追加します。
+	 *
 	 * @return 実行できたかどうか
-	 * @throws SQLException 内部でSQLExceptionが発生した場合
+	 * @throws SQLException         内部でSQLExceptionが発生した場合
 	 * @throws NullPointerException プレイヤーが取得できなかったとき
 	 */
 	public boolean add() throws SQLException, NullPointerException {
@@ -307,6 +316,7 @@ public class PlayerVoteData_Monocraft {
 
 	/**
 	 * プレイヤー名を更新します。
+	 *
 	 * @author mine_book000
 	 */
 	public void changePlayerName() {

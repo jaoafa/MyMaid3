@@ -10,7 +10,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassFinder {
-	private ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
     public ClassFinder() {
         classLoader = Thread.currentThread().getContextClassLoader();
@@ -79,7 +79,7 @@ public class ClassFinder {
     private List<Class<?>> findClassesWithJarFile(String rootPackageName, URL jarFileUrl) throws Exception {
         List<Class<?>> classes = new ArrayList<Class<?>>();
 
-        JarURLConnection jarUrlConnection = (JarURLConnection)jarFileUrl.openConnection();
+        JarURLConnection jarUrlConnection = (JarURLConnection) jarFileUrl.openConnection();
         JarFile jarFile = null;
 
         try {

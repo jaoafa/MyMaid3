@@ -1,14 +1,13 @@
 package com.jaoafa.MyMaid3.Event;
 
+import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-
 public class Event_TeamDeathMessageCanceler extends MyMaidLibrary implements Listener {
-	@EventHandler(ignoreCancelled = true)
-	public void onDeath(PlayerDeathEvent event) {
+    @EventHandler(ignoreCancelled = true)
+    public void onDeath(PlayerDeathEvent event) {
 		/*
 		if (event.getEntityType() != EntityType.PLAYER) {
 			return;
@@ -32,5 +31,5 @@ public class Event_TeamDeathMessageCanceler extends MyMaidLibrary implements Lis
 		
 		event.setDeathMessage(null);
 		*/
-	}
+    }
 }

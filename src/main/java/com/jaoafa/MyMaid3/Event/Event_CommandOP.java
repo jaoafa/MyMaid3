@@ -1,15 +1,11 @@
 package com.jaoafa.MyMaid3.Event;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
-import java.util.logging.Logger;
 
 public class Event_CommandOP extends MyMaidLibrary implements Listener {
     @EventHandler

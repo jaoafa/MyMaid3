@@ -4,16 +4,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Task_TeleportAlias extends BukkitRunnable {
-	Player player;
-	String replacement;
+    Player player;
+    String replacement;
 
-	public Task_TeleportAlias(Player player, String replacement) {
-		this.player = player;
-		this.replacement = replacement;
-	}
+    public Task_TeleportAlias(Player player, String replacement) {
+        this.player = player;
+        this.replacement = replacement;
+    }
 
-	@Override
-	public void run() {
-		player.performCommand("tp " + replacement);
-	}
+    @Override
+    public void run() {
+        player.performCommand("tp " + replacement);
+    }
 }
