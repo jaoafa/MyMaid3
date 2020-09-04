@@ -12,7 +12,7 @@ public class MyMaidServer extends BukkitRunnable {
         int port = 31001;
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-            server.createContext("/", new Http_VoteFill());
+            server.createContext("/votefill", new Http_VoteFill());
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

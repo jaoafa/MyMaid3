@@ -29,7 +29,7 @@ public class Http_VoteFill implements HttpHandler {
     String responseBody = "{}";
 
     public void handle(HttpExchange t) throws IOException {
-        System.out.printf("%s %s %s", t.getRequestMethod(), t.getRequestURI().toString(), t.getProtocol());
+        System.out.printf("%s %s %s%n", t.getRequestMethod(), t.getRequestURI().toString(), t.getProtocol());
 
         InputStream is = t.getRequestBody();
         String requestBody = InputStreamToString(is);
@@ -83,7 +83,7 @@ public class Http_VoteFill implements HttpHandler {
         long created_at = request.getLong("created_at"); // unixtime
         String service = request.getString("service");
 
-        System.out.printf("[AutoFill-%s] %s (%s) %d", service, name, uuid, created_at);
+        System.out.printf("[AutoFill-%s] %s (%s) %d%n", service, name, uuid, created_at);
 
         OfflinePlayer offplayer = Bukkit.getOfflinePlayer(uuid);
         try {
