@@ -3,6 +3,7 @@ package com.jaoafa.MyMaid3;
 import com.jaoafa.MyMaid3.DiscordEvent.Event_Ready;
 import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerChatListCmd;
 import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerLeave;
+import com.jaoafa.MyMaid3.HttpServer.MyMaidServer;
 import com.jaoafa.MyMaid3.Lib.*;
 import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
 import com.jaoafa.MyMaid3.Task.Task_DisableInvisible;
@@ -271,6 +272,8 @@ public class Main extends JavaPlugin {
         new Task_TPSTimings(this).runTaskLater(this, 1200L); // per 1 minute
         new Task_NewStep().runTaskTimerAsynchronously(this, 0L, 1200L); // per 1 minute
         new Task_DisableInvisible().runTaskTimer(this, 0L, 1200L); // per 1 minute
+
+        new MyMaidServer().runTaskAsynchronously(this);
     }
 
     private void existClassCheck() {
