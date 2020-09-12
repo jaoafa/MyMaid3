@@ -1,5 +1,7 @@
 package com.jaoafa.MyMaid3.Event;
 
+import com.jaoafa.MyMaid3.Lib.EBan;
+import com.jaoafa.MyMaid3.Lib.Jail;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Lib.TeleportAlias;
 import com.jaoafa.MyMaid3.Main;
@@ -21,6 +23,15 @@ public class Event_TeleportAlias extends MyMaidLibrary implements Listener {
         if (!args[0].equalsIgnoreCase("/tp")) {
             return;
         }
+        Jail jail = new Jail(player);
+        if (jail.isBanned()) {
+            return;
+        }
+        EBan eban = new EBan(player);
+        if (eban.isBanned()) {
+            return;
+        }
+
         if (args.length == 2) { // /tp <Player>
             String to = args[1];
             String replacement = TeleportAlias.getReplaceAlias(to);
@@ -29,7 +40,6 @@ public class Event_TeleportAlias extends MyMaidLibrary implements Listener {
             }
             new Task_TeleportAlias(player, replacement).runTaskLater(Main.getJavaPlugin(), 5L);
             event.setCancelled(true);
-            return;
         }
     }
 }
