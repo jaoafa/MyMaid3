@@ -56,20 +56,19 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener 
 
                     Response response = client.newCall(request).execute();
                     if (response.code() != 200 && response.code() != 302) {
-                        System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + response.code() + " "
-                                + response.body().string());
+                        System.out.printf("NewPlayerAutoBlMap: APIサーバへの接続に失敗: %d %s\nhttps://jaoafa.com/cp/?uuid=%s%n", response.code(), response.body().string(), player.getUniqueId().toString());
                         response.close();
                         return;
                     }
                     if (response.body() == null) {
-                        System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: response.body() is null.");
+                        System.out.printf("NewPlayerAutoBlMap: APIサーバへの接続に失敗: response.body() is null.\nhttps://jaoafa.com/cp/?uuid=%s%n", player.getUniqueId().toString());
                         response.close();
                         return;
                     }
                     System.out.println("NewPlayerAutoBlMap: ブロック編集マップ取得完了");
 
                     channel.sendFile(response.body().byteStream(), player.getUniqueId().toString() + ".png")
-                            .append(String.format("新規プレイヤー「%s」のブロック編集マップ", player.getName())).queue(msg -> {
+                            .append(String.format("新規プレイヤー「%s」のブロック編集マップ\nhttps://jaoafa.com/cp/?uuid=%s", player.getName(), player.getUniqueId().toString())).queue(msg -> {
                         System.out.println("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
                         response.close();
                     }, failure -> {
