@@ -1,6 +1,10 @@
 package com.jaoafa.MyMaid3.Event;
 
+import com.jaoafa.MyMaid3.Lib.EBan;
+import com.jaoafa.MyMaid3.Lib.Jail;
+import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +26,20 @@ public class Event_CommandOP extends MyMaidLibrary implements Listener {
         }
 
         player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "This command is not allowed to be run from within the game. This incident will be reported.");
+
+        Jail jail = new Jail(player);
+        if (jail.isBanned()) {
+            event.setCancelled(true);
+            return;
+        }
+        EBan eban = new EBan(player);
+        if (eban.isBanned()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        Bukkit.broadcastMessage(ChatColor.RED + player.getName() + " tried to execute the following command: " + command);
+        MyMaidConfig.getJaotanChannel().sendMessage("**" + player.getName() + " tried to execute the following command: " + command + "**").queue();
         event.setCancelled(true);
     }
 }
