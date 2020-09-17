@@ -5,10 +5,7 @@ import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerChatListCmd;
 import com.jaoafa.MyMaid3.DiscordEvent.Event_ServerLeave;
 import com.jaoafa.MyMaid3.HttpServer.MyMaidServer;
 import com.jaoafa.MyMaid3.Lib.*;
-import com.jaoafa.MyMaid3.Task.Task_AutoRemoveTeam;
-import com.jaoafa.MyMaid3.Task.Task_DisableInvisible;
-import com.jaoafa.MyMaid3.Task.Task_NewStep;
-import com.jaoafa.MyMaid3.Task.Task_TPSTimings;
+import com.jaoafa.MyMaid3.Task.*;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
@@ -272,6 +269,7 @@ public class Main extends JavaPlugin {
         new Task_TPSTimings(this).runTaskLater(this, 1200L); // per 1 minute
         new Task_NewStep().runTaskTimerAsynchronously(this, 0L, 1200L); // per 1 minute
         new Task_DisableInvisible().runTaskTimer(this, 0L, 1200L); // per 1 minute
+        new Task_OldWorldCheck().runTaskTimer(this, 0L, 12000L); // per 10 minutes
 
         new MyMaidServer().runTaskAsynchronously(this);
     }
