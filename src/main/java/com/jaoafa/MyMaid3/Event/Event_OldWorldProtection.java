@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
@@ -24,10 +25,11 @@ public class Event_OldWorldProtection extends MyMaidLibrary implements Listener 
             "SandBox_3",
             "ReJao_Afa",
             "Summer2017",
-            "Summer2018"
+            "Summer2018",
+            "Summer2020"
     };
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         World world = event.getBlock().getWorld();
@@ -42,7 +44,7 @@ public class Event_OldWorldProtection extends MyMaidLibrary implements Listener 
         event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
         World world = event.getBlock().getWorld();
@@ -57,7 +59,7 @@ public class Event_OldWorldProtection extends MyMaidLibrary implements Listener 
         event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockIgniteEvent(BlockIgniteEvent event) {
         Player player = event.getPlayer();
         World world = event.getBlock().getWorld();
@@ -76,7 +78,7 @@ public class Event_OldWorldProtection extends MyMaidLibrary implements Listener 
         event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerBucketEmptyEvent(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
         World world = player.getWorld();
@@ -91,7 +93,7 @@ public class Event_OldWorldProtection extends MyMaidLibrary implements Listener 
         event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerBucketFillEvent(PlayerBucketFillEvent event) {
         Player player = event.getPlayer();
         World world = player.getWorld();
