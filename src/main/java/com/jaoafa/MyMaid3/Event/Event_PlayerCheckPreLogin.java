@@ -15,6 +15,7 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
@@ -30,13 +31,33 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void OnEvent_PlayerCheckPreLogin(AsyncPlayerPreLoginEvent event) {
         String name = event.getName();
         UUID uuid = event.getUniqueId();
         InetAddress ia = event.getAddress();
         String ip = ia.getHostAddress();
         String host = ia.getHostName();
+
+
+        MySQLDBManager MySQLDBManager = MyMaidConfig.getMySQLDBManager();
+        if (MySQLDBManager == null) {
+            event.disallow(Result.KICK_OTHER, ChatColor.RED + "[DATABASE CONNECTION ERROR]\n" +
+                    "PLEASE CONTACT ADMINISTRATOR. (1)");
+            return;
+        }
+        try {
+            Connection conn = MySQLDBManager.getConnection();
+            if (conn.isClosed() || !conn.isValid(3)) {
+                event.disallow(Result.KICK_OTHER, ChatColor.RED + "[DATABASE CONNECTION ERROR]\n" +
+                        "PLEASE CONTACT ADMINISTRATOR. (2)");
+                return;
+            }
+        } catch (SQLException e) {
+            event.disallow(Result.KICK_OTHER, ChatColor.RED + "[DATABASE CONNECTION ERROR]\n" +
+                    "PLEASE CONTACT ADMINISTRATOR. (3)");
+            return;
+        }
 
         Country country = null;
         String countryName = null;
@@ -53,7 +74,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         }
 
         String permission = getPermissionGroup(uuid);
-        if (country != null && city != null) {
+        if (country != null) {
             Main.getJavaPlugin().getLogger().info("Country: " + country.getName() + " (" + country.getIsoCode() + ")");
             Main.getJavaPlugin().getLogger().info("City: " + city.getName() + " (" + city.getGeoNameId() + ")");
         }
@@ -101,7 +122,6 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
                     statement.close();
                 } catch (SQLException e) {
                     ErrorReporter.report(e);
-                    return;
                 }
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
@@ -117,8 +137,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
 
         try {
             DatabaseReader dr = new DatabaseReader.Builder(file).build();
-            CityResponse res = dr.city(ia);
-            return res;
+            return dr.city(ia);
         } catch (IOException e) {
             plugin.getLogger().warning("IOException catched. getGeoIP failed.");
             e.printStackTrace();
@@ -136,8 +155,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         if (LPplayer == null) {
             return null;
         }
-        String groupname = LPplayer.getPrimaryGroup();
-        return groupname;
+        return LPplayer.getPrimaryGroup();
     }
 
     private void disallow(AsyncPlayerPreLoginEvent event, String message, String reason) {
