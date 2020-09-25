@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class MyMaidLibrary {
     @Nullable
@@ -46,12 +47,12 @@ public class MyMaidLibrary {
     }
 
     /**
-     * 指定された期間内かどうか
+     * 指定された期間内かどうか<br></>
+     * http://www.yukun.info/blog/2009/02/java-jsp-gregoriancalendar-period.html
      *
      * @param start 期間の開始
      * @param end   期間の終了
      * @return 期間内ならtrue、期間外ならfalse
-     * @see http://www.yukun.info/blog/2009/02/java-jsp-gregoriancalendar-period.html
      */
     public static boolean isPeriod(Date start, Date end) {
         Date now = new Date();
@@ -109,7 +110,16 @@ public class MyMaidLibrary {
 
     public static boolean isInt(String s) {
         try {
-            Integer.valueOf(s);
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isUUID(String s) {
+        try {
+            UUID.fromString(s);
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -123,8 +133,8 @@ public class MyMaidLibrary {
     /**
      * CommandSenderに対してヘルプメッセージと使い方を送信します。
      *
-     * @param sender
-     * @param cmd
+     * @param sender CommandSender
+     * @param cmd    Cmd
      */
     public void SendUsageMessage(CommandSender sender, Command cmd) {
         SendMessage(sender, cmd, "------- " + cmd.getName() + " --------");
