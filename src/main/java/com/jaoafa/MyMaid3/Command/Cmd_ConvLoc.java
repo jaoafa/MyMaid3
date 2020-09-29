@@ -123,6 +123,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
                 String sheet_baseCommand = line.split(" ")[0].trim();
                 List<String> sheet_args = Arrays.asList(Arrays.copyOfRange(line.split(" "), 1, line.split(" ").length));
 
+                boolean canEnd = false;
                 for (int i = 0; i < args.size(); i++) {
                     String arg = args.get(i);
                     if (SELECTOR_PATTERN.matcher(arg).matches()) {
@@ -148,6 +149,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
                         new_args.add(arg);
                         continue;
                     }
+                    canEnd = true;
                     if (i >= sheet_args.size()) {
                         new_args.add(arg);
                         continue;
@@ -178,9 +180,9 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
                     }
                     new_args.add(arg);
                 }
-                return _baseCommand + " " + String.join(" ", new_args);
+                if (canEnd) return _baseCommand + " " + String.join(" ", new_args);
             }
-            return null;
+            return _baseCommand + " " + String.join(" ", new_args);
         } catch (IOException e) {
             return null;
         }
