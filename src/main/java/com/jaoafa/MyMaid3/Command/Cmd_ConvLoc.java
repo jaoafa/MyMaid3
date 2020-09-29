@@ -111,7 +111,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
     }
 
     String replaceProcess(Location loc, String command, boolean toRelative) {
-        String _baseCommand = command.split(" ")[0].substring(1).trim();
+        String _baseCommand = command.split(" ")[0].trim();
         String baseCommand = _baseCommand;
         if (baseCommand.charAt(0) == '$') baseCommand = baseCommand.substring(1);
         if (baseCommand.charAt(0) == '/') baseCommand = baseCommand.substring(1);
@@ -119,7 +119,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
         try {
             List<String> lines = Files.readAllLines(Paths.get(Main.getJavaPlugin().getDataFolder().getAbsolutePath(), "command_sheet.txt"));
             for (String line : lines) {
-                String sheet_baseCommand = line.split(" ")[0].substring(1).trim();
+                String sheet_baseCommand = line.split(" ")[0].trim();
                 List<String> sheet_args = Arrays.asList(Arrays.copyOfRange(line.split(" "), 1, line.split(" ").length));
 
                 if (!baseCommand.equalsIgnoreCase(sheet_baseCommand)) {
