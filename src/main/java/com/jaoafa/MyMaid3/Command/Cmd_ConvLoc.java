@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([0-9]+)$");
     Pattern SELECTOR_PATTERN = Pattern.compile("^@[praes]\\[.*?]$");
-    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("([^d][xyz])=([~\\-0-9]+)");
+    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("[^d]([xyz])=([~\\-0-9]+)");
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -141,13 +141,13 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
 
                         if (selector_key.equalsIgnoreCase("x")) {
                             String replaced = toRelative ? toRelative(selector_value, loc.getBlockX()) : toAbsolute(selector_value, loc.getBlockX());
-                            arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
+                            arg = arg.replace(selector_key + "=" + selector_value, selector_key + "=" + replaced);
                         } else if (selector_key.equalsIgnoreCase("y")) {
                             String replaced = toRelative ? toRelative(selector_value, loc.getBlockY()) : toAbsolute(selector_value, loc.getBlockY());
-                            arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
+                            arg = arg.replace(selector_key + "=" + selector_value, selector_key + "=" + replaced);
                         } else if (selector_key.equalsIgnoreCase("z")) {
                             String replaced = toRelative ? toRelative(selector_value, loc.getBlockZ()) : toAbsolute(selector_value, loc.getBlockZ());
-                            arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
+                            arg = arg.replace(selector_key + "=" + selector_value, selector_key + "=" + replaced);
                         }
                     }
                 }
