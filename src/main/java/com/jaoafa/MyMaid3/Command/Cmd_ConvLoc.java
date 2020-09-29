@@ -1,5 +1,6 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.google.common.collect.Sets;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Main;
@@ -35,13 +36,10 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
         }
         Player player = (Player) sender;
 
-        Set<Material> materials = new HashSet<Material>() {
-            {
-                add(Material.COMMAND);
-                add(Material.COMMAND_CHAIN);
-                add(Material.COMMAND_REPEATING);
-            }
-        };
+        Set<Material> materials = Sets.newHashSet(Material.values());
+        materials.remove(Material.COMMAND);
+        materials.remove(Material.COMMAND_CHAIN);
+        materials.remove(Material.COMMAND_REPEATING);
         Block targetBlock = player.getTargetBlock(materials, 10);
         if (targetBlock == null) {
             SendMessage(sender, cmd, "対象のコマンドブロックを見てください。(1)");
