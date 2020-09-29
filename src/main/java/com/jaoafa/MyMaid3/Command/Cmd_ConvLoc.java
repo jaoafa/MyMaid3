@@ -15,10 +15,7 @@ import org.bukkit.entity.Player;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,12 +35,19 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
         }
         Player player = (Player) sender;
 
-        Block targetBlock = player.getTargetBlock(null, 10);
+        Set<Material> materials = new HashSet<Material>() {
+            {
+                add(Material.COMMAND);
+                add(Material.COMMAND_CHAIN);
+                add(Material.COMMAND_REPEATING);
+            }
+        };
+        Block targetBlock = player.getTargetBlock(materials, 10);
         if (targetBlock == null) {
             SendMessage(sender, cmd, "対象のコマンドブロックを見てください。(1)");
             return true;
         }
-        if (targetBlock.getType() != Material.COMMAND && targetBlock.getType() == Material.COMMAND_CHAIN && targetBlock.getType() == Material.COMMAND_REPEATING) {
+        if (targetBlock.getType() != Material.COMMAND && targetBlock.getType() != Material.COMMAND_CHAIN && targetBlock.getType() != Material.COMMAND_REPEATING) {
             SendMessage(sender, cmd, "対象のコマンドブロックを見てください。(2 / " + targetBlock.getType().name() + " / " + targetBlock.getX() + " " + targetBlock.getY() + " " + targetBlock.getZ() + ")");
             return true;
         }
