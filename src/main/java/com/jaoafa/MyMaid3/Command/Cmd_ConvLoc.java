@@ -145,6 +145,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
                         }
                     }
                     if (!baseCommand.equalsIgnoreCase(sheet_baseCommand)) {
+                        new_args.add(arg);
                         continue;
                     }
                     if (i >= sheet_args.size()) {
