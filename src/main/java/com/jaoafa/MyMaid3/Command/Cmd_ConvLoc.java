@@ -117,15 +117,12 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
         if (baseCommand.charAt(0) == '/') baseCommand = baseCommand.substring(1);
         List<String> args = Arrays.asList(Arrays.copyOfRange(command.split(" "), 1, command.split(" ").length));
         try {
+            LinkedList<String> new_args = new LinkedList<>();
             List<String> lines = Files.readAllLines(Paths.get(Main.getJavaPlugin().getDataFolder().getAbsolutePath(), "command_sheet.txt"));
             for (String line : lines) {
                 String sheet_baseCommand = line.split(" ")[0].trim();
                 List<String> sheet_args = Arrays.asList(Arrays.copyOfRange(line.split(" "), 1, line.split(" ").length));
 
-                if (!baseCommand.equalsIgnoreCase(sheet_baseCommand)) {
-                    continue;
-                }
-                LinkedList<String> new_args = new LinkedList<>();
                 for (int i = 0; i < args.size(); i++) {
                     String arg = args.get(i);
                     if (SELECTOR_PATTERN.matcher(arg).matches()) {
@@ -146,6 +143,9 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
                                 arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
                             }
                         }
+                    }
+                    if (!baseCommand.equalsIgnoreCase(sheet_baseCommand)) {
+                        continue;
                     }
                     if (i >= sheet_args.size()) {
                         new_args.add(arg);
@@ -177,12 +177,11 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
                     }
                     new_args.add(arg);
                 }
-                return _baseCommand + " " + String.join(" ", new_args);
             }
+            return _baseCommand + " " + String.join(" ", new_args);
         } catch (IOException e) {
             return null;
         }
-        return null;
     }
 
     /**
