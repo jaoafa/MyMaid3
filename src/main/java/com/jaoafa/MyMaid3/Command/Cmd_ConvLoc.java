@@ -119,68 +119,71 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
         try {
             LinkedList<String> new_args = new LinkedList<>();
             List<String> lines = Files.readAllLines(Paths.get(Main.getJavaPlugin().getDataFolder().getAbsolutePath(), "command_sheet.txt"));
+            List<String> sheet_args = null;
             for (String line : lines) {
                 String sheet_baseCommand = line.split(" ")[0].trim();
-                List<String> sheet_args = Arrays.asList(Arrays.copyOfRange(line.split(" "), 1, line.split(" ").length));
+                List<String> _sheet_args = Arrays.asList(Arrays.copyOfRange(line.split(" "), 1, line.split(" ").length));
 
-                boolean canEnd = false;
-                for (int i = 0; i < args.size(); i++) {
-                    String arg = args.get(i);
-                    if (SELECTOR_PATTERN.matcher(arg).matches()) {
-                        // セレクター
-                        Matcher xyz = XYZ_SELECTOR_PATTERN.matcher(arg);
-                        while (xyz.find()) {
-                            String selector_key = xyz.group(1);
-                            String selector_value = xyz.group(2);
+                if (!baseCommand.equalsIgnoreCase(sheet_baseCommand)) {
+                    continue;
+                }
+                sheet_args = _sheet_args;
+                break;
+            }
+            for (int i = 0; i < args.size(); i++) {
+                String arg = args.get(i);
+                if (SELECTOR_PATTERN.matcher(arg).matches()) {
+                    // セレクター
+                    Matcher xyz = XYZ_SELECTOR_PATTERN.matcher(arg);
+                    while (xyz.find()) {
+                        String selector_key = xyz.group(1);
+                        String selector_value = xyz.group(2);
 
-                            if (selector_key.equalsIgnoreCase("x")) {
-                                String replaced = toRelative ? toRelative(selector_value, loc.getBlockX()) : toAbsolute(selector_value, loc.getBlockX());
-                                arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
-                            } else if (selector_key.equalsIgnoreCase("y")) {
-                                String replaced = toRelative ? toRelative(selector_value, loc.getBlockY()) : toAbsolute(selector_value, loc.getBlockY());
-                                arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
-                            } else if (selector_key.equalsIgnoreCase("z")) {
-                                String replaced = toRelative ? toRelative(selector_value, loc.getBlockZ()) : toAbsolute(selector_value, loc.getBlockZ());
-                                arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
-                            }
+                        if (selector_key.equalsIgnoreCase("x")) {
+                            String replaced = toRelative ? toRelative(selector_value, loc.getBlockX()) : toAbsolute(selector_value, loc.getBlockX());
+                            arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
+                        } else if (selector_key.equalsIgnoreCase("y")) {
+                            String replaced = toRelative ? toRelative(selector_value, loc.getBlockY()) : toAbsolute(selector_value, loc.getBlockY());
+                            arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
+                        } else if (selector_key.equalsIgnoreCase("z")) {
+                            String replaced = toRelative ? toRelative(selector_value, loc.getBlockZ()) : toAbsolute(selector_value, loc.getBlockZ());
+                            arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
                         }
                     }
-                    if (!baseCommand.equalsIgnoreCase(sheet_baseCommand)) {
-                        new_args.add(arg);
-                        continue;
-                    }
-                    canEnd = true;
-                    if (i >= sheet_args.size()) {
-                        new_args.add(arg);
-                        continue;
-                    }
-                    String sheet_arg = sheet_args.get(i);
-                    if (sheet_arg.equals("%N")) {
-                        // skip
-                        new_args.add(arg);
-                        continue;
-                    }
-                    if (sheet_arg.equals("%X")) {
-                        // x
-                        String replaced = toRelative ? toRelative(arg, loc.getBlockX()) : toAbsolute(arg, loc.getBlockX());
-                        new_args.add(replaced);
-                        continue;
-                    }
-                    if (sheet_arg.equals("%Y")) {
-                        // y
-                        String replaced = toRelative ? toRelative(arg, loc.getBlockY()) : toAbsolute(arg, loc.getBlockY());
-                        new_args.add(replaced);
-                        continue;
-                    }
-                    if (sheet_arg.equals("%Z")) {
-                        // z
-                        String replaced = toRelative ? toRelative(arg, loc.getBlockZ()) : toAbsolute(arg, loc.getBlockZ());
-                        new_args.add(replaced);
-                        continue;
-                    }
-                    new_args.add(arg);
                 }
-                if (canEnd) return _baseCommand + " " + String.join(" ", new_args);
+                if (sheet_args == null) {
+                    new_args.add(arg);
+                    continue;
+                }
+                if (i >= sheet_args.size()) {
+                    new_args.add(arg);
+                    continue;
+                }
+                String sheet_arg = sheet_args.get(i);
+                if (sheet_arg.equals("%N")) {
+                    // skip
+                    new_args.add(arg);
+                    continue;
+                }
+                if (sheet_arg.equals("%X")) {
+                    // x
+                    String replaced = toRelative ? toRelative(arg, loc.getBlockX()) : toAbsolute(arg, loc.getBlockX());
+                    new_args.add(replaced);
+                    continue;
+                }
+                if (sheet_arg.equals("%Y")) {
+                    // y
+                    String replaced = toRelative ? toRelative(arg, loc.getBlockY()) : toAbsolute(arg, loc.getBlockY());
+                    new_args.add(replaced);
+                    continue;
+                }
+                if (sheet_arg.equals("%Z")) {
+                    // z
+                    String replaced = toRelative ? toRelative(arg, loc.getBlockZ()) : toAbsolute(arg, loc.getBlockZ());
+                    new_args.add(replaced);
+                    continue;
+                }
+                new_args.add(arg);
             }
             return _baseCommand + " " + String.join(" ", new_args);
         } catch (IOException e) {
