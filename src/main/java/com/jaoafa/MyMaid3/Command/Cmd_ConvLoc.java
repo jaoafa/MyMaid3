@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 
 public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([0-9]+)$");
+    Pattern SELECTOR_PATTERN = Pattern.compile("^@[praes]\\[.*?]$");
+    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("([xyz])=([~\\-0-9]+)");
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -74,12 +76,14 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
         } else if (args.length == 1) {
             if (args[0].startsWith("relative")) {
                 String replaced = replaceProcess(targetBlock.getLocation(), command, true);
+                if (replaced == null) replaced = command;
                 SendMessage(sender, cmd, targetBlock.getWorld().getName() + " " + targetBlock.getX() + " " + targetBlock.getY() + " " + targetBlock.getZ());
                 SendMessage(sender, cmd, "BEFORE: " + command);
                 SendMessage(sender, cmd, "AFTER : " + replaced);
                 return true;
             } else if (args[0].startsWith("absolute")) {
                 String replaced = replaceProcess(targetBlock.getLocation(), command, false);
+                if (replaced == null) replaced = command;
                 SendMessage(sender, cmd, targetBlock.getWorld().getName() + " " + targetBlock.getX() + " " + targetBlock.getY() + " " + targetBlock.getZ());
                 SendMessage(sender, cmd, "BEFORE: " + command);
                 SendMessage(sender, cmd, "AFTER : " + replaced);
@@ -123,35 +127,55 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
                 }
                 LinkedList<String> new_args = new LinkedList<>();
                 for (int i = 0; i < args.size(); i++) {
-                    if (i > sheet_args.size()) {
-                        new_args.add(args.get(i));
+                    String arg = args.get(i);
+                    if (SELECTOR_PATTERN.matcher(arg).matches()) {
+                        // セレクター
+                        Matcher xyz = XYZ_SELECTOR_PATTERN.matcher(arg);
+                        while (xyz.find()) {
+                            String selector_key = xyz.group(1);
+                            String selector_value = xyz.group(2);
+
+                            if (selector_key.equalsIgnoreCase("x")) {
+                                String replaced = toRelative ? toRelative(selector_value, loc.getBlockX()) : toAbsolute(selector_value, loc.getBlockX());
+                                arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
+                            } else if (selector_key.equalsIgnoreCase("y")) {
+                                String replaced = toRelative ? toRelative(selector_value, loc.getBlockY()) : toAbsolute(selector_value, loc.getBlockY());
+                                arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
+                            } else if (selector_key.equalsIgnoreCase("z")) {
+                                String replaced = toRelative ? toRelative(selector_value, loc.getBlockZ()) : toAbsolute(selector_value, loc.getBlockZ());
+                                arg = arg.replace(xyz.group(0), xyz.group(1) + "=" + replaced);
+                            }
+                        }
+                    }
+                    if (i >= sheet_args.size()) {
+                        new_args.add(arg);
                         continue;
                     }
                     String sheet_arg = sheet_args.get(i);
                     if (sheet_arg.equals("%N")) {
                         // skip
-                        new_args.add(args.get(i));
+                        new_args.add(arg);
                         continue;
                     }
                     if (sheet_arg.equals("%X")) {
                         // x
-                        String replaced = toRelative ? toRelative(args.get(i), loc.getBlockX()) : toAbsolute(args.get(i), loc.getBlockX());
+                        String replaced = toRelative ? toRelative(arg, loc.getBlockX()) : toAbsolute(arg, loc.getBlockX());
                         new_args.add(replaced);
                         continue;
                     }
                     if (sheet_arg.equals("%Y")) {
                         // y
-                        String replaced = toRelative ? toRelative(args.get(i), loc.getBlockY()) : toAbsolute(args.get(i), loc.getBlockY());
+                        String replaced = toRelative ? toRelative(arg, loc.getBlockY()) : toAbsolute(arg, loc.getBlockY());
                         new_args.add(replaced);
                         continue;
                     }
                     if (sheet_arg.equals("%Z")) {
                         // z
-                        String replaced = toRelative ? toRelative(args.get(i), loc.getBlockZ()) : toAbsolute(args.get(i), loc.getBlockZ());
+                        String replaced = toRelative ? toRelative(arg, loc.getBlockZ()) : toAbsolute(arg, loc.getBlockZ());
                         new_args.add(replaced);
                         continue;
                     }
-                    new_args.add(args.get(i));
+                    new_args.add(arg);
                 }
                 return _baseCommand + " " + String.join(" ", new_args);
             }
@@ -182,6 +206,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
         }
         int i = Integer.parseInt(matcher.group(2) + matcher.group(3));
 
+        if (("~" + (i - cmb_xyz)).equals("~0")) return "~";
         return "~" + (i - cmb_xyz);
     }
 
@@ -204,7 +229,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
             // 既に絶対座標数値
             return xyz;
         }
-        int i = Integer.parseInt(matcher.group(3));
+        int i = matcher.group(3).equals("") ? 0 : Integer.parseInt(matcher.group(3));
         if (matcher.group(2).equals("-")) {
             i = cmb_xyz - i;
         } else {
