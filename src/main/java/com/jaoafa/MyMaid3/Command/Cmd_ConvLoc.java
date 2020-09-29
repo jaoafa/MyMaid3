@@ -178,8 +178,9 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
                     }
                     new_args.add(arg);
                 }
+                return _baseCommand + " " + String.join(" ", new_args);
             }
-            return _baseCommand + " " + String.join(" ", new_args);
+            return null;
         } catch (IOException e) {
             return null;
         }
