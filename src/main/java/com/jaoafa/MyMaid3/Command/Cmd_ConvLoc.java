@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([0-9]+)$");
     Pattern SELECTOR_PATTERN = Pattern.compile("^@[praes]\\[.*?]$");
-    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("([xyz])=([~\\-0-9]+)");
+    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("([^d][xyz])=([~\\-0-9]+)");
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
