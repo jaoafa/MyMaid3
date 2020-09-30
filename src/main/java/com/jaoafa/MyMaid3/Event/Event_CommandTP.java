@@ -1,6 +1,7 @@
 package com.jaoafa.MyMaid3.Event;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
+import com.jaoafa.MyMaid3.Lib.TpDeny;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -21,7 +22,7 @@ public class Event_CommandTP extends MyMaidLibrary implements Listener {
         }
         if (!args[0].equalsIgnoreCase("/tp")
                 && !args[0].equalsIgnoreCase("/minecraft:tp")) {
-            return; // gamemodeコマンド以外
+            return; // tpコマンド以外
         }
         // /tp [target player] <destination player>
         // /tp [target player] <x> <y> <z> [<yaw> <pitch>]
@@ -44,6 +45,16 @@ public class Event_CommandTP extends MyMaidLibrary implements Listener {
                         SendMessage(player, "tp", "プレイヤー「" + to_player.getName() + "」はスペクテイターモードのためテレポートできません。");
                         event.setCancelled(true);
                     }
+                }
+            } else {
+                // TpDeny
+                TpDeny tpDeny = new TpDeny(to_player);
+                if (tpDeny.isTpDeny(player)) {
+                    // denied
+                    printDebugMsg("tpDenyによって拒否されました。");
+                    SendMessage(player, "tpDeny", "指定されたプレイヤー「" + to_player.getName() + "」へのテレポートは拒否されました。");
+                    SendMessage(to_player, "tpDeny", "プレイヤー「" + player.getName() + "」からのテレポートを拒否しました。");
+                    event.setCancelled(true);
                 }
             }
         } else if (args.length == 3) { // /tp <Player> <Player>
@@ -76,6 +87,16 @@ public class Event_CommandTP extends MyMaidLibrary implements Listener {
                         SendMessage(player, "tp", "プレイヤー「" + to_player.getName() + "」はスペクテイターモードのためテレポートできません。");
                         event.setCancelled(true);
                     }
+                }
+            } else {
+                // TpDeny
+                TpDeny tpDeny = new TpDeny(to_player);
+                if (tpDeny.isTpDeny(player) || tpDeny.isTpDeny(from_player)) {
+                    // denied
+                    printDebugMsg("tpDenyによって拒否されました。");
+                    SendMessage(player, "tpDeny", "指定されたプレイヤー「" + to_player.getName() + "」へのテレポートは拒否されました。");
+                    SendMessage(to_player, "tpDeny", "プレイヤー「" + player.getName() + "」からのテレポートを拒否しました。");
+                    event.setCancelled(true);
                 }
             }
         } else if (args.length == 4) { // /tp ~ ~ ~
