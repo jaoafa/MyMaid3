@@ -59,6 +59,7 @@ public class Cmd_TpDeny extends MyMaidLibrary implements CommandExecutor, Comman
                     SendMessage(sender, cmd, "[" + denydata.id + "] " + denydata.target.getName() + " / created_at: " + MyMaidLibrary.sdfFormat(denydata.created_at) + " / updated_at: " + MyMaidLibrary.sdfFormat(denydata.updated_at));
                 }
                 SendMessage(sender, cmd, "テレポート拒否を解除したい場合は、かっこ内に記載されている数値(TpDenyId)を元に/tpdeny remove <TpDenyId>を実行してください。");
+                return true;
             }
         }
         SendUsageMessage(sender, cmd);

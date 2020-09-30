@@ -99,8 +99,8 @@ public class TpDeny {
                         Bukkit.getOfflinePlayer(UUID.fromString(res.getString("uuid"))),
                         Bukkit.getOfflinePlayer(UUID.fromString(res.getString("deny_uuid"))),
                         res.getBoolean("disabled"),
-                        res.getDate("created_at"),
-                        res.getDate("updated_at")
+                        res.getTimestamp("created_at"),
+                        res.getTimestamp("updated_at")
                 ));
             }
             return rets;
