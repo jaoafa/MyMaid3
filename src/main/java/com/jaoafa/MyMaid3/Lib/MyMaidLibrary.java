@@ -121,7 +121,7 @@ public class MyMaidLibrary {
         try {
             UUID.fromString(s);
             return true;
-        } catch (NumberFormatException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
