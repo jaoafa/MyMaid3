@@ -32,7 +32,26 @@ public class Cmd_TpDeny extends MyMaidLibrary implements CommandExecutor, Comman
             return true;
         }
         TpDeny tpDeny = new TpDeny(player);
-        if (args.length == 2) {
+        if (args.length == 3) {
+            if (args[0].equalsIgnoreCase("notify")) {
+                if (!isInt(args[1]) || Integer.parseInt(args[1]) <= 0) {
+                    SendMessage(sender, cmd, "第2引数の指定に問題があります。1以上の数値(TpDenyId)を指定してください。");
+                    return true;
+                }
+                boolean notifySetting;
+                if (args[2].equalsIgnoreCase("On")) {
+                    notifySetting = true;
+                } else if (args[2].equalsIgnoreCase("Off")) {
+                    notifySetting = false;
+                } else {
+                    SendMessage(sender, cmd, "第3引数にはOnまたはOffを指定してください。");
+                    return true;
+                }
+                boolean bool = tpDeny.setNotify(Integer.parseInt(args[1]), notifySetting);
+                SendMessage(sender, cmd, "指定されたTpDenyId「" + args[1] + "」の通知設定を" + (notifySetting ? "オン" : "オフ") + "にすることに" + (bool ? "成功" : "失敗") + "しました。");
+                return true;
+            }
+        } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("add")) {
                 OfflinePlayer target = getOfflinePlayer(args[1]);
                 if (tpDeny.isTpDeny(target)) {
@@ -83,6 +102,7 @@ public class Cmd_TpDeny extends MyMaidLibrary implements CommandExecutor, Comman
             {
                 add("/tpdeny add <Player>: TpDenyにプレイヤーを追加し、以降のテレポートを拒否します。");
                 add("/tpdeny remove <TpDenyId>: TpDenyからプレイヤーを解除し、以降のテレポートを許可します。TpDenyIdは/tpdeny listで取得してください。");
+                add("/tpdeny notify <TpDenyId> <On/Off>: テレポートを拒否した場合に通知するかどうかを設定します。TpDenyIdは/tpdeny listで取得してください。");
                 add("/tpdeny list: 現在TpDenyに追加されている(テレポートを拒否されている)プレイヤーの一覧を表示します。");
             }
         };

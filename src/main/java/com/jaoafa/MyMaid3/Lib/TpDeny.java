@@ -20,6 +20,12 @@ public class TpDeny {
         this.player = player;
     }
 
+    /**
+     * targetがコマンド実行者であった場合、テレポートを拒否するか
+     *
+     * @param target コマンド実行者
+     * @return テレポートを拒否するならばtrue
+     */
     public boolean isTpDeny(OfflinePlayer target) {
         if (MyMaidConfig.getMySQLDBManager() == null) {
             return false;
@@ -41,6 +47,12 @@ public class TpDeny {
         }
     }
 
+    /**
+     * 以降のテレポートを拒否する
+     *
+     * @param target テレポートを拒否するプレイヤー
+     * @return 成功したか
+     */
     public boolean addDeny(OfflinePlayer target) {
         if (MyMaidConfig.getMySQLDBManager() == null) {
             return false;
@@ -64,15 +76,22 @@ public class TpDeny {
         }
     }
 
+    /**
+     * テレポート拒否設定を無効化(オフに)する
+     *
+     * @param id TpDenyId
+     * @return 成功したか
+     */
     public boolean disableDeny(int id) {
         if (MyMaidConfig.getMySQLDBManager() == null) {
             return false;
         }
         try {
             Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE tpdeny SET disabled = ? WHERE rowid = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE tpdeny SET disabled = ? WHERE rowid = ? AND uuid = ?");
             stmt.setBoolean(1, true);
             stmt.setInt(2, id);
+            stmt.setString(3, player.getUniqueId().toString());
             int count = stmt.executeUpdate();
             stmt.close();
             return count != 0;
@@ -82,6 +101,11 @@ public class TpDeny {
         }
     }
 
+    /**
+     * 現在設定されているテレポート拒否設定の一覧を表示する。
+     *
+     * @return テレポートを拒否するList
+     */
     public List<TpDenyData> getDenys() {
         List<TpDenyData> rets = new ArrayList<>();
         if (MyMaidConfig.getMySQLDBManager() == null) {
@@ -107,6 +131,62 @@ public class TpDeny {
         } catch (SQLException e) {
             e.printStackTrace();
             return rets;
+        }
+    }
+
+    /**
+     * テレポートを拒否した場合、通知するか
+     *
+     * @param target 対象プレイヤー
+     * @return 通知するか否か
+     */
+    public boolean isNotify(OfflinePlayer target) {
+        if (MyMaidConfig.getMySQLDBManager() == null) {
+            return true;
+        }
+        try {
+            Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM tpdeny WHERE uuid = ? AND deny_uuid = ? AND disabled = ?");
+            stmt.setString(1, player.getUniqueId().toString());
+            stmt.setString(2, target.getUniqueId().toString());
+            stmt.setBoolean(3, false);
+            ResultSet res = stmt.executeQuery();
+            if (!res.next()) {
+                return true;
+            }
+            boolean bool = res.getBoolean("notify");
+            res.close();
+            stmt.close();
+            return bool; // 存在するならdeny
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    /**
+     * テレポートを拒否した場合、通知するかを設定する
+     *
+     * @param id   TpDenyId
+     * @param bool 通知するかどうか
+     * @return 成功したか
+     */
+    public boolean setNotify(int id, boolean bool) {
+        if (MyMaidConfig.getMySQLDBManager() == null) {
+            return false;
+        }
+        try {
+            Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
+            PreparedStatement stmt = conn.prepareStatement("UPDATE tpdeny SET notify = ? WHERE rowid = ? AND uuid = ?");
+            stmt.setBoolean(1, bool);
+            stmt.setInt(2, id);
+            stmt.setString(3, player.getUniqueId().toString());
+            int count = stmt.executeUpdate();
+            stmt.close();
+            return count != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
