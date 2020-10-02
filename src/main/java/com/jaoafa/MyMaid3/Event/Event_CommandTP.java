@@ -53,7 +53,8 @@ public class Event_CommandTP extends MyMaidLibrary implements Listener {
                     // denied
                     printDebugMsg("tpDenyによって拒否されました。");
                     SendMessage(player, "tpDeny", "指定されたプレイヤー「" + to_player.getName() + "」へのテレポートは拒否されました。");
-                    SendMessage(to_player, "tpDeny", "プレイヤー「" + player.getName() + "」からのテレポートを拒否しました。");
+                    if (tpDeny.isNotify(player))
+                        SendMessage(to_player, "tpDeny", "プレイヤー「" + player.getName() + "」からのテレポートを拒否しました。");
                     event.setCancelled(true);
                 }
             }
@@ -95,7 +96,8 @@ public class Event_CommandTP extends MyMaidLibrary implements Listener {
                     // denied
                     printDebugMsg("tpDenyによって拒否されました。");
                     SendMessage(player, "tpDeny", "指定されたプレイヤー「" + to_player.getName() + "」へのテレポートは拒否されました。");
-                    SendMessage(to_player, "tpDeny", "プレイヤー「" + player.getName() + "」からのテレポートを拒否しました。");
+                    if (tpDeny.isNotify(player))
+                        SendMessage(to_player, "tpDeny", "プレイヤー「" + player.getName() + "」からのテレポートを拒否しました。");
                     event.setCancelled(true);
                 }
             }
