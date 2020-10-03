@@ -30,7 +30,7 @@ public class Event_NotifyTPServerChat extends MyMaidLibrary implements Listener 
             if (to_player == null) {
                 return;
             }
-            MyMaidConfig.getServerChatChannel().sendMessage(String.format("Teleported to %s to %s", player.getName(), to_player.getName())).queue();
+            MyMaidConfig.getServerChatChannel().sendMessage(String.format("*[%s: Teleported %s to %s]*", MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(to_player.getName()))).queue();
         } else if (args.length == 3) { // /tp <Player> <Player>
             String from = args[1];
             String to = args[2];
