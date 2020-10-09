@@ -274,7 +274,7 @@ public class PlayerVoteData_Monocraft {
         PreparedStatement statement = conn
                 .prepareStatement("UPDATE vote_monocraft SET count = ?, last = ? WHERE id = ?");
         statement.setInt(1, next);
-        statement.setTimestamp(2, Timestamp.from(Instant.ofEpochSecond(unixtime)));
+        statement.setTimestamp(2, Timestamp.from(Instant.ofEpochMilli(unixtime)));
         statement.setInt(3, getID());
         int upcount = statement.executeUpdate();
         statement.close();
