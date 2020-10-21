@@ -131,7 +131,7 @@ public class PlayerVoteData_Monocraft {
      * @throws NullPointerException          プレイヤーが取得できなかったとき
      * @throws NumberFormatException         最終投票日時が正常に取得できなかったとき
      */
-    public Long getLastVoteUnixTime() throws SQLException, UnsupportedOperationException,
+    public Long getLastVoteMilliseconds() throws SQLException, UnsupportedOperationException,
             NullPointerException, NumberFormatException {
         if (offplayer == null)
             throw new NullPointerException("We could not get the player.");
@@ -156,7 +156,7 @@ public class PlayerVoteData_Monocraft {
 
     public boolean isVoted() {
         try {
-            Long lasttime = getLastVoteUnixTime();
+            Long lasttime = getLastVoteMilliseconds();
             Calendar cal = Calendar.getInstance();
             cal.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
             cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
@@ -250,18 +250,18 @@ public class PlayerVoteData_Monocraft {
      * @throws NullPointerException プレイヤーが取得できなかったとき
      */
     public boolean add() throws SQLException, NullPointerException {
-        return add(System.currentTimeMillis() / 1000L);
+        return add(System.currentTimeMillis());
     }
 
     /**
      * プレイヤーの投票数に1つ追加します。
      *
-     * @param unixtime UnixTime
+     * @param millisecond MilliSeconds
      * @return 実行できたかどうか
      * @throws SQLException         内部でSQLExceptionが発生した場合
      * @throws NullPointerException プレイヤーが取得できなかったとき
      */
-    public boolean add(long unixtime) throws SQLException, NullPointerException {
+    public boolean add(long millisecond) throws SQLException, NullPointerException {
         if (offplayer == null)
             throw new NullPointerException("We could not get the player.");
         if (!exists()) {
@@ -274,7 +274,7 @@ public class PlayerVoteData_Monocraft {
         PreparedStatement statement = conn
                 .prepareStatement("UPDATE vote_monocraft SET count = ?, last = ? WHERE id = ?");
         statement.setInt(1, next);
-        statement.setTimestamp(2, Timestamp.from(Instant.ofEpochMilli(unixtime)));
+        statement.setTimestamp(2, Timestamp.from(Instant.ofEpochMilli(millisecond)));
         statement.setInt(3, getID());
         int upcount = statement.executeUpdate();
         statement.close();
