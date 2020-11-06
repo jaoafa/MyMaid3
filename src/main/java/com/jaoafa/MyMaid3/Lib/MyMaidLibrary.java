@@ -3,6 +3,7 @@ package com.jaoafa.MyMaid3.Lib;
 import com.jaoafa.MyMaid3.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,6 +13,8 @@ import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MyMaidLibrary {
     @Nullable
@@ -151,5 +154,52 @@ public class MyMaidLibrary {
         } else {
             SendMessage(sender, cmd, CMDusage);
         }
+    }
+
+    /**
+     * 4バイトの文字列を含むかどうかを調べます
+     *
+     * @param str 文字列
+     * @return 含むならtrue
+     */
+    public static boolean check4bytechars(String str) {
+        Pattern pattern = Pattern.compile(".*([^\\u0000-\\uFFFF]).*");
+        Matcher m = pattern.matcher(str);
+        return m.matches();
+    }
+
+    /**
+     * 4バイトの文字列を含むかどうかを調べ、含んでいればその文字列を返します。
+     *
+     * @param str 文字列
+     * @return 含むならその文字列、そうでなければnull
+     */
+    public static String check4bytechars_MatchText(String str) {
+        Pattern pattern = Pattern.compile(".*([^\\u0000-\\uFFFF]).*");
+        Matcher m = pattern.matcher(str);
+        if (m.matches()) {
+            return m.group(1);
+        }
+
+        return null;
+    }
+
+    /**
+     * 指定されたLocationに一番近いプレイヤーを取得します。
+     *
+     * @param loc Location
+     * @return 一番近いプレイヤー
+     */
+    public Player getNearestPlayer(Location loc) {
+        double closest = Double.MAX_VALUE;
+        Player closestp = null;
+        for (Player i : loc.getWorld().getPlayers()) {
+            double dist = i.getLocation().distance(loc);
+            if (closest == Double.MAX_VALUE || dist < closest) {
+                closest = dist;
+                closestp = i;
+            }
+        }
+        return closestp;
     }
 }
