@@ -5,9 +5,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class MyMaidConfig {
     private static JDA JDA = null;
@@ -21,6 +19,7 @@ public class MyMaidConfig {
     private static Map<UUID, Location> coOLDLoc = new HashMap<>();
     private static MySQLDBManager MySQLDBManager_COOLD = null;
     private static boolean DedRaining = true;
+    private static final Set<UUID> hid = new HashSet<>();
 
     public static JDA getJDA() {
         return JDA;
@@ -122,4 +121,15 @@ public class MyMaidConfig {
         DedRaining = dedRaining;
     }
 
+    public static boolean isHid(UUID uuid) {
+        return hid.contains(uuid);
+    }
+
+    public static void addHid(UUID uuid) {
+        hid.add(uuid);
+    }
+
+    public static void removeHid(UUID uuid) {
+        hid.remove(uuid);
+    }
 }

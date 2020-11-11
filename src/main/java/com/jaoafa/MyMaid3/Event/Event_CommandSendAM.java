@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -17,13 +18,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Event_CommandSendAM extends MyMaidLibrary implements Listener {
-    @EventHandler
-    public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent e) {
-        Player player = e.getPlayer();
-        if (!(player instanceof Player)) {
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        if (player == null) {
             return;
         }
-        String command = e.getMessage();
+        String command = event.getMessage();
         if (isAMRV(player)) {
             // Default以上は実行試行したコマンドを返す
             player.sendMessage(ChatColor.DARK_GRAY + "Cmd: " + command); // 仮
@@ -32,7 +33,7 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (isAM(p) && (!player.getName().equals(p.getName()))) {
                 p.sendMessage(
-                        ChatColor.GRAY + "(" + group + ") " + player.getName() + ": " + ChatColor.YELLOW + command);
+                        ChatColor.GRAY + "(" + group + ") " + player.getName() + ": " + ChatColor.YELLOW + command + (event.isCancelled() ? ChatColor.RED + " (Canceled)" : ""));
             }
         }
 
