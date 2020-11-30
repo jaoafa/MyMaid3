@@ -1,18 +1,14 @@
 package com.jaoafa.MyMaid3.Command;
 
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
-import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,14 +40,8 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandExecutor, CommandP
         if (args[0].equalsIgnoreCase("jaotan")) {
             color = ChatColor.GOLD;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
-        Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdf.format(new Date()) + "]" + color + "■" + ChatColor.WHITE
-                + args[0] + ": " + text);
-        MyMaidConfig.getServerChatChannel()
-                .sendMessage("**" + DiscordEscape(args[0]) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
-                .queue();
-        //DiscordSend("**" + args[0] + "**: " + text);
+        chatFake(color, args[0], text);
         return true;
     }
 

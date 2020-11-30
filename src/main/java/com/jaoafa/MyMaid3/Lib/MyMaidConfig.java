@@ -20,6 +20,8 @@ public class MyMaidConfig {
     private static MySQLDBManager MySQLDBManager_COOLD = null;
     private static boolean DedRaining = true;
     private static final Set<UUID> hid = new HashSet<>();
+    private static final Map<UUID, Integer> SpamCount = new HashMap<>();
+    private static final Map<UUID, Long> SpamTime = new HashMap<>();
 
     public static JDA getJDA() {
         return JDA;
@@ -131,5 +133,21 @@ public class MyMaidConfig {
 
     public static void removeHid(UUID uuid) {
         hid.remove(uuid);
+    }
+
+    public static Integer getSpamCount(UUID uuid) {
+        return SpamCount.get(uuid);
+    }
+
+    public static void setSpamCount(UUID uuid, int count) {
+        SpamCount.put(uuid, count);
+    }
+
+    public static Long getSpamTime(UUID uuid) {
+        return SpamTime.get(uuid);
+    }
+
+    public static void setSpamTime(UUID uuid, long time) {
+        SpamTime.put(uuid, time);
     }
 }

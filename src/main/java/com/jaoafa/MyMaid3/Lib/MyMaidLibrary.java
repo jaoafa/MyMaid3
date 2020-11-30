@@ -202,4 +202,55 @@ public class MyMaidLibrary {
         }
         return closestp;
     }
+
+    /**
+     * スパムかどうかのチェックを実施し、必要に応じてJailします。
+     *
+     * @param player チェックを行うプレイヤー
+     */
+    public static void checkSpam(Player player) {
+        if (MyMaidConfig.getSpamCount(player.getUniqueId()) == null || MyMaidConfig.getSpamTime(player.getUniqueId()) == null) {
+            MyMaidConfig.setSpamCount(player.getUniqueId(), 1);
+            MyMaidConfig.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+            return;
+        }
+        int count = MyMaidConfig.getSpamCount(player.getUniqueId());
+        long time = MyMaidConfig.getSpamTime(player.getUniqueId());
+
+        if (System.currentTimeMillis() - time > 180000) {
+            // 3分
+            MyMaidConfig.setSpamCount(player.getUniqueId(), 1);
+            MyMaidConfig.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+            return;
+        }
+
+        if (count == 2) {
+            // 今回3回目 -> Jail
+            Jail jail = new Jail(player);
+            if (jail.isBanned()) {
+                return;
+            }
+            jail.addBan("jaotan", "迷惑コマンドを3分間に3回以上実行したため");
+        } else if (count == 1) {
+            player.sendMessage(String.format("[AntiProblemCommand] %s短時間に複数回にわたる迷惑コマンドが実行された場合、処罰対象となる場合があります。ご注意ください。", ChatColor.GREEN));
+        } else {
+            player.sendMessage(String.format("[AntiProblemCommand] %sあなたが実行したコマンドは迷惑コマンドとされています。複数回実行すると、迷惑行為として処罰対象となる場合がございます。", ChatColor.GREEN));
+        }
+        MyMaidConfig.setSpamCount(player.getUniqueId(), count + 1);
+        MyMaidConfig.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+    }
+
+    /**
+     * フェイクのチャットを送信します。
+     *
+     * @param color 四角色
+     * @param name  プレイヤー名
+     * @param text  テキスト
+     */
+    public static void chatFake(ChatColor color, String name, String text) {
+        Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdfFormat(new Date()) + "]" + color + "■" + ChatColor.WHITE + name + ": " + text);
+        MyMaidConfig.getServerChatChannel()
+                .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
+                .queue();
+    }
 }

@@ -16,8 +16,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Event_LongTimeNoSee extends MyMaidLibrary implements Listener {
     @EventHandler
@@ -78,15 +76,7 @@ public class Event_LongTimeNoSee extends MyMaidLibrary implements Listener {
                                 builder.append(sec + "秒");
                             }
 
-                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                            Bukkit.broadcastMessage(
-                                    ChatColor.GRAY + "[" + sdf.format(new Date()) + "]" + ChatColor.GOLD + "■"
-                                            + ChatColor.WHITE + "jaotan" + ": " + player.getName() + "さん、お久しぶりです！"
-                                            + builder.toString()
-                                            + "ぶりですね！");
-                            MyMaidConfig.getServerChatChannel().sendMessage(
-                                    "**jaotan**: " + player.getName() + "さん、お久しぶりです！" + builder.toString() + "ぶりですね！")
-                                    .queue();
+                            chatFake(ChatColor.GOLD, "jaotan", player.getName() + "さん、お久しぶりです！" + builder.toString() + "ぶりですね！");
                         }
                     }
                 } catch (SQLException e) {
