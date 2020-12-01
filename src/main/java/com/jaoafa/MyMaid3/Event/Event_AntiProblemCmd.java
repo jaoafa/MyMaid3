@@ -96,6 +96,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                 player.chat("自分は思わないんだけど周りにキリトに似てるってよく言われるwww");
                 player.chat("こないだDQNに絡まれた時も気が付いたら意識無くて周りに人が血だらけで倒れてたしなwww");
                 player.chat("ちなみに彼女もアスナに似てる(聞いてないw)");
+                player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
                 checkSpam(player);
                 return;
@@ -105,6 +106,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                 player.chat("一応オタクだけど彼女いるし、俺って退けない性格だしそこら辺とかめっちゃ似てるって言われる()");
                 player.chat("握力も31キロあってクラスの女子にたかられる←彼女いるからやめろ！笑");
                 player.chat("俺、これでも中1ですよ？");
+                player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
                 checkSpam(player);
                 return;
@@ -114,6 +116,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                 player.chat("最後にキレたのは高2のころかな。オタクだからってウェイ系に絡まれたときw");
                 player.chat(
                         "最初は微笑してたんだけど、推しを貶されて気づいたらウェイ系は意識無くなってて、25人くらいに取り押さえられてたw記憶無いけど、ひたすら笑顔で殴ってたらしいw俺ってサイコパスなのかもなww");
+                player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
                 checkSpam(player);
                 return;
@@ -198,6 +201,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
             player.chat("自分は思わないんだけど周りにキリトに似てるってよく言われるwww");
             player.chat("こないだDQNに絡まれた時も気が付いたら意識無くて周りに人が血だらけで倒れてたしなwww");
             player.chat("ちなみに彼女もアスナに似てる(聞いてないw)");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             MyMaidLibrary.checkSpam(player);
             event.setCancelled(true);
         }
@@ -207,6 +211,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
             player.chat("(◞‸◟) ｻﾊﾞｵﾁﾅｲｰﾅ? ﾎﾜｯｳｳﾞｼﾞｸｼﾞｸﾞｨﾝﾉﾝﾞﾝﾞﾝﾞﾝﾞﾍﾟﾗﾚｸﾞｼﾞｭﾁﾞ…ﾇﾇﾉｮｩﾂﾋﾞｮﾝﾇｽﾞｨｺｹｰｯﾝｦｯ…ｶﾅｼﾐ…");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
@@ -216,6 +221,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
             player.chat("オ、オオwwwwwwwwオレアタマ良いwwwwwwww最近めっちょ成績あがってんねんオレwwwwwwwwエゴサとかかけるとめっちょ人気やねんwwwwァァァァァァァwwwクソハゲアタマを見下しながら食べるフライドチキンは一段とウメェなァァァァwwwwwwww");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
@@ -225,6 +231,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
             player.chat("オ、オオwwwwwwwwオレコマンド実行できるwwwwwwww最近マイクラやってんねんオレwwwwwwwwカスどもをぶちのめしてるねんwwwwァァァァァァァwwwカスに見下されながら食べるフィレオフィッシュは一段とウメェなァァァァwwwwwwww");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
@@ -234,6 +241,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
             player.chat("オ、オオwwwwwwwwオレアルファwwwwwwww最近めっちょふぁぼられてんねんオレwwwwwwwwエゴサとかかけるとめっちょ人気やねんwwwwァァァァァァァwwwクソアルファを見下しながら食べるエビフィレオは一段とウメェなァァァァwwwwwwww");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
@@ -350,6 +358,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
             player.chat("†エンゲキ†...");
             player.chat(
                     "私達の世界は…演劇で溢れています…その劇を演じる者…受け入れて消費する者…全ての者がそれに魅了されます…舞台の上に上がり…世界に自分の価値をはからせましょう…その舞台が…現実のものであるかないかにかかわらず…私達は…私達の役を演じるのです…しかし…それらの役割を無くしてしまったら…私達は一体何者なのでしょう…人々が、善と悪を区別しなくなり…目に見える世界が失われ…舞台の幕が降ろされてしまったら…私達は…本当の自分達であること…それが…生きているということなのでしょうか…魂を…持っているということなのでしょうか……＼キイイイイイイイン！！！！！！！！！／");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
