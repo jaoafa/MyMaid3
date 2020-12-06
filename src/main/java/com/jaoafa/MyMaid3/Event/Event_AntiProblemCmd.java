@@ -98,7 +98,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                 player.chat("ちなみに彼女もアスナに似てる(聞いてないw)");
                 player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
-                checkSpam(player);
+                MyMaidLibrary.checkSpam(player);
                 return;
             }
             if (args[1].equalsIgnoreCase("@a")) {
@@ -108,7 +108,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                 player.chat("俺、これでも中1ですよ？");
                 player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
-                checkSpam(player);
+                MyMaidLibrary.checkSpam(player);
                 return;
             }
             if (args[1].startsWith("@e") && !MyMaidLibrary.isAMR(player)) {
@@ -118,7 +118,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                         "最初は微笑してたんだけど、推しを貶されて気づいたらウェイ系は意識無くなってて、25人くらいに取り押さえられてたw記憶無いけど、ひたすら笑顔で殴ってたらしいw俺ってサイコパスなのかもなww");
                 player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
-                checkSpam(player);
+                MyMaidLibrary.checkSpam(player);
                 return;
             }
             if (!MyMaidLibrary.isAMR(player)) {
@@ -132,7 +132,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                 MyMaidLibrary.chatFake(ChatColor.GOLD, "jaotan", text);
                 player.setHealth(0);
                 event.setCancelled(true);
-                checkSpam(player);
+                MyMaidLibrary.checkSpam(player);
                 return;
             }
             if (args[1].startsWith("@e")) {
@@ -143,6 +143,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                         Set<String> invalids = parser.getInValidValues();
                         player.sendMessage(String.format("[COMMAND] %s不適切だったセレクター引数: %s", ChatColor.GREEN, String.join(", ", invalids)));
                         event.setCancelled(true);
+                        MyMaidLibrary.checkSpam(player);
                         return;
                     }
                     if (!parser.getArgs().containsKey("r")) {
@@ -157,6 +158,7 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                             player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
                             player.sendMessage(String.format("[COMMAND] %s理由: @eセレクターで引数「%s」のいずれかを指定せずに実行することはできません。", ChatColor.GREEN, String.join("」・「", LeastOne)));
                             event.setCancelled(true);
+                            MyMaidLibrary.checkSpam(player);
                             return;
                         }
                     }
@@ -166,18 +168,21 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                             player.sendMessage(
                                     String.format("[COMMAND] %s理由: @eセレクターで引数「r」に300以上の値を指定することはできません。", ChatColor.GREEN));
                             event.setCancelled(true);
+                            MyMaidLibrary.checkSpam(player);
                             return;
                         }
                     } else {
                         player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
                         player.sendMessage(String.format("[COMMAND] %s理由: @eセレクターで引数「r」を指定せずに実行することはできません。", ChatColor.GREEN));
                         event.setCancelled(true);
+                        MyMaidLibrary.checkSpam(player);
                         return;
                     }
                 } catch (IllegalArgumentException e) {
                     player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
                     player.sendMessage(String.format("[COMMAND] %s理由: %s", ChatColor.GREEN, e.getMessage()));
                     event.setCancelled(true);
+                    MyMaidLibrary.checkSpam(player);
                     return;
                 }
             }
@@ -187,23 +192,15 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                     if (!parser.isValidValues()) {
                         player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
                         event.setCancelled(true);
-                        return;
+                        MyMaidLibrary.checkSpam(player);
                     }
                 } catch (IllegalArgumentException e) {
                     player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
                     player.sendMessage(String.format("[COMMAND] %s理由: %s", ChatColor.GREEN, e.getMessage()));
                     event.setCancelled(true);
-                    return;
+                    MyMaidLibrary.checkSpam(player);
                 }
             }
-
-            player.chat("キリトかなーやっぱりww");
-            player.chat("自分は思わないんだけど周りにキリトに似てるってよく言われるwww");
-            player.chat("こないだDQNに絡まれた時も気が付いたら意識無くて周りに人が血だらけで倒れてたしなwww");
-            player.chat("ちなみに彼女もアスナに似てる(聞いてないw)");
-            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
-            MyMaidLibrary.checkSpam(player);
-            event.setCancelled(true);
         }
     }
 
