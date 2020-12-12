@@ -40,7 +40,7 @@ public class Event_NotifyTPServerChat extends MyMaidLibrary implements Listener 
                 return;
             }
             MyMaidConfig.getServerChatChannel().sendMessage(String.format("*[%s: Teleported %s to %s]*",
-                    MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(to_player.getName()))).queue();
+                    MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(from_player.getName()), MyMaidLibrary.DiscordEscape(to_player.getName()))).queue();
         }/* else if (args.length == 4) { // /tp ~ ~ ~
             String x = args[1];
             String y = args[2];
