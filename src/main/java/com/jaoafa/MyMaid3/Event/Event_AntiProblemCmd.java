@@ -87,6 +87,9 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
     static class AntiCmd_Kill implements AntiCommand {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
+            if (args.length == 1) {
+                return;
+            }
             if (args[1].equalsIgnoreCase("@p") || args[1].equalsIgnoreCase(player.getName())) {
                 return;
             }
