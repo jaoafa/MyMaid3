@@ -190,6 +190,17 @@ public class MyMaidLibrary {
     }
 
     /**
+     * 4バイトの文字列を含むかどうかを調べ、含んでいればその文字列を消したものを返します。
+     *
+     * @param str 文字列
+     * @return 含む場合消した文字列、そうでないばあい入力された文字列
+     */
+    public static String check4bytechars_DeleteMatchText(String str) {
+        Pattern pattern = Pattern.compile("([^\\u0000-\\uFFFF]+)");
+        return pattern.matcher(str).replaceAll("");
+    }
+
+    /**
      * 指定されたLocationに一番近いプレイヤーを取得します。
      *
      * @param loc Location

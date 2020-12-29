@@ -81,21 +81,28 @@ public class Event_Anti4BYTES extends MyMaidLibrary implements Listener {
         int z = loc.getBlockZ();
         String[] messages = event.getLines();
 
+        int i = -1;
         for (String message : messages) {
+            i++;
             if (!check4bytechars(message)) {
                 continue;
             }
+            //player.sendMessage("[4BYTESChecker] " + ChatColor.GREEN
+            //        + "看板内に絵文字などの4バイト文字が含まれています。Minecraftの仕様上、4バイト文字は表示されません。注意してください。");
+            //player.sendMessage("[4BYTESChecker] " + ChatColor.GREEN
+            //        + "また、アイテム名などに4バイト文字列を含まれているとチャンク破損等を起こす可能性があります。出来る限り使用は避けてください。");
+
             player.sendMessage("[4BYTESChecker] " + ChatColor.GREEN
-                    + "看板内に絵文字などの4バイト文字が含まれています。Minecraftの仕様上、4バイト文字は表示されません。注意してください。");
-            player.sendMessage("[4BYTESChecker] " + ChatColor.GREEN
-                    + "また、アイテム名などに4バイト文字列を含まれているとチャンク破損等を起こす可能性があります。出来る限り使用は避けてください。");
+                    + "看板内に絵文字などの4バイト文字が含まれています。チャンクに影響を及ぼす可能性があるため、該当文字を削除します。");
+
+            event.setLine(i, check4bytechars_DeleteMatchText(message));
 
             TextChannel channel = MyMaidConfig.getJDA().getTextChannelById(617805813553299456L);
             if (channel == null) {
                 Main.getJavaPlugin().getLogger().info(String.format("[4BYTESChecker] channel = null | %s / %s %d %d %d / message: %s / matchText: %s", player.getName(), world, x, y, z, message, check4bytechars_MatchText(message)));
                 return;
             }
-            channel.sendMessage(String.format("プレイヤー「%s」が設置した看板(%s %d %d %d)内に4バイト文字が含まれていました。\nコマンド: ```%s```\n判定された対象文字列: ```%s```", player.getName(), world, x, y, z, message, check4bytechars_MatchText(message))).queue(
+            channel.sendMessage(String.format("プレイヤー「%s」が設置した看板(%s %d %d %d)内に4バイト文字が含まれていたため、該当文字を削除しました。\nコマンド: ```%s```\n判定された対象文字列: ```%s```", player.getName(), world, x, y, z, message, check4bytechars_MatchText(message))).queue(
                     null,
                     failure -> Main.getJavaPlugin().getLogger().info(String.format("[4BYTESChecker] Exception: %s | %s / %s %d %d %d / message: %s / matchText: %s", failure.getMessage(), player.getName(), world, x, y, z, message, check4bytechars_MatchText(message)))
             );
