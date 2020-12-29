@@ -49,6 +49,11 @@ public class MyMaidLibrary {
         return sdf.format(date);
     }
 
+    public static String sdfTimeFormat(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        return sdf.format(date);
+    }
+
     /**
      * 指定された期間内かどうか<br></>
      * http://www.yukun.info/blog/2009/02/java-jsp-gregoriancalendar-period.html
@@ -248,7 +253,7 @@ public class MyMaidLibrary {
      * @param text  テキスト
      */
     public static void chatFake(ChatColor color, String name, String text) {
-        Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdfFormat(new Date()) + "]" + color + "■" + ChatColor.WHITE + name + ": " + text);
+        Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdfTimeFormat(new Date()) + "]" + color + "■" + ChatColor.WHITE + name + ": " + text);
         MyMaidConfig.getServerChatChannel()
                 .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
                 .queue();
