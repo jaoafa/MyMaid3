@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.util.UUID;
 
 public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener {
@@ -104,7 +105,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener {
                 try {
                     String url = String.format("https://api.jaoafa.com/users/mcbans/%s", uuid.toString());
 
-                    System.out.printf("OnLoginAfterCheck: APIサーバへの接続を開始: %s -> %s%n", player.getName(), url);
+                    System.out.println(MessageFormat.format("OnLoginAfterCheck: APIサーバへの接続を開始: {0} -> {1}", player.getName(), url));
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder().url(url).get().build();
                     Response response = client.newCall(request).execute();
@@ -115,7 +116,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener {
                     }
                     ResponseBody body = response.body();
                     if (body == null) {
-                        System.out.printf("OnLoginAfterCheck: APIサーバへの接続に失敗: %s -> response.body() is null.%n", url);
+                        System.out.println(MessageFormat.format("OnLoginAfterCheck: APIサーバへの接続に失敗: {0} -> response.body() is null.", url));
                         response.close();
                         return;
                     }
@@ -141,7 +142,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener {
                     int globalCount = data.getInt("global");
                     int localCount = data.getInt("local");
 
-                    MyMaidLibrary.sendAMR(String.format("[MCBans] %s%s -> %s (G:%d|L:%d)", ChatColor.GRAY, player.getName(), reputation, globalCount, localCount));
+                    MyMaidLibrary.sendAMR(String.format("[MCBans] %s%s -> %s (G:%d | L:%d)", ChatColor.GRAY, player.getName(), reputation, globalCount, localCount));
                     if (reputation < 3) {
                         // 3未満はキック
                         String message = ChatColor.RED + "----- MCBans Checker -----\n"
