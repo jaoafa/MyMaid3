@@ -148,7 +148,11 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener {
                         String message = ChatColor.RED + "----- MCBans Checker -----\n"
                                 + ChatColor.RESET + ChatColor.WHITE + "Access denied.\n"
                                 + ChatColor.RESET + ChatColor.WHITE + "Your reputation is below this server's threshold.";
-                        player.kickPlayer(message);
+                        new BukkitRunnable() {
+                            public void run() {
+                                player.kickPlayer(message);
+                            }
+                        }.runTask(Main.getJavaPlugin());
                     }
                 } catch (IOException e) {
                     System.out.println("OnLoginAfterCheck: IOException Error...");
