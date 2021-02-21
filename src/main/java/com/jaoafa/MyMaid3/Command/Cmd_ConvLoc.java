@@ -21,9 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, CommandPremise {
-    Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([0-9]+)$");
+    Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([.0-9]+)$");
     Pattern SELECTOR_PATTERN = Pattern.compile("^@[praes]\\[.*?]$");
-    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("[^d]([xyz])=([~\\-0-9]+)");
+    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("[^d]([xyz])=([~.\\-0-9]+)");
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -74,14 +74,14 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
             SendMessage(sender, cmd, "AFTER : " + replaced);
             return true;
         } else if (args.length == 1) {
-            if (args[0].startsWith("relative")) {
+            if ("relative".startsWith(args[0])) {
                 String replaced = replaceProcess(targetBlock.getLocation(), command, true);
                 if (replaced == null) replaced = command;
                 SendMessage(sender, cmd, targetBlock.getWorld().getName() + " " + targetBlock.getX() + " " + targetBlock.getY() + " " + targetBlock.getZ());
                 SendMessage(sender, cmd, "BEFORE: " + command);
                 SendMessage(sender, cmd, "AFTER : " + replaced);
                 return true;
-            } else if (args[0].startsWith("absolute")) {
+            } else if ("absolute".startsWith(args[0])) {
                 String replaced = replaceProcess(targetBlock.getLocation(), command, false);
                 if (replaced == null) replaced = command;
                 SendMessage(sender, cmd, targetBlock.getWorld().getName() + " " + targetBlock.getX() + " " + targetBlock.getY() + " " + targetBlock.getZ());
