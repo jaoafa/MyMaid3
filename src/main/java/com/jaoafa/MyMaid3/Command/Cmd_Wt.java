@@ -50,7 +50,6 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandExecutor, CommandPre
                 loc.add(0.5f, 0f, 0.5f);
                 player.teleport(loc);
                 SendMessage(sender, cmd, String.format("「%s」ワールドにテレポートしました。", worldName));
-                return true;
             } else {
                 World world = Bukkit.getServer().getWorld(args[0]);
                 if (world == null) {
@@ -63,8 +62,8 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandExecutor, CommandPre
                     player.teleport(loc);
                     SendMessage(sender, cmd, "「" + world.getName() + "」ワールドにテレポートしました。");
                 }
-                return true;
             }
+            return true;
         } else if (args.length == 2) {
             Player play = null;
             for (Player p : Bukkit.getServer().getOnlinePlayers()) {
@@ -76,8 +75,8 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandExecutor, CommandPre
                 SendMessage(sender, cmd, "ユーザーが見つかりませんでした。");
                 return true;
             }
-            if (worlds.containsKey(args[0])) {
-                String worldName = worlds.get(args[0]);
+            if (worlds.containsKey(args[1])) {
+                String worldName = worlds.get(args[1]);
                 World world = Bukkit.getServer().getWorld(worldName);
                 if (world == null) {
                     SendMessage(sender, cmd, String.format("「%s」ワールドの取得に失敗しました。", worldName));
