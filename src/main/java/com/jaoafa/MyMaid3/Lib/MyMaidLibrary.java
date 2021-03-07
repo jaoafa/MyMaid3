@@ -1,5 +1,6 @@
 package com.jaoafa.MyMaid3.Lib;
 
+import com.jaoafa.MyMaid3.Command.Cmd_TempMute;
 import com.jaoafa.MyMaid3.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -73,6 +74,9 @@ public class MyMaidLibrary {
 
     public static void sendAM(String str) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (Cmd_TempMute.tempmutes.stream().anyMatch(pf -> pf.getUniqueId().equals(p.getUniqueId()))) {
+                continue;
+            }
             String group = PermissionsManager.getPermissionMainGroup(p);
             if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")) {
                 continue;
@@ -83,6 +87,9 @@ public class MyMaidLibrary {
 
     public static void sendAMR(String str) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (Cmd_TempMute.tempmutes.stream().anyMatch(pf -> pf.getUniqueId().equals(p.getUniqueId()))) {
+                continue;
+            }
             String group = PermissionsManager.getPermissionMainGroup(p);
             if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
                     && !group.equalsIgnoreCase("Regular")) {
