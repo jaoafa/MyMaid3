@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.material.Cauldron;
 
 public class Event_PlaceCauldron extends MyMaidLibrary implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -24,8 +23,6 @@ public class Event_PlaceCauldron extends MyMaidLibrary implements Listener {
             return;
         }
         int level = Cmd_Cauldron.cauldrons.get(player.getUniqueId());
-        Cauldron cauldron = (Cauldron) block.getState().getData();
-
         BlockState cauldronState = block.getState();
         cauldronState.getData().setData((byte) level);
         cauldronState.update();

@@ -48,7 +48,8 @@ public class Event_OldWorldProtection extends MyMaidLibrary implements Listener 
             Material.CHEST,
             Material.TRAPPED_CHEST,
             Material.STONE_PLATE,
-            Material.WOOD_PLATE
+            Material.WOOD_PLATE,
+            Material.COMMAND,
     };
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
