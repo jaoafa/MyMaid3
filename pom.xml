@@ -8,8 +8,9 @@
     <name>MyMaid3</name>
     <description>わたしたちの「めいど」をここに。</description>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
         <plugins>
@@ -77,10 +78,10 @@
         </resources>
     </build>
     <repositories>
-        <!-- Spigot/Bukkit -->
+        <!-- Paper -->
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <!-- LuckPerms -->
         <repository>
@@ -130,25 +131,12 @@
         </repository>
     </repositories>
     <dependencies>
-        <!--Spigot-API -->
+        <!-- Paper -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-        </dependency>
-        <!--Bukkit API -->
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-        </dependency>
-        <!--CraftBukkit -->
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-            <systemPath>${basedir}/lib/craftbukkit-1.12.2.jar</systemPath>
-            <scope>system</scope>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <!-- LuckPerms -->
         <dependency>
