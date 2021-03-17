@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.MyMaid3.Event;
 
 import com.jaoafa.MyMaid3.Lib.*;
@@ -210,7 +221,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
     void missedNotifyMonocraftNet(String name, String reason) {
         MyMaidConfig.getJDA(.getTextChannelById(499922840871632896L))
                 .sendMessage(
-                        ":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました(monocraft.net): `" + reason + "`")
+                ":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました(monocraft.net): `" + reason + "`")
                 .queue();
     }
 

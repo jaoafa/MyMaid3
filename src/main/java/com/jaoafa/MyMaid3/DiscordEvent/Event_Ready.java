@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.MyMaid3.DiscordEvent;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
@@ -18,7 +29,6 @@ public class Event_Ready {
         MyMaidConfig.setReportChannel(event.getJDA().getTextChannelById(597765357196935169L));
         MyMaidConfig.setJaotanChannel(event.getJDA().getTextChannelById(597423444501463040L));
         MyMaidConfig.setGeneralChannel(event.getJDA().getTextChannelById(597419057251090443L));
-
 
 
         FileConfiguration config = Main.getMain().getConfig();

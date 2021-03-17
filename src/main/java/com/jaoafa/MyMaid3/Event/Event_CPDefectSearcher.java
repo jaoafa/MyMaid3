@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.MyMaid3.Event;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidConfig;
@@ -181,30 +192,30 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
             MyMaidConfig.getJDA(
                     .getTextChannelById(618569153422426113L))
                     .sendMessage("__**[CPDefectSearcher|onPlace]**__ throwed `NotSerializableException`!\n"
-                            + "Message: `" + e.getMessage() + "`\n"
-                            + "Location: `" + loc.toString() + "`\n"
-                            + "Block: `" + block.getType().name() + "`\n"
-                            + "Player: `" + player.getName() + "`")
+                    + "Message: `" + e.getMessage() + "`\n"
+                    + "Location: `" + loc.toString() + "`\n"
+                    + "Block: `" + block.getType().name() + "`\n"
+                    + "Player: `" + player.getName() + "`")
                     .queue();
         } catch (Exception e) {
             MyMaidConfig.getJDA(
                     .getTextChannelById(618569153422426113L))
                     .sendMessage("__**[CPDefectSearcher|onPlace]**__ throwed `Exception`!\n"
-                            + "Class: `" + e.getClass().getName() + "`\n"
-                            + "Message: `" + e.getMessage() + "`\n"
-                            + "Location: `" + loc.toString() + "`\n"
-                            + "Block: `" + block.getType().name() + "`\n"
-                            + "Player: `" + player.getName() + "`")
+                    + "Class: `" + e.getClass().getName() + "`\n"
+                    + "Message: `" + e.getMessage() + "`\n"
+                    + "Location: `" + loc.toString() + "`\n"
+                    + "Block: `" + block.getType().name() + "`\n"
+                    + "Player: `" + player.getName() + "`")
                     .queue();
         } catch (Throwable e) {
             MyMaidConfig.getJDA(
                     .getTextChannelById(618569153422426113L))
                     .sendMessage("__**[CPDefectSearcher|onPlace]**__ throwed `Throwable`!\n"
-                            + "Class: `" + e.getClass().getName() + "`\n"
-                            + "Message: `" + e.getMessage() + "`\n"
-                            + "Location: `" + loc.toString() + "`\n"
-                            + "Block: `" + block.getType().name() + "`\n"
-                            + "Player: `" + player.getName() + "`")
+                    + "Class: `" + e.getClass().getName() + "`\n"
+                    + "Message: `" + e.getMessage() + "`\n"
+                    + "Location: `" + loc.toString() + "`\n"
+                    + "Block: `" + block.getType().name() + "`\n"
+                    + "Player: `" + player.getName() + "`")
                     .queue();
         }
     }
@@ -224,19 +235,19 @@ public class Event_CPDefectSearcher extends MyMaidLibrary implements Listener {
             MyMaidConfig.getJDA(
                     .getTextChannelById(618569153422426113L))
                     .sendMessage("__**[CPDefectSearcher|onBreak]**__ throwed `NotSerializableException`!\n"
-                            + "Message: `" + e.getMessage() + "`\n"
-                            + "Location: `" + loc.toString() + "`\n"
-                            + "Block: `" + block.getType().name() + "`\n"
-                            + "Player: `" + player.getName() + "`")
+                    + "Message: `" + e.getMessage() + "`\n"
+                    + "Location: `" + loc.toString() + "`\n"
+                    + "Block: `" + block.getType().name() + "`\n"
+                    + "Player: `" + player.getName() + "`")
                     .queue();
         } catch (Exception e) {
             MyMaidConfig.getJDA(
                     .getTextChannelById(618569153422426113L))
                     .sendMessage("__**[CPDefectSearcher|onBreak]**__ throwed `Exception`!\n"
-                            + "Message: `" + e.getMessage() + "`\n"
-                            + "Location: `" + loc.toString() + "`\n"
-                            + "Block: `" + block.getType().name() + "`\n"
-                            + "Player: `" + player.getName() + "`")
+                    + "Message: `" + e.getMessage() + "`\n"
+                    + "Location: `" + loc.toString() + "`\n"
+                    + "Block: `" + block.getType().name() + "`\n"
+                    + "Player: `" + player.getName() + "`")
                     .queue();
         }
     }

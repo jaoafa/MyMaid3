@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.MyMaid3.Event;
 
 import com.jaoafa.MyMaid3.Lib.Historyjao;
@@ -40,7 +51,7 @@ public class Event_History extends MyMaidLibrary implements Listener {
 
         MyMaidConfig.getJDA(.getTextChannelById(597423444501463040L))
                 .sendMessage("**-----: Historyjao DATA / `" + player.getName() + "` :-----**\n"
-                        + "```" + String.join("\n", data) + "```")
+                + "```" + String.join("\n", data) + "```")
                 .queue();
     }
 }

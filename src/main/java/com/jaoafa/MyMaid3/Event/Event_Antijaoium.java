@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.MyMaid3.Event;
 
 import com.jaoafa.MyMaid3.Lib.*;
@@ -739,11 +750,11 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         }
         MyMaidConfig.getJDA(.getTextChannelById(597423444501463040L))
                 .sendMessage("**jaoium Location & Reason Notice**\n"
-                        + "Player: " + player.getName() + "\n"
-                        + "Location: " + loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " "
-                        + loc.getBlockZ() + "\n"
-                        + "Reason: ``" + reason + "``\n"
-                        + "ItemData: " + ItemDataUrl).queue();
+                + "Player: " + player.getName() + "\n"
+                + "Location: " + loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " "
+                + loc.getBlockZ() + "\n"
+                + "Reason: ``" + reason + "``\n"
+                + "ItemData: " + ItemDataUrl).queue();
     }
 
     private void setjaoiumItemData(Player player, ItemStack is) {

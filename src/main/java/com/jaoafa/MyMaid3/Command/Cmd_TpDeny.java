@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.MyMaid3.Command;
 
 import com.jaoafa.MyMaid3.Lib.*;
@@ -78,7 +89,7 @@ public class Cmd_TpDeny extends MyMaidLibrary implements CommandExecutor, Comman
 
     OfflinePlayer getOfflinePlayer(String name_or_uuid) {
         return MyMaidLibrary.isUUID(name_or_uuid) ?
-                Bukkit.getOfflinePlayer(UUID.fromString(name_or_uid)) :
+                Bukkit.getOfflinePlayer(UUID.fromString(name_or_uuid)) :
                 Bukkit.getOfflinePlayer(name_or_uuid);
     }
 

@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.MyMaid3.Lib;
 
 import com.jaoafa.MyMaid3.Command.Cmd_TempMute;
@@ -238,8 +249,8 @@ public class MyMaidLibrary {
             sender.sendMessage(Component.text().append(
                     Component.text("・"),
                     Component.text(String.format("/%s %s", cmdUsage.getCommand(), cmd.getArgs()))
-                        .clickEvent(ClickEvent.suggestCommand(String.format("/%s %s", cmdUsage.getCommand(), cmd.getArgs())))
-                        .hoverEvent(HoverEvent.showText(Component.text("コマンドをサジェストします"))),
+                            .clickEvent(ClickEvent.suggestCommand(String.format("/%s %s", cmdUsage.getCommand(), cmd.getArgs())))
+                            .hoverEvent(HoverEvent.showText(Component.text("コマンドをサジェストします"))),
                     Component.text(":"),
                     Component.space(),
                     Component.text(cmd.getDetails())

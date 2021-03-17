@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.MyMaid3.Command;
 
 import com.jaoafa.MyMaid3.Lib.CmdUsage;
@@ -32,11 +43,11 @@ public class Cmd_GetLookLoc extends MyMaidLibrary implements CommandExecutor, Co
         Location loc = player.getTargetBlock(null, 50).getLocation();
         Component component = Component.text().append(
                 Component.text("ここ")
-                    .hoverEvent(HoverEvent.showText(
-                            Component.text(String.format("文字列「%d %d %d」をコピーします", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
-                    ))
-                    .clickEvent(ClickEvent.copyToClipboard(String.format("%d %d %d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())))
-                    .style(Style.style(NamedTextColor.AQUA, TextDecoration.UNDERLINED)),
+                        .hoverEvent(HoverEvent.showText(
+                                Component.text(String.format("文字列「%d %d %d」をコピーします", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
+                        ))
+                        .clickEvent(ClickEvent.copyToClipboard(String.format("%d %d %d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())))
+                        .style(Style.style(NamedTextColor.AQUA, TextDecoration.UNDERLINED)),
                 Component.text("をクリックすると見ているブロックの座標がコピーされます。")
         ).build();
         SendMessage(player, cmd, component);

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="src" pattern="src:com.jaoafa.MyMaid3..*||src:com.jaoafa.MyMaid3.Command..*||src:com.jaoafa.MyMaid3.DiscordEvent..*||src:com.jaoafa.MyMaid3.Event..*||src:com.jaoafa.MyMaid3.HttpServer..*||src:com.jaoafa.MyMaid3.Lib..*||src:com.jaoafa.MyMaid3.Task..*||test:com.jaoafa.MyMaid3.*" />
+</component>
