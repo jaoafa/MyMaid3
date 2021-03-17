@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Task_ViaVerNotify extends BukkitRunnable {
-    Player player;
+    final Player player;
 
     public Task_ViaVerNotify(Player player) {
         this.player = player;

@@ -1,33 +1,26 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import com.jaoafa.MyMaid3.Lib.PermissionsManager;
-import com.jaoafa.MyMaid3.Main;
-import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
             SendMessage(sender, cmd, "このコマンドはゲーム内から実行してください。");
             return true;
         }
+
+        SendMessage(sender, cmd, "このコマンドは開発中のため使えません。");
+        return true;
+
+        /*
         Player player = (Player) sender;
         if (args.length == 1 && args[0].equalsIgnoreCase("regist")) {
             // /help regist
@@ -48,6 +41,7 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
                 SendMessage(sender, cmd, "エラーが発生しました。詳しくはプラグイン制作者にお問い合わせください。Debug: Pages null");
                 return true;
             }
+
             net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
             NBTTagCompound bookData = nmsItem.getTag();
             boolean res = save(bookData);
@@ -74,8 +68,10 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
             SendMessage(sender, cmd, "ヘルプブックをインベントリに追加しました。");
         }
         return true;
+         */
     }
 
+    /*
     boolean save(NBTTagCompound bookData) {
         try {
             File file = new File(Main.getJavaPlugin().getDataFolder(), "helpBook.yml");
@@ -114,6 +110,7 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
             return null;
         }
     }
+     */
 
     @Override
     public String getDescription() {
@@ -121,12 +118,11 @@ public class Cmd_Help extends MyMaidLibrary implements CommandExecutor, CommandP
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/help: ヘルプブックを入手します。");
-                add("/help regist: ヘルプブックを登録します。運営のみ使用できます。");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "help",
+                new CmdUsage.Cmd("", "ヘルプブックを入手します。"),
+                new CmdUsage.Cmd("regist", "ヘルプブックを登録します。運営のみ使用できます。")
+        );
     }
 }

@@ -13,6 +13,7 @@ public class MyMaidConfig {
     private static TextChannel ReportChannel = null;
     private static TextChannel ServerChatChannel = null;
     private static TextChannel jaotanChannel = null;
+    private static TextChannel generalChannel = null;
     private static String BugReportWebhookUrl = null;
     private static String FeedbackWebhookUrl = null;
     private static Map<UUID, BukkitTask> coOLDEnabler = new HashMap<>();
@@ -22,6 +23,7 @@ public class MyMaidConfig {
     private static final Set<UUID> hid = new HashSet<>();
     private static final Map<UUID, Integer> SpamCount = new HashMap<>();
     private static final Map<UUID, Long> SpamTime = new HashMap<>();
+    private static boolean isDevelopmentServer = false;
 
     public static JDA getJDA() {
         return JDA;
@@ -61,6 +63,14 @@ public class MyMaidConfig {
 
     public static void setJaotanChannel(TextChannel jaotanChannel) {
         MyMaidConfig.jaotanChannel = jaotanChannel;
+    }
+
+    public static TextChannel getGeneralChannel() {
+        return generalChannel;
+    }
+
+    public static void setGeneralChannel(TextChannel generalChannel) {
+        MyMaidConfig.generalChannel = generalChannel;
     }
 
     public static String getBugReportWebhookUrl() {
@@ -149,5 +159,13 @@ public class MyMaidConfig {
 
     public static void setSpamTime(UUID uuid, long time) {
         SpamTime.put(uuid, time);
+    }
+
+    public static boolean isDevelopmentServer() {
+        return isDevelopmentServer;
+    }
+
+    public static void setDevelopmentServer(boolean _isDevelopmentServer) {
+        isDevelopmentServer = _isDevelopmentServer;
     }
 }

@@ -36,14 +36,11 @@ public class Event_CommandGameMode extends MyMaidLibrary implements Listener {
             printDebugMsg("NG 他のユーザーのゲームモードを変更");
             SendMessage(player, "GameMode", "あなたの権限では他のユーザーのゲームモードを変更することはできません。自身のゲームモードを変更する場合はプレイヤー名を入れずに入力してください。");
             event.setCancelled(true);
-            return;
         }
     }
 
     void printDebugMsg(String msg) {
         boolean debug = true;
-        if (!debug)
-            return;
         Logger LOGGER = Bukkit.getLogger();
         LOGGER.info(msg);
     }

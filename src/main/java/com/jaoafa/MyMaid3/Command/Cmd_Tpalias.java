@@ -1,24 +1,19 @@
 package com.jaoafa.MyMaid3.Command;
 
-import com.jaoafa.MyMaid3.Lib.CommandPremise;
-import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import com.jaoafa.MyMaid3.Lib.PermissionsManager;
-import com.jaoafa.MyMaid3.Lib.TeleportAlias;
+import com.jaoafa.MyMaid3.Lib.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class Cmd_Tpalias extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
-            SendUsageMessage(sender, cmd);
+            SendUsageMessage(sender, getDescription(), getUsage());
             return true;
         }
         if (args.length == 1) {
@@ -37,8 +32,6 @@ public class Cmd_Tpalias extends MyMaidLibrary implements CommandExecutor, Comma
                 SendMessage(sender, cmd, "あなたはこのコマンドを使用できません。");
                 return true;
             }
-        } else if (sender instanceof ConsoleCommandSender) {
-            // allow
         } else {
             SendMessage(sender, cmd, "このコマンドはゲーム内またはコンソールから実行してください。");
             return true;
@@ -57,7 +50,7 @@ public class Cmd_Tpalias extends MyMaidLibrary implements CommandExecutor, Comma
                 return true;
             }
         }
-        SendUsageMessage(sender, cmd);
+        SendUsageMessage(sender, getDescription(), getUsage());
         return true;
     }
 
@@ -67,13 +60,12 @@ public class Cmd_Tpalias extends MyMaidLibrary implements CommandExecutor, Comma
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/tpalias set <Target> <Replacement>: tpコマンド実行時に<Target>を<Replacement>に置き換えるよう設定します。");
-                add("/tpalias remove <Target>: tpコマンド実行時の<Target>置き換え設定を削除します。");
-                add("/tpalias list: tpコマンド実行時の置き換え設定一覧を表示します。");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "tpalias",
+                new CmdUsage.Cmd("set <Target> <Replacement>", "tpコマンド実行時に<Target>を<Replacement>に置き換えるよう設定します。"),
+                new CmdUsage.Cmd("remove <Target>", "tpコマンド実行時の<Target>置き換え設定を削除します。"),
+                new CmdUsage.Cmd("list", "tpコマンド実行時の置き換え設定一覧を表示します。")
+        );
     }
 }

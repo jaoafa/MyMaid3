@@ -27,6 +27,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Main extends JavaPlugin {
     private static Main Main = null;
@@ -76,19 +78,11 @@ public class Main extends JavaPlugin {
         if (!isEnabled())
             return;
 
-        existClassCheck();
-        if (!isEnabled())
-            return;
-
         commandRegister();
         if (!isEnabled())
             return;
 
-        registEvent();
-        if (!isEnabled())
-            return;
-
-        PermissionsManager.first();
+        registryEvent();
         if (!isEnabled())
             return;
 
@@ -121,7 +115,7 @@ public class Main extends JavaPlugin {
                     .setContextEnabled(false)
                     .setEventManager(new AnnotatedEventManager());
 
-            registDiscordEvent(jdabuilder);
+            registryDiscordEvent(jdabuilder);
 
             MyMaidConfig.setJDA(jdabuilder.build().awaitReady());
         } catch (Exception e) {
@@ -158,6 +152,11 @@ public class Main extends JavaPlugin {
             getLogger().warning("MyMaid3プラグインを終了します。");
             getServer().getPluginManager().disablePlugin(this);
         }
+
+        if (config.contains("development") && config.getBoolean("development")) {
+            getLogger().warning("THIS SERVER IS DEVELOPMENT SERVER. Some features will be disabled.");
+            MyMaidConfig.setDevelopmentServer(true);
+        }
     }
 
     private void commandRegister() {
@@ -180,10 +179,18 @@ public class Main extends JavaPlugin {
                 CommandPremise cmdPremise = (CommandPremise) instance;
 
                 PluginCommand cmd = getCommand(commandName);
+                if(cmd == null){
+                    getLogger().info(commandName + ": command register failed [0]");
+                    return;
+                }
                 cmd.setName(commandName);
                 cmd.setDescription(cmdPremise.getDescription());
                 cmd.setPermission("mymaid." + commandName);
-                cmd.setUsage(String.join("\n", cmdPremise.getUsage()));
+                List<String> usages = new LinkedList<>();
+                for (CmdUsage.Cmd _cmd : cmdPremise.getUsage().getCommands()){
+                    usages.add("・" + cmdPremise.getUsage().getCommand() + " " + _cmd.getArgs() + ": " + _cmd.getDetails());
+                }
+                cmd.setUsage(String.join("\n", usages));
 
                 if (instance instanceof CommandExecutor) {
                     try {
@@ -221,7 +228,7 @@ public class Main extends JavaPlugin {
         }
     }
 
-    private void registEvent() {
+    private void registryEvent() {
         try {
             ClassFinder classFinder = new ClassFinder(this.getClassLoader());
             for (Class<?> clazz : classFinder.findClasses("com.jaoafa.MyMaid3.Event")) {
@@ -256,11 +263,10 @@ public class Main extends JavaPlugin {
         }
     }
 
-    private JDABuilder registDiscordEvent(JDABuilder d) {
+    private void registryDiscordEvent(JDABuilder d) {
         d.addEventListeners(new Event_Ready());
         d.addEventListeners(new Event_ServerLeave());
         d.addEventListeners(new Event_ServerChatListCmd());
-        return d;
     }
 
     private void scheduleTask() {
@@ -272,25 +278,5 @@ public class Main extends JavaPlugin {
         new Task_OldWorldCheck().runTaskTimer(this, 0L, 12000L); // per 10 minutes
 
         new MyMaidServer().runTaskAsynchronously(this);
-    }
-
-    private void existClassCheck() {
-        existClass("com.jaoafa.MyMaid3.Lib.Jail");
-        existClass("com.jaoafa.MyMaid3.Lib.EBan");
-        existClass("com.jaoafa.MyMaid3.Lib.TeleportAlias");
-        existClass("com.jaoafa.MyMaid3.Task.Task_ViaVerNotify");
-    }
-
-    private boolean existClass(String clazz) {
-        try {
-            Class.forName(clazz);
-            getLogger().info("class: \"" + clazz + "\" found.");
-            return true;
-        } catch (ClassNotFoundException e) {
-            getLogger().info("class: \"" + clazz + "\" not found. server shutdowning...");
-            getServer().getPluginManager().disablePlugin(this);
-            getServer().shutdown();
-            return false;
-        }
     }
 }

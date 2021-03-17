@@ -18,15 +18,12 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
     public void onPotionDrink(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
-        if (item == null) {
-            return;
-        }
         if (item.getType() != Material.POTION &&
                 item.getType() != Material.SPLASH_POTION &&
                 item.getType() != Material.LINGERING_POTION) {
             return;
         }
-        String group = null;
+        String group;
         try {
             group = PermissionsManager.getPermissionMainGroup(player);
         } catch (IllegalArgumentException e) {
@@ -59,16 +56,13 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
             return;
         }
         ItemStack item = event.getPotion().getItem();
-        if (item == null) {
-            return;
-        }
         if (item.getType() != Material.POTION &&
                 item.getType() != Material.SPLASH_POTION &&
                 item.getType() != Material.LINGERING_POTION) {
             return;
         }
         Player player = (Player) event.getPotion().getShooter();
-        String group = null;
+        String group;
         try {
             group = PermissionsManager.getPermissionMainGroup(player);
         } catch (IllegalArgumentException e) {
@@ -107,7 +101,7 @@ public class Event_AntiSplashPotion extends MyMaidLibrary implements Listener {
                 item.getType() != Material.LINGERING_POTION) {
             return;
         }
-        String group = null;
+        String group;
         try {
             group = PermissionsManager.getPermissionMainGroup(player);
         } catch (IllegalArgumentException e) {

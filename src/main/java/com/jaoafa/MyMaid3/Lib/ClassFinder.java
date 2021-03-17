@@ -48,7 +48,7 @@ public class ClassFinder {
         URL url = classLoader.getResource(resourceName);
 
         if (url == null) {
-            return new ArrayList<Class<?>>();
+            return new ArrayList<>();
         }
 
         String protocol = url.getProtocol();
@@ -62,7 +62,7 @@ public class ClassFinder {
     }
 
     private List<Class<?>> findClassesWithFile(String packageName, File dir) throws Exception {
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+        List<Class<?>> classes = new ArrayList<>();
 
         for (String path : dir.list()) {
             File entry = new File(dir, path);
@@ -77,13 +77,11 @@ public class ClassFinder {
     }
 
     private List<Class<?>> findClassesWithJarFile(String rootPackageName, URL jarFileUrl) throws Exception {
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+        List<Class<?>> classes = new ArrayList<>();
 
         JarURLConnection jarUrlConnection = (JarURLConnection) jarFileUrl.openConnection();
-        JarFile jarFile = null;
 
-        try {
-            jarFile = jarUrlConnection.getJarFile();
+        try (JarFile jarFile = jarUrlConnection.getJarFile()) {
             Enumeration<JarEntry> jarEnum = jarFile.entries();
 
             String packageNameAsResourceName = packageNameToResourceName(rootPackageName);
@@ -93,10 +91,6 @@ public class ClassFinder {
                 if (jarEntry.getName().startsWith(packageNameAsResourceName) && isClassFile(jarEntry.getName())) {
                     classes.add(classLoader.loadClass(resourceNameToClassName(jarEntry.getName())));
                 }
-            }
-        } finally {
-            if (jarFile != null) {
-                jarFile.close();
             }
         }
 

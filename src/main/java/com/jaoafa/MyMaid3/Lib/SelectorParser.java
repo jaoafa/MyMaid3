@@ -20,7 +20,7 @@ public class SelectorParser extends MyMaidLibrary {
      * @e	全てのエンティティ
      * @s	コマンドを実行しているエンティティ
      */
-    List<String> selector_list = Arrays.asList("p", "r", "a", "e", "s");
+    final List<String> selector_list = Arrays.asList("p", "r", "a", "e", "s");
     /**
      * x, y, z	座標
      * r, rm	半径（最大、最小）
@@ -57,13 +57,12 @@ public class SelectorParser extends MyMaidLibrary {
 
     boolean valid = true;
     String selector;
-    Map<String, String> args = new HashMap<>();
+    final Map<String, String> args = new HashMap<>();
 
     /**
      * ParseSelectorクラスの作成
      *
      * @param SelectorText セレクター
-     * @return ParseSelectorクラス
      * @throws IllegalArgumentException 指定されたセレクターが適切でなかった場合に発生します。
      * @author mine_book000
      */

@@ -129,9 +129,6 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if (!(player instanceof Player)) {
-            return;
-        }
         if (!player.getLocation().getWorld().getName().equalsIgnoreCase("Jao_Afa")) {
             return;
         }
@@ -147,9 +144,6 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if (!(player instanceof Player)) {
-            return;
-        }
         EBan eban = new EBan(player);
         if (!eban.isBanned()) { // EBanされてる
             return;
@@ -162,7 +156,7 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onBlockIgniteEvent(BlockIgniteEvent event) {
         Player player = event.getPlayer();
-        if (!(player instanceof Player)) {
+        if (player == null) {
             return;
         }
         EBan eban = new EBan(player);
@@ -177,9 +171,6 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onPlayerBucketEmptyEvent(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
-        if (!(player instanceof Player)) {
-            return;
-        }
         EBan eban = new EBan(player);
         if (!eban.isBanned()) { // EBanされてる
             return;
@@ -192,9 +183,6 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onPlayerBucketFillEvent(PlayerBucketFillEvent event) {
         Player player = event.getPlayer();
-        if (!(player instanceof Player)) {
-            return;
-        }
         EBan eban = new EBan(player);
         if (!eban.isBanned()) { // EBanされてる
             return;
@@ -210,9 +198,6 @@ public class Event_EBan implements Listener {
             return;
         }
         Player player = (Player) event.getEntity();
-        if (!(player instanceof Player)) {
-            return;
-        }
         EBan eban = new EBan(player);
         if (!eban.isBanned()) { // EBanされてる
             return;
@@ -223,9 +208,6 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        if (!(player instanceof Player)) {
-            return;
-        }
         EBan eban = new EBan(player);
         if (!eban.isBanned()) { // EBanされてる
             return;
@@ -236,9 +218,6 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        if (!(player instanceof Player)) {
-            return;
-        }
         EBan eban = new EBan(player);
         if (!eban.isBanned()) { // EBanされてる
             return;

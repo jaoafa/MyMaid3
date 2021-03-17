@@ -2,6 +2,11 @@ package com.jaoafa.MyMaid3.Lib;
 
 import com.jaoafa.MyMaid3.Command.Cmd_TempMute;
 import com.jaoafa.MyMaid3.Main;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,13 +18,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MyMaidLibrary {
     @Nullable
-    public static JavaPlugin JavaPlugin() {
+    protected static JavaPlugin JavaPlugin() {
         return Main.getJavaPlugin();
     }
 
@@ -42,15 +46,47 @@ public class MyMaidLibrary {
      * @param message メッセージ
      */
     public static void SendMessage(CommandSender sender, Command cmd, String message) {
-        sender.sendMessage("[" + cmd.getName().toUpperCase() + "] " + ChatColor.GREEN + message);
+        sender.sendMessage(Component.text().append(
+                Component.text("[" + cmd.getName().toUpperCase() + "]"),
+                Component.space(),
+                Component.text(message).style(Style.style(NamedTextColor.GREEN))
+        ).build());
     }
 
+    /**
+     * CommandSenderに対してメッセージを送信します。
+     *
+     * @param sender  CommandSender
+     * @param cmd     Commandデータ
+     * @param message メッセージ
+     */
+    public static void SendMessage(CommandSender sender, Command cmd, Component component) {
+        sender.sendMessage(Component.text().append(
+                Component.text("[" + cmd.getName().toUpperCase() + "]"),
+                Component.space(),
+                component
+        ).build());
+    }
+
+    /**
+     * Dateをyyyy/MM/dd HH:mm:ss形式でフォーマットします。
+     *
+     * @param date フォーマットするDate
+     * @return フォーマットされた結果文字列
+     */
     public static String sdfFormat(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         return sdf.format(date);
     }
 
-    public static String sdfTimeFormat(Date date) {
+
+    /**
+     * DateをHH:mm:ss形式でフォーマットします。
+     *
+     * @param date フォーマットするDate
+     * @return フォーマットされた結果文字列
+     */
+    private static String sdfTimeFormat(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         return sdf.format(date);
     }
@@ -65,65 +101,100 @@ public class MyMaidLibrary {
      */
     public static boolean isPeriod(Date start, Date end) {
         Date now = new Date();
-        if (now.after(start)) {
-            return now.before(end);
-        }
+        if (now.after(start)) return now.before(end);
 
         return false;
     }
 
+    /**
+     * Admin・Moderatorにメッセージを送信します。
+     *
+     * @param str 送信するメッセージ文字列
+     */
     public static void sendAM(String str) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (Cmd_TempMute.tempmutes.stream().anyMatch(pf -> pf.getUniqueId().equals(p.getUniqueId()))) {
-                continue;
-            }
+            if (Cmd_TempMute.tempmutes.stream().anyMatch(pf -> pf.getUniqueId().equals(p.getUniqueId()))) continue;
             String group = PermissionsManager.getPermissionMainGroup(p);
-            if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")) {
-                continue;
-            }
+            if (!isAM(p)) continue;
             p.sendMessage(str);
         }
     }
 
+    /**
+     * Admin・Moderator・Regularにメッセージを送信します。
+     *
+     * @param str 送信するメッセージ文字列
+     */
     public static void sendAMR(String str) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (Cmd_TempMute.tempmutes.stream().anyMatch(pf -> pf.getUniqueId().equals(p.getUniqueId()))) {
-                continue;
-            }
+            if (Cmd_TempMute.tempmutes.stream().anyMatch(pf -> pf.getUniqueId().equals(p.getUniqueId()))) continue;
             String group = PermissionsManager.getPermissionMainGroup(p);
-            if (!group.equalsIgnoreCase("Admin") && !group.equalsIgnoreCase("Moderator")
-                    && !group.equalsIgnoreCase("Regular")) {
-                continue;
-            }
+            if (!isAMR(p)) continue;
             p.sendMessage(str);
         }
     }
 
-    public static boolean isA(Player player) {
+    /**
+     * Admin・Moderator・Regular・Verifiedにメッセージを送信します。
+     *
+     * @param str 送信するメッセージ文字列
+     */
+    public static void sendAMRV(String str) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (Cmd_TempMute.tempmutes.stream().anyMatch(pf -> pf.getUniqueId().equals(p.getUniqueId()))) continue;
+            String group = PermissionsManager.getPermissionMainGroup(p);
+            if (!isAMRV(p)) continue;
+            p.sendMessage(str);
+        }
+    }
+
+    /**
+     * プレイヤーがAdminであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
+    protected static boolean isA(Player player) {
         String group = PermissionsManager.getPermissionMainGroup(player);
         return group.equalsIgnoreCase("Admin");
     }
 
+    /**
+     * プレイヤーがAdmin・Moderatorのいずれかであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
     public static boolean isAM(Player player) {
         String group = PermissionsManager.getPermissionMainGroup(player);
-        return group.equalsIgnoreCase("Admin") || group.equalsIgnoreCase("Moderator");
+        return isA(player) || group.equalsIgnoreCase("Moderator");
     }
 
+    /**
+     * プレイヤーがAdmin・Moderator・Regularのいずれかであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
     public static boolean isAMR(Player player) {
         String group = PermissionsManager.getPermissionMainGroup(player);
-        return group.equalsIgnoreCase("Admin") || group.equalsIgnoreCase("Moderator")
-                || group.equalsIgnoreCase("Regular");
+        return isAM(player) || group.equalsIgnoreCase("Regular");
     }
 
-    public static boolean isAMRV(Player player) {
+    /**
+     * プレイヤーがAdmin・Moderator・Verifiedのいずれかであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
+    protected static boolean isAMRV(Player player) {
         String group = PermissionsManager.getPermissionMainGroup(player);
-        return group.equalsIgnoreCase("Admin")
-                || group.equalsIgnoreCase("Moderator")
-                || group.equalsIgnoreCase("Regular")
-                || group.equalsIgnoreCase("Verified");
+        return isAMR(player) || group.equalsIgnoreCase("Verified");
     }
 
-    public static boolean isInt(String s) {
+    /**
+     * 文字列が数値であるかを判定します。
+     *
+     * @param s 判定する文字列
+     * @return 判定結果
+     */
+    protected static boolean isInt(String s) {
         try {
             Integer.parseInt(s);
             return true;
@@ -132,39 +203,47 @@ public class MyMaidLibrary {
         }
     }
 
-    public static boolean isUUID(String s) {
-        try {
-            UUID.fromString(s);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+    /**
+     * 文字列がUUIDとして正しいか判定します。
+     *
+     * @param s 判定する文字列
+     * @return 判定結果
+     */
+    protected static boolean isUUID(String s) {
+        return s.split("-").length == 5;
     }
 
-    public static String DiscordEscape(String text) {
+    /**
+     * 文字列をDiscord用にエスケープします。
+     *
+     * @param text エスケープする文字列
+     * @return エスケープされた文字列
+     */
+    protected static String DiscordEscape(String text) {
         return text == null ? "" : text.replace("_", "\\_").replace("*", "\\*").replace("~", "\\~");
     }
 
     /**
      * CommandSenderに対してヘルプメッセージと使い方を送信します。
      *
-     * @param sender CommandSender
-     * @param cmd    Cmd
+     * @param sender      CommandSender
+     * @param description getDescription()
+     * @param cmdUsage    getUsage()
      */
-    public void SendUsageMessage(CommandSender sender, Command cmd) {
-        SendMessage(sender, cmd, "------- " + cmd.getName() + " --------");
-        SendMessage(sender, cmd, cmd.getDescription());
-        String CMDusage = cmd.getUsage();
+    public static void SendUsageMessage(CommandSender sender, String description, CmdUsage cmdUsage) {
+        sender.sendMessage("------- " + cmdUsage.getCommand() + " --------");
+        sender.sendMessage(description);
 
-        CMDusage = CMDusage.replaceAll("<command>", cmd.getName());
-
-        if (CMDusage.contains("\n")) {
-            String[] usages = CMDusage.split("\n");
-            for (String usage : usages) {
-                SendMessage(sender, cmd, usage);
-            }
-        } else {
-            SendMessage(sender, cmd, CMDusage);
+        for (CmdUsage.Cmd cmd : cmdUsage.getCommands()){
+            sender.sendMessage(Component.text().append(
+                    Component.text("・"),
+                    Component.text(String.format("/%s %s", cmdUsage.getCommand(), cmd.getArgs()))
+                        .clickEvent(ClickEvent.suggestCommand(String.format("/%s %s", cmdUsage.getCommand(), cmd.getArgs())))
+                        .hoverEvent(HoverEvent.showText(Component.text("コマンドをサジェストします"))),
+                    Component.text(":"),
+                    Component.space(),
+                    Component.text(cmd.getDetails())
+            ));
         }
     }
 
@@ -174,7 +253,7 @@ public class MyMaidLibrary {
      * @param str 文字列
      * @return 含むならtrue
      */
-    public static boolean check4bytechars(String str) {
+    protected static boolean check4bytechars(String str) {
         Pattern pattern = Pattern.compile(".*([^\\u0000-\\uFFFF]).*");
         Matcher m = pattern.matcher(str);
         return m.matches();
@@ -186,12 +265,10 @@ public class MyMaidLibrary {
      * @param str 文字列
      * @return 含むならその文字列、そうでなければnull
      */
-    public static String check4bytechars_MatchText(String str) {
+    protected static String check4bytechars_MatchText(String str) {
         Pattern pattern = Pattern.compile(".*([^\\u0000-\\uFFFF]).*");
         Matcher m = pattern.matcher(str);
-        if (m.matches()) {
-            return m.group(1);
-        }
+        if (m.matches()) return m.group(1);
 
         return null;
     }
@@ -200,9 +277,9 @@ public class MyMaidLibrary {
      * 4バイトの文字列を含むかどうかを調べ、含んでいればその文字列を消したものを返します。
      *
      * @param str 文字列
-     * @return 含む場合消した文字列、そうでないばあい入力された文字列
+     * @return 含む場合消した文字列、そうでない場合入力された文字列
      */
-    public static String check4bytechars_DeleteMatchText(String str) {
+    protected static String check4bytechars_DeleteMatchText(String str) {
         Pattern pattern = Pattern.compile("([^\\u0000-\\uFFFF]+)");
         return pattern.matcher(str).replaceAll("");
     }
@@ -250,15 +327,12 @@ public class MyMaidLibrary {
         if (count == 2) {
             // 今回3回目 -> Jail
             Jail jail = new Jail(player);
-            if (jail.isBanned()) {
-                return;
-            }
+            if (jail.isBanned()) return;
             jail.addBan("jaotan", "迷惑コマンドを3分間に3回以上実行したため");
-        } else if (count == 1) {
+        } else if (count == 1)
             player.sendMessage(String.format("[AntiProblemCommand] %s短時間に複数回にわたる迷惑コマンドが実行された場合、処罰対象となる場合があります。ご注意ください。", ChatColor.GREEN));
-        } else {
+        else
             player.sendMessage(String.format("[AntiProblemCommand] %sあなたが実行したコマンドは迷惑コマンドとされています。複数回実行すると、迷惑行為として処罰対象となる場合がございます。", ChatColor.GREEN));
-        }
         MyMaidConfig.setSpamCount(player.getUniqueId(), count + 1);
         MyMaidConfig.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
     }
@@ -285,7 +359,7 @@ public class MyMaidLibrary {
      * <p>
      * http://www.jias.jp/blog/?57
      */
-    public static int getGroundPos(Location loc) {
+    protected static int getGroundPos(Location loc) {
 
         // 最も高い位置にある非空気ブロックを取得
         loc = loc.getWorld().getHighestBlockAt(loc).getLocation();
@@ -299,12 +373,10 @@ public class MyMaidLibrary {
             loc.setY(y);
 
             // そこは太陽光が一定以上届く場所で、非固体ブロックで、ひとつ上も非固体ブロックか
+            // 地上の高さとして記憶しておく
             if (loc.getBlock().getLightFromSky() >= 8
                     && !loc.getBlock().getType().isSolid()
-                    && !loc.clone().add(0, 1, 0).getBlock().getType().isSolid()) {
-                // 地上の高さとして記憶しておく
-                ground = y;
-            }
+                    && !loc.clone().add(0, 1, 0).getBlock().getType().isSolid()) ground = y;
         }
 
         // 地上の高さを返す

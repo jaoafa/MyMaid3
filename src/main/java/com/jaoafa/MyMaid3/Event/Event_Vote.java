@@ -28,7 +28,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
                 .queue();
         MyMaidConfig.getServerChatChannel().sendMessage("投票をよろしくお願いします！ https://jaoafa.com/vote").queue();
 
-        MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
+        MyMaidConfig.getJDA(.getTextChannelById(499922840871632896L))
                 .sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました(minecraft.jp): " + oldVote + "回 -> " + newVote + "回" + autoFillMessage)
                 .queue();
     }
@@ -43,7 +43,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
                 .queue();
         MyMaidConfig.getServerChatChannel().sendMessage("投票をよろしくお願いします！ https://jaoafa.com/monovote").queue();
 
-        MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
+        MyMaidConfig.getJDA(.getTextChannelById(499922840871632896L))
                 .sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました(monocraft.net): " + oldVote + "回 -> " + newVote + "回" + autoFillMessage)
                 .queue();
     }
@@ -96,7 +96,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
         OfflinePlayer offplayer = Bukkit.getOfflinePlayer(uuid);
 
-        if (offplayer == null || offplayer.getName() == null) {
+        if (offplayer.getName() == null) {
             missedNotifyMinecraftJP(name, "OfflinePlayer取得失敗");
             return;
         }
@@ -144,7 +144,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
 
         OfflinePlayer offplayer = Bukkit.getOfflinePlayer(uuid);
 
-        if (offplayer == null || offplayer.getName() == null) {
+        if (offplayer.getName() == null) {
             missedNotifyMonocraftNet(name, "OfflinePlayer取得失敗");
             return;
         }
@@ -196,19 +196,19 @@ public class Event_Vote extends MyMaidLibrary implements Listener {
     }
 
     void missedNotify(String name, String reason) {
-        MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
+        MyMaidConfig.getJDA(.getTextChannelById(499922840871632896L))
                 .sendMessage(":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました: `" + reason + "`")
                 .queue();
     }
 
     void missedNotifyMinecraftJP(String name, String reason) {
-        MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
+        MyMaidConfig.getJDA(.getTextChannelById(499922840871632896L))
                 .sendMessage(":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました(minecraft.jp): `" + reason + "`")
                 .queue();
     }
 
     void missedNotifyMonocraftNet(String name, String reason) {
-        MyMaidConfig.getJDA().getTextChannelById(499922840871632896L)
+        MyMaidConfig.getJDA(.getTextChannelById(499922840871632896L))
                 .sendMessage(
                         ":x: <@221991565567066112> `" + name + "`の投票特典付与処理に失敗しました(monocraft.net): `" + reason + "`")
                 .queue();

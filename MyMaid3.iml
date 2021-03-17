@@ -35,6 +35,15 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-commons:9.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-tree:9.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-analysis:9.0" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: org.bukkit:craftbukkit:1.16.5-R0.1-SNAPSHOT">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/craftbukkit-1.12.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" name="Maven: net.luckperms:api:5.1" level="project" />
     <orderEntry type="library" name="Maven: org.dynmap:dynmap-api:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.4.7-R1.0" level="project" />

@@ -111,9 +111,6 @@ public class Event_Jail implements Listener {
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
         if (!player.getLocation().getWorld().getName().equalsIgnoreCase("Jao_Afa")) {
             return;
         }
@@ -129,9 +126,6 @@ public class Event_Jail implements Listener {
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
         Jail jail = new Jail(player);
         if (!jail.isBanned()) { // Jailされてる
             return;
@@ -159,9 +153,6 @@ public class Event_Jail implements Listener {
     @EventHandler
     public void onPlayerBucketEmptyEvent(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
         Jail jail = new Jail(player);
         if (!jail.isBanned()) { // Jailされてる
             return;
@@ -174,9 +165,6 @@ public class Event_Jail implements Listener {
     @EventHandler
     public void onPlayerBucketFillEvent(PlayerBucketFillEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
         Jail jail = new Jail(player);
         if (!jail.isBanned()) { // Jailされてる
             return;
@@ -192,9 +180,6 @@ public class Event_Jail implements Listener {
             return;
         }
         Player player = (Player) event.getEntity();
-        if (player == null) {
-            return;
-        }
         Jail jail = new Jail(player);
         if (!jail.isBanned()) { // Jailされてる
             return;
@@ -205,9 +190,6 @@ public class Event_Jail implements Listener {
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
         Jail jail = new Jail(player);
         if (!jail.isBanned()) { // Jailされてる
             return;
@@ -218,9 +200,6 @@ public class Event_Jail implements Listener {
     @EventHandler
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
         Jail jail = new Jail(player);
         if (!jail.isBanned()) { // Jailされてる
             return;

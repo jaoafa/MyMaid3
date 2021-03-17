@@ -1,9 +1,6 @@
 package com.jaoafa.MyMaid3.Command;
 
-import com.jaoafa.MyMaid3.Lib.CommandPremise;
-import com.jaoafa.MyMaid3.Lib.EBan;
-import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import com.jaoafa.MyMaid3.Lib.PermissionsManager;
+import com.jaoafa.MyMaid3.Lib.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -11,14 +8,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.UUID;
 
 public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
-            SendUsageMessage(sender, cmd);
+            SendUsageMessage(sender, getDescription(), getUsage());
             return true;
         }
         if (args.length >= 1 && args[0].equalsIgnoreCase("status")) {
@@ -38,13 +38,17 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
             onCmd_Remove(sender, cmd, args);
             return true;
         }
-        SendUsageMessage(sender, cmd);
+        SendUsageMessage(sender, getDescription(), getUsage());
         return true;
     }
 
     private void onCmd_Status(CommandSender sender, Command cmd, String[] args) {
         if (args.length == 1) {
             Set<EBan> ebans = EBan.getList();
+            if(ebans == null){
+                SendMessage(sender, cmd, "EBanデータの取得に失敗しました。しばらく経ってからもう一度お試しください。");
+                return;
+            }
             SendMessage(sender, cmd, "現在、" + ebans.size() + "人のプレイヤーがEBanされています。");
             for (EBan eban : ebans) {
                 String name;
@@ -129,14 +133,13 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandExecutor, CommandP
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/eban add <Target> <Reason>: TargetをEBanします。");
-                add("/eban remove <Target>: TargetのEBanを解除します。");
-                add("/eban status: EBan一覧を表示します。");
-                add("/eban status <Target>: TargetのEBan情報を表示します。");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "eban",
+                new CmdUsage.Cmd("add <Target> <Reason>", "TargetをEBanします。"),
+                new CmdUsage.Cmd("remove <Target>", "TargetのEBanを解除します。"),
+                new CmdUsage.Cmd("status", "EBan一覧を表示します。"),
+                new CmdUsage.Cmd("status <Target>", "TargetのEBan情報を表示します。")
+        );
     }
 }

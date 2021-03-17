@@ -138,6 +138,14 @@
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!--CraftBukkit -->
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <systemPath>${basedir}/lib/craftbukkit-1.12.2.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
         <!-- LuckPerms -->
         <dependency>
             <groupId>net.luckperms</groupId>

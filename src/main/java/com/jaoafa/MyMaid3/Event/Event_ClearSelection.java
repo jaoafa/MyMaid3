@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 public class Event_ClearSelection extends MyMaidLibrary implements Listener {
-    LinkedList<UUID> sprinting = new LinkedList<>();
+    final LinkedList<UUID> sprinting = new LinkedList<>();
 
     @EventHandler
     public void onAirClick(PlayerInteractEvent event) {

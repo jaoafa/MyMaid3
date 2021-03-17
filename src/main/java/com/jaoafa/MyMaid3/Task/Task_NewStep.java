@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class Task_NewStep extends BukkitRunnable {
-    Set<UUID> getted = new HashSet<>();
+    final Set<UUID> getted = new HashSet<>();
 
     public Task_NewStep() {
     }
@@ -35,10 +35,9 @@ public class Task_NewStep extends BukkitRunnable {
         if (regions.size() == 0) {
             return false;
         }
-        List<ProtectedRegion> inheritance = new LinkedList<ProtectedRegion>();
-        Iterator<ProtectedRegion> iterator = regions.iterator();
-        while (iterator.hasNext()) {
-            inheritance.add(iterator.next());
+        List<ProtectedRegion> inheritance = new LinkedList<>();
+        for (ProtectedRegion region : regions) {
+            inheritance.add(region);
         }
         Collections.reverse(inheritance);
         ProtectedRegion firstregion = inheritance.get(0);
@@ -48,7 +47,7 @@ public class Task_NewStep extends BukkitRunnable {
     private static WorldGuardPlugin getWorldGuard() {
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+        if (!(plugin instanceof WorldGuardPlugin)) {
             return null;
         }
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class TpDeny {
-    Player player;
+    final Player player;
 
     public TpDeny(Player player) {
         this.player = player;
@@ -79,18 +79,21 @@ public class TpDeny {
     /**
      * テレポート拒否設定を無効化(オフに)する
      *
-     * @param id TpDenyId
+     * @param target テレポートの拒否を解除するプレイヤー
      * @return 成功したか
      */
-    public boolean disableDeny(int id) {
+    public boolean disableDeny(OfflinePlayer target) {
         if (MyMaidConfig.getMySQLDBManager() == null) {
+            return false;
+        }
+        if(!isTpDeny(target)){
             return false;
         }
         try {
             Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE tpdeny SET disabled = ? WHERE rowid = ? AND uuid = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE tpdeny SET disabled = ? WHERE deny_uuid = ? AND uuid = ?");
             stmt.setBoolean(1, true);
-            stmt.setInt(2, id);
+            stmt.setString(2, target.getUniqueId().toString());
             stmt.setString(3, player.getUniqueId().toString());
             int count = stmt.executeUpdate();
             stmt.close();
@@ -167,19 +170,22 @@ public class TpDeny {
     /**
      * テレポートを拒否した場合、通知するかを設定する
      *
-     * @param id   TpDenyId
+     * @param target テレポートの拒否通知対象プレイヤー
      * @param bool 通知するかどうか
      * @return 成功したか
      */
-    public boolean setNotify(int id, boolean bool) {
+    public boolean setNotify(OfflinePlayer target, boolean bool) {
         if (MyMaidConfig.getMySQLDBManager() == null) {
+            return false;
+        }
+        if(!isTpDeny(target)){
             return false;
         }
         try {
             Connection conn = MyMaidConfig.getMySQLDBManager().getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE tpdeny SET notify = ? WHERE rowid = ? AND uuid = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE tpdeny SET notify = ? WHERE deny_uuid = ? AND uuid = ?");
             stmt.setBoolean(1, bool);
-            stmt.setInt(2, id);
+            stmt.setString(2, target.getUniqueId().toString());
             stmt.setString(3, player.getUniqueId().toString());
             int count = stmt.executeUpdate();
             stmt.close();

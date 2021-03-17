@@ -46,7 +46,7 @@ public class ErrorReporter {
                     + exception.getCause();
             InputStream stream = new ByteArrayInputStream(
                     text.getBytes(StandardCharsets.UTF_8));
-            MyMaidConfig.getReportChannel().sendFile(stream, "Mainreport" + System.currentTimeMillis() + ".txt");
+            MyMaidConfig.getReportChannel().sendFile(stream, "Mainreport" + System.currentTimeMillis() + ".txt").queue();
         }
 
     }

@@ -51,8 +51,6 @@ public class PlayerVoteData_Monocraft {
     @Deprecated
     public PlayerVoteData_Monocraft(String name) throws NullPointerException {
         OfflinePlayer offplayer = Bukkit.getOfflinePlayer(name);
-        if (offplayer == null)
-            throw new NullPointerException("We could not get the player.");
         this.offplayer = offplayer;
 
         changePlayerName();

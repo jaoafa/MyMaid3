@@ -1,22 +1,22 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Cmd_TempMute extends MyMaidLibrary implements CommandExecutor, CommandPremise {
-    public static Set<Player> tempmutes = new HashSet<>();
+    public static final Set<Player> tempmutes = new HashSet<>();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
             SendMessage(sender, cmd, "このコマンドはゲーム内から実行してください。");
             return true;
@@ -43,11 +43,10 @@ public class Cmd_TempMute extends MyMaidLibrary implements CommandExecutor, Comm
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/tempmute");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "tempmute",
+                new CmdUsage.Cmd("", getDescription())
+        );
     }
 }

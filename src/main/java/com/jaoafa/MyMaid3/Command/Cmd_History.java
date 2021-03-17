@@ -1,5 +1,6 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.Historyjao;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
@@ -10,17 +11,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 public class Cmd_History extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
-            SendUsageMessage(sender, cmd);
+            SendUsageMessage(sender, getDescription(), getUsage());
             return true;
         }
         // jaoHistory
@@ -41,7 +41,7 @@ public class Cmd_History extends MyMaidLibrary implements CommandExecutor, Comma
             return true;
         }
 
-        SendUsageMessage(sender, cmd);
+        SendUsageMessage(sender, getDescription(), getUsage());
         return true;
     }
 
@@ -125,13 +125,12 @@ public class Cmd_History extends MyMaidLibrary implements CommandExecutor, Comma
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/history add <Target> <Message...>: Targetに対してMessageのヒストリーを追加します。");
-                add("/history disable <Target> <ID>: TargetのIDに対応するヒストリーを無効にします。");
-                add("/history status <Target>: Targetのヒストリー情報を表示します。");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "history",
+                new CmdUsage.Cmd("add <Target> <Message...>", "Targetに対してMessageのヒストリーを追加します。"),
+                new CmdUsage.Cmd("disable <Target> <ID>", "TargetのIDに対応するヒストリーを無効にします。"),
+                new CmdUsage.Cmd("status <Target>", "Targetのヒストリー情報を表示します。")
+        );
     }
 }

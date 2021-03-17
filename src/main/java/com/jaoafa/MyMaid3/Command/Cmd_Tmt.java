@@ -1,5 +1,6 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import org.bukkit.Bukkit;
@@ -12,14 +13,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Cmd_Tmt extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
             SendMessage(sender, cmd, "このコマンドはサーバ内から実行できます。");
             return true;
@@ -29,9 +29,8 @@ public class Cmd_Tmt extends MyMaidLibrary implements CommandExecutor, CommandPr
         PlayerInventory inv = player.getInventory();
 
         dropOrAddItem(loc, inv, inv.getHelmet());
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM);
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-        skull.setDurability((short) 3);
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("32ff7cdc-a1b4-450a-aa7e-6af75fe8c37c")));
         skull.setItemMeta(skullMeta);
         inv.setHelmet(skull);
@@ -67,11 +66,10 @@ public class Cmd_Tmt extends MyMaidLibrary implements CommandExecutor, CommandPr
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/tmt");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "tmt",
+                new CmdUsage.Cmd("", getDescription())
+        );
     }
 }

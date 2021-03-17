@@ -47,33 +47,33 @@ public class Event_LongTimeNoSee extends MyMaidLibrary implements Listener {
                         if (sa >= 2592000L) {
                             StringBuilder builder = new StringBuilder();
 
-                            int year = (int) Math.floor(sa / 31536000L);
+                            int year = (int) Math.floor((double) sa / 31536000L);
                             int year_remain = (int) Math.floor(sa % 31536000L);
                             if (year != 0) {
-                                builder.append(year + "年");
+                                builder.append(year).append("年");
                             }
-                            int month = (int) Math.floor(year_remain / 2592000L);
+                            int month = (int) Math.floor((double) year_remain / 2592000L);
                             int month_remain = (int) Math.floor(year_remain % 2592000L);
                             if (month != 0) {
-                                builder.append(month + "か月");
+                                builder.append(month).append("か月");
                             }
-                            int day = (int) Math.floor(month_remain / 86400L);
+                            int day = (int) Math.floor((double) month_remain / 86400L);
                             int day_remain = (int) Math.floor(month_remain % 86400L);
                             if (day != 0) {
-                                builder.append(day + "日");
+                                builder.append(day).append("日");
                             }
-                            int hour = (int) Math.floor(day_remain / 3600L);
+                            int hour = (int) Math.floor((double) day_remain / 3600L);
                             int hour_remain = (int) Math.floor(day_remain % 3600L);
                             if (hour != 0) {
-                                builder.append(hour + "時間");
+                                builder.append(hour).append("時間");
                             }
-                            int minute = (int) Math.floor(hour_remain / 60L);
+                            int minute = (int) Math.floor((double) hour_remain / 60L);
                             if (minute != 0) {
-                                builder.append(minute + "分");
+                                builder.append(minute).append("分");
                             }
                             int sec = (int) Math.floor(hour_remain % 60L);
                             if (sec != 0) {
-                                builder.append(sec + "秒");
+                                builder.append(sec).append("秒");
                             }
 
                             chatFake(ChatColor.GOLD, "jaotan", player.getName() + "さん、お久しぶりです！" + builder.toString() + "ぶりですね！");

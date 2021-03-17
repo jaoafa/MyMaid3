@@ -1,21 +1,25 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Cmd_Cauldron extends MyMaidLibrary implements CommandExecutor, CommandPremise {
-    public static Map<UUID, Integer> cauldrons = new HashMap<>();
+    public static final Map<UUID, Integer> cauldrons = new HashMap<>();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
-            SendUsageMessage(sender, cmd);
+            SendUsageMessage(sender, getDescription(), getUsage());
             return true;
         }
         if (!(sender instanceof Player)) {
@@ -63,13 +67,12 @@ public class Cmd_Cauldron extends MyMaidLibrary implements CommandExecutor, Comm
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/cauldron: 現在の大釜設置時の水状態を表示します。");
-                add("/cauldron [1-3]: 大釜設置時の水状態を1・2・3のいずれか指定された値に変更します。");
-                add("/cauldron off: 大釜設置時の水状態をオフ(0)にします。");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "cauldron",
+                new CmdUsage.Cmd("", "現在の大釜設置時の水状態を表示します。"),
+                new CmdUsage.Cmd("[1-3]", "大釜設置時の水状態を1・2・3のいずれか指定された値に変更します。"),
+                new CmdUsage.Cmd("off", "大釜設置時の水状態をオフ(0)にします。")
+        );
     }
 }

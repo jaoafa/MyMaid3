@@ -160,11 +160,12 @@ public class Event_SandBoxRegularOnly extends MyMaidLibrary implements Listener 
         Player player = event.getPlayer();
         World world = player.getWorld();
 
-        if ((player.getInventory().getItemInMainHand() == null
-                || player.getInventory().getItemInMainHand().getType() == Material.AIR)
-                && (player.getInventory().getItemInOffHand() == null
-                || player.getInventory().getItemInOffHand().getType() == Material.AIR)) {
-            return;
+        player.getInventory().getItemInMainHand();
+        if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
+            player.getInventory().getItemInOffHand();
+            if (player.getInventory().getItemInOffHand().getType() == Material.AIR) {
+                return;
+            }
         }
 
         if (!world.getName().equalsIgnoreCase("SandBox")) {
@@ -187,11 +188,12 @@ public class Event_SandBoxRegularOnly extends MyMaidLibrary implements Listener 
         Player player = event.getPlayer();
         World world = player.getWorld();
 
-        if ((player.getInventory().getItemInMainHand() == null
-                || player.getInventory().getItemInMainHand().getType() == Material.AIR)
-                && (player.getInventory().getItemInOffHand() == null
-                || player.getInventory().getItemInOffHand().getType() == Material.AIR)) {
-            return;
+        player.getInventory().getItemInMainHand();
+        if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
+            player.getInventory().getItemInOffHand();
+            if (player.getInventory().getItemInOffHand().getType() == Material.AIR) {
+                return;
+            }
         }
 
         if (!world.getName().equalsIgnoreCase("SandBox")) {

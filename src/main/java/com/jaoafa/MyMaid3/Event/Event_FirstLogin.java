@@ -24,7 +24,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
             return; // 初めてではない
         }
 
-        String reputation = "null";
+        String reputation;
         MCBans mcbans = null;
         try {
             mcbans = new MCBans(player);
@@ -37,7 +37,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
             reputation = "null";
         }
 
-        List<String> players = new ArrayList<String>();
+        List<String> players = new ArrayList<>();
         for (Player p : Bukkit.getOnlinePlayers()) {
             players.add(p.getName());
         }
@@ -55,7 +55,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
                 "https://crafatar.com/renders/body/" + player.getUniqueId().toString() + ".png?overlay=true&scale=10");
         builder.setAuthor(MyMaidConfig.getJDA().getSelfUser().getName(), null,
                 MyMaidConfig.getJDA().getSelfUser().getAvatarUrl());
-        MyMaidConfig.getJDA().getTextChannelById(597423444501463040L).sendMessage(builder.build()).queue();
+        MyMaidConfig.getJDA(.getTextChannelById(597423444501463040L)).sendMessage(builder.build()).queue();
 
         if (mcbans != null && (mcbans.getGlobalCount() > 0 || mcbans.getLocalCount() > 0)) {
             int[] global_ids = mcbans.getGlobalBanIds();
@@ -97,7 +97,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
                 }
             }
 
-            MyMaidConfig.getJDA().getTextChannelById(597423444501463040L).sendMessage(embed.build()).queue();
+            MyMaidConfig.getJDA(.getTextChannelById(597423444501463040L)).sendMessage(embed.build()).queue();
         }
     }
 }

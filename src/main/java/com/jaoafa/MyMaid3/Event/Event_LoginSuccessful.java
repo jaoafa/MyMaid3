@@ -39,7 +39,6 @@ public class Event_LoginSuccessful extends MyMaidLibrary implements Listener {
                     statement.close();
                 } catch (SQLException e) {
                     ErrorReporter.report(e);
-                    return;
                 }
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());

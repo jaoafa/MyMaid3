@@ -1,11 +1,13 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Main;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,6 +15,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,16 +26,24 @@ import java.util.*;
 
 public class Cmd_MyMaid3 extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
-            SendUsageMessage(sender, cmd);
+            SendUsageMessage(sender, getDescription(), getUsage());
             return true;
         }
         PluginDescriptionFile desc = Main.getJavaPlugin().getDescription();
         String nowVer = desc.getVersion();
         Date nowVerDate = getVersionDate(nowVer);
         String nowVerSha = getVersionSha(nowVer);
+        if(nowVerSha == null){
+            SendMessage(sender, cmd, ChatColor.AQUA + "現バージョン情報の取得に失敗しました。");
+            return true;
+        }
         String latestVer = getVersion(desc.getName());
+        if(latestVer == null){
+            SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン情報の取得に失敗しました。");
+            return true;
+        }
         Date latestVerDate = getVersionDate(latestVer);
         String latestVerSha = getLastCommitSha(desc.getName());
 
@@ -49,11 +60,6 @@ public class Cmd_MyMaid3 extends MyMaidLibrary implements CommandExecutor, Comma
         } else if (nowVerDate.before(latestVerDate)) {
             // 新しいバージョンあり
             SendMessage(sender, cmd, ChatColor.RED + "現在導入されているバージョンよりも新しいバージョンがリリースされています。");
-            SendMessage(sender, cmd, ChatColor.AQUA + "導入バージョン: " + nowVer);
-            SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer + " (" + latestVerSha + ")");
-        } else if (nowVerSha.equals(latestVerSha)) {
-            // shaがおなじ
-            SendMessage(sender, cmd, ChatColor.AQUA + "現在導入されているバージョンは最新です。(-)");
             SendMessage(sender, cmd, ChatColor.AQUA + "導入バージョン: " + nowVer);
             SendMessage(sender, cmd, ChatColor.AQUA + "最新バージョン: " + latestVer + " (" + latestVerSha + ")");
         } else if (nowVerDate.after(latestVerDate)) {
@@ -81,12 +87,15 @@ public class Cmd_MyMaid3 extends MyMaidLibrary implements CommandExecutor, Comma
             String url = "https://api.github.com/repos/jaoafa/" + repo + "/commits";
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(url).get().build();
-            Response response = client.newCall(request).execute();
-            if (response.code() != 200) {
-                return null;
+            JSONArray array;
+            try (Response response = client.newCall(request).execute()) {
+                if (response.code() != 200) {
+                    return null;
+                }
+                ResponseBody body = response.body();
+                if(body == null) throw new NullPointerException("Body is null.");
+                array = new JSONArray(body.string());
             }
-            JSONArray array = new JSONArray(response.body().string());
-            response.close();
 
             for (int i = 0; i < array.length() && i < 5; i++) {
                 JSONObject obj = array.getJSONObject(i).getJSONObject("commit");
@@ -108,12 +117,15 @@ public class Cmd_MyMaid3 extends MyMaidLibrary implements CommandExecutor, Comma
             String url = "https://api.github.com/repos/jaoafa/" + repo + "/commits";
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(url).get().build();
-            Response response = client.newCall(request).execute();
-            if (response.code() != 200) {
-                return null;
+            JSONArray array;
+            try (Response response = client.newCall(request).execute()) {
+                if (response.code() != 200) {
+                    return null;
+                }
+                ResponseBody body = response.body();
+                if(body == null) throw new NullPointerException("Body is null.");
+                array = new JSONArray(body.string());
             }
-            JSONArray array = new JSONArray(response.body().string());
-            response.close();
 
             return array.getJSONObject(0).getString("sha").substring(0, 7);
         } catch (IOException | JSONException e) {
@@ -153,7 +165,9 @@ public class Cmd_MyMaid3 extends MyMaidLibrary implements CommandExecutor, Comma
             if (response.code() != 200) {
                 return null;
             }
-            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(response.body().charStream());
+            ResponseBody body = response.body();
+            if(body == null) throw new NullPointerException("Body is null.");
+            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(body.charStream());
             response.close();
             if (yaml.contains("version")) {
                 return yaml.getString("version");
@@ -172,11 +186,10 @@ public class Cmd_MyMaid3 extends MyMaidLibrary implements CommandExecutor, Comma
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/mymaid3");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "mymaid3",
+                new CmdUsage.Cmd("", getDescription())
+        );
     }
 }

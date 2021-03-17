@@ -42,11 +42,11 @@ import java.util.List;
 import java.util.Map;
 
 public class Event_Antijaoium extends MyMaidLibrary implements Listener {
-    List<Integer> HEAL_jaoium = new ArrayList<>();
-    List<Integer> HEALTH_BOOST_jaoium = new ArrayList<>();
+    final List<Integer> HEAL_jaoium = new ArrayList<>();
+    final List<Integer> HEALTH_BOOST_jaoium = new ArrayList<>();
     // -------------- ↓jaoium取得方法判定↓ -------------- //
-    Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
-    Map<String, String> ItemData = new HashMap<>();
+    final Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
+    final Map<String, String> ItemData = new HashMap<>();
 
     public Event_Antijaoium() {
         HEAL_jaoium.add(-3);
@@ -152,7 +152,6 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
             }
             if (ALLPlayer) {
                 Reason.put(p.getName(), player.getName() + "の実行したコマンド : " + command);
-                continue;
             }
         }
     }
@@ -163,7 +162,8 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
             return;
         BlockCommandSender sender = (BlockCommandSender) event.getSender();
 
-        if (sender.getBlock() == null || !(sender.getBlock().getState() instanceof CommandBlock))
+        sender.getBlock();
+        if (!(sender.getBlock().getState() instanceof CommandBlock))
             return;
         CommandBlock cmdb = (CommandBlock) sender.getBlock().getState();
 
@@ -185,7 +185,6 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         }
 
         String selector = commands[1];
-        boolean ALLPlayer = false;
         String ToPlayer = null;
         if (selector.equalsIgnoreCase("@p")) {
             // 一番近い
@@ -194,12 +193,6 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
                 return;
             }
             ToPlayer = p.getName();
-        } else if (selector.equalsIgnoreCase("@a")) {
-            // プレイヤーすべて
-            ALLPlayer = true;
-        } else if (selector.equalsIgnoreCase("@e")) {
-            // エンティティすべて
-            ALLPlayer = true;
         } else {
             Player p = Bukkit.getPlayer(selector);
             if (p != null) {
@@ -215,14 +208,6 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
                         "コマンドブロック(" + cmdb.getLocation().getWorld().getName() + " " + cmdb.getLocation().getBlockX()
                                 + " " + cmdb.getLocation().getBlockY() + " " + cmdb.getLocation().getBlockZ()
                                 + ")の実行したコマンド : " + command);
-                continue;
-            }
-            if (ALLPlayer) {
-                Reason.put(p.getName(),
-                        "コマンドブロック(" + cmdb.getLocation().getWorld().getName() + " " + cmdb.getLocation().getBlockX()
-                                + " " + cmdb.getLocation().getBlockY() + " " + cmdb.getLocation().getBlockZ()
-                                + ")の実行したコマンド : " + command);
-                continue;
             }
         }
     }
@@ -235,9 +220,6 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         Player player = (Player) event.getEntity();
         Item item = event.getItem();
         ItemStack hand = item.getItemStack();
-        if (hand == null) {
-            return;
-        }
         if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
             PotionMeta potion = (PotionMeta) hand.getItemMeta();
             if (isjaoium(potion.getCustomEffects())) {
@@ -294,9 +276,6 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         Player player = (Player) event.getEntity();
         Item item = event.getItem();
         ItemStack hand = item.getItemStack();
-        if (hand == null) {
-            return;
-        }
         if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
             PotionMeta potion = (PotionMeta) hand.getItemMeta();
             if (isjaoium(potion.getCustomEffects())) {
@@ -307,7 +286,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void InvClick(InventoryClickEvent event) throws ClassNotFoundException, SQLException {
+    public void InvClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
@@ -334,7 +313,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
                     setjaoiumItemData(player, hand);
                     if (inventory.getItem(n) != null)
                         inventory.clear(n);
-                    jaoium = _jaoium;
+                    jaoium = true;
 
                     if (isMalicious(potion) != null) {
                         malicious = isMalicious(potion);
@@ -358,7 +337,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
                     if (_jaoium) {
                         setjaoiumItemData(player, hand);
                         clickedinventory.clear(n);
-                        jaoium = _jaoium;
+                        jaoium = true;
 
                         if (isMalicious(potion) != null) {
                             malicious = isMalicious(potion);
@@ -395,7 +374,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) throws ClassNotFoundException, SQLException {
+    public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
         Inventory inventory = player.getInventory();
         Inventory enderchestinventory = player.getEnderChest();
@@ -418,7 +397,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
                 if (_jaoium) {
                     setjaoiumItemData(player, hand);
                     inventory.clear(n);
-                    jaoium = _jaoium;
+                    jaoium = true;
 
                     if (isMalicious(potion) != null) {
                         malicious = isMalicious(potion);
@@ -431,30 +410,28 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         }
 
         boolean enderjaoium = false;
-        if (enderchestinventory != null) {
-            is = enderchestinventory.getContents();
-            for (int n = 0; n < is.length; n++) {
-                if (is[n] == null) {
-                    continue;
-                }
-                ItemStack hand = is[n];
-                if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
-                    PotionMeta potion = (PotionMeta) hand.getItemMeta();
-                    boolean _enderjaoium = isjaoium(potion.getCustomEffects());
-                    if (_enderjaoium) {
-                        setjaoiumItemData(player, hand);
-                        enderchestinventory.clear(n);
-                        enderjaoium = _enderjaoium;
+        is = enderchestinventory.getContents();
+        for (int n = 0; n < is.length; n++) {
+            if (is[n] == null) {
+                continue;
+            }
+            ItemStack hand = is[n];
+            if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
+                PotionMeta potion = (PotionMeta) hand.getItemMeta();
+                boolean _enderjaoium = isjaoium(potion.getCustomEffects());
+                if (_enderjaoium) {
+                    setjaoiumItemData(player, hand);
+                    enderchestinventory.clear(n);
+                    enderjaoium = true;
 
-                        if (isMalicious(potion) != null) {
-                            malicious = isMalicious(potion);
-                        }
+                    if (isMalicious(potion) != null) {
+                        malicious = isMalicious(potion);
                     }
                 }
             }
-            if (enderjaoium) {
-                enderchestinventory.clear();
-            }
+        }
+        if (enderjaoium) {
+            enderchestinventory.clear();
         }
         if ((jaoium || enderjaoium) && (jail.isBanned() || eban.isBanned())) {
             return;
@@ -504,7 +481,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
                 if (_jaoium) {
                     setjaoiumItemData(player, hand);
                     inventory.clear(n);
-                    jaoium = _jaoium;
+                    jaoium = true;
 
                     if (isMalicious(potion) != null) {
                         malicious = isMalicious(potion);
@@ -516,30 +493,28 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
             inventory.clear();
         }
         boolean enderjaoium = false;
-        if (enderchestinventory != null) {
-            is = enderchestinventory.getContents();
-            for (int n = 0; n < is.length; n++) {
-                if (is[n] == null) {
-                    continue;
-                }
-                ItemStack hand = is[n];
-                if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
-                    PotionMeta potion = (PotionMeta) hand.getItemMeta();
-                    boolean _enderjaoium = isjaoium(potion.getCustomEffects());
-                    if (_enderjaoium) {
-                        setjaoiumItemData(player, hand);
-                        enderchestinventory.clear(n);
-                        enderjaoium = _enderjaoium;
+        is = enderchestinventory.getContents();
+        for (int n = 0; n < is.length; n++) {
+            if (is[n] == null) {
+                continue;
+            }
+            ItemStack hand = is[n];
+            if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
+                PotionMeta potion = (PotionMeta) hand.getItemMeta();
+                boolean _enderjaoium = isjaoium(potion.getCustomEffects());
+                if (_enderjaoium) {
+                    setjaoiumItemData(player, hand);
+                    enderchestinventory.clear(n);
+                    enderjaoium = true;
 
-                        if (isMalicious(potion) != null) {
-                            malicious = isMalicious(potion);
-                        }
+                    if (isMalicious(potion) != null) {
+                        malicious = isMalicious(potion);
                     }
                 }
             }
-            if (jaoium || enderjaoium) {
-                enderchestinventory.clear();
-            }
+        }
+        if (jaoium || enderjaoium) {
+            enderchestinventory.clear();
         }
         if ((jaoium || enderjaoium) && (jail.isBanned() || eban.isBanned())) {
             return;
@@ -592,7 +567,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
                 if (_jaoium) {
                     setjaoiumItemData(player, hand);
                     inventory.clear(n);
-                    jaoium = _jaoium;
+                    jaoium = true;
 
                     if (isMalicious(potion) != null) {
                         malicious = isMalicious(potion);
@@ -604,30 +579,28 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
             inventory.clear();
         }
         boolean enderjaoium = false;
-        if (enderchestinventory != null) {
-            is = enderchestinventory.getContents();
-            for (int n = 0; n < is.length; n++) {
-                if (is[n] == null) {
-                    continue;
-                }
-                ItemStack hand = is[n];
-                if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
-                    PotionMeta potion = (PotionMeta) hand.getItemMeta();
-                    boolean _enderjaoium = isjaoium(potion.getCustomEffects());
-                    if (_enderjaoium) {
-                        setjaoiumItemData(player, hand);
-                        enderchestinventory.clear(n);
-                        enderjaoium = _enderjaoium;
+        is = enderchestinventory.getContents();
+        for (int n = 0; n < is.length; n++) {
+            if (is[n] == null) {
+                continue;
+            }
+            ItemStack hand = is[n];
+            if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
+                PotionMeta potion = (PotionMeta) hand.getItemMeta();
+                boolean _enderjaoium = isjaoium(potion.getCustomEffects());
+                if (_enderjaoium) {
+                    setjaoiumItemData(player, hand);
+                    enderchestinventory.clear(n);
+                    enderjaoium = true;
 
-                        if (isMalicious(potion) != null) {
-                            malicious = isMalicious(potion);
-                        }
+                    if (isMalicious(potion) != null) {
+                        malicious = isMalicious(potion);
                     }
                 }
             }
-            if (enderjaoium) {
-                enderchestinventory.clear();
-            }
+        }
+        if (enderjaoium) {
+            enderchestinventory.clear();
         }
         if ((jaoium || enderjaoium) && (jail.isBanned() || eban.isBanned())) {
             return;
@@ -680,7 +653,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
                 if (_jaoium) {
                     setjaoiumItemData(player, hand);
                     inventory.clear(n);
-                    jaoium = _jaoium;
+                    jaoium = true;
 
                     if (isMalicious(potion) != null) {
                         malicious = isMalicious(potion);
@@ -692,30 +665,28 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
             inventory.clear();
         }
         boolean enderjaoium = false;
-        if (enderchestinventory != null) {
-            is = enderchestinventory.getContents();
-            for (int n = 0; n < is.length; n++) {
-                if (is[n] == null) {
-                    continue;
-                }
-                ItemStack hand = is[n];
-                if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
-                    PotionMeta potion = (PotionMeta) hand.getItemMeta();
-                    boolean _enderjaoium = isjaoium(potion.getCustomEffects());
-                    if (_enderjaoium) {
-                        setjaoiumItemData(player, hand);
-                        enderchestinventory.clear(n);
-                        enderjaoium = _enderjaoium;
+        is = enderchestinventory.getContents();
+        for (int n = 0; n < is.length; n++) {
+            if (is[n] == null) {
+                continue;
+            }
+            ItemStack hand = is[n];
+            if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
+                PotionMeta potion = (PotionMeta) hand.getItemMeta();
+                boolean _enderjaoium = isjaoium(potion.getCustomEffects());
+                if (_enderjaoium) {
+                    setjaoiumItemData(player, hand);
+                    enderchestinventory.clear(n);
+                    enderjaoium = true;
 
-                        if (isMalicious(potion) != null) {
-                            malicious = isMalicious(potion);
-                        }
+                    if (isMalicious(potion) != null) {
+                        malicious = isMalicious(potion);
                     }
                 }
             }
-            if (enderjaoium) {
-                enderchestinventory.clear();
-            }
+        }
+        if (enderjaoium) {
+            enderchestinventory.clear();
         }
         if ((jaoium || enderjaoium) && ((jail.isBanned() || eban.isBanned()))) {
             return;
@@ -766,13 +737,13 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
             ItemDataUrl = ItemData.get(player.getName());
             ItemData.remove(player.getName());
         }
-        MyMaidConfig.getJDA().getTextChannelById(597423444501463040L)
+        MyMaidConfig.getJDA(.getTextChannelById(597423444501463040L))
                 .sendMessage("**jaoium Location & Reason Notice**\n"
                         + "Player: " + player.getName() + "\n"
                         + "Location: " + loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " "
                         + loc.getBlockZ() + "\n"
                         + "Reason: ``" + reason + "``\n"
-                        + "ItemData: " + ItemDataUrl);
+                        + "ItemData: " + ItemDataUrl).queue();
     }
 
     private void setjaoiumItemData(Player player, ItemStack is) {

@@ -1,6 +1,7 @@
 package com.jaoafa.MyMaid3.Command;
 
 import com.google.common.collect.Sets;
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import com.jaoafa.MyMaid3.Main;
@@ -12,23 +13,27 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, CommandPremise {
-    Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([.0-9]+)$");
-    Pattern SELECTOR_PATTERN = Pattern.compile("^@[praes]\\[.*?]$");
-    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("[^d]([xyz])=([~.\\-0-9]+)");
+    final Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([.0-9]+)$");
+    final Pattern SELECTOR_PATTERN = Pattern.compile("^@[praes]\\[.*?]$");
+    final Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("[^d]([xyz])=([~.\\-0-9]+)");
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
-            SendUsageMessage(sender, cmd);
+            SendUsageMessage(sender, getDescription(), getUsage());
             return true;
         }
 
@@ -39,16 +44,12 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
         Player player = (Player) sender;
 
         Set<Material> materials = Sets.newHashSet(Material.values());
-        materials.remove(Material.COMMAND);
-        materials.remove(Material.COMMAND_CHAIN);
-        materials.remove(Material.COMMAND_REPEATING);
+        materials.remove(Material.COMMAND_BLOCK);
+        materials.remove(Material.CHAIN_COMMAND_BLOCK);
+        materials.remove(Material.REPEATING_COMMAND_BLOCK);
         Block targetBlock = player.getTargetBlock(materials, 10);
-        if (targetBlock == null) {
-            SendMessage(sender, cmd, "対象のコマンドブロックを見てください。(1)");
-            return true;
-        }
-        if (targetBlock.getType() != Material.COMMAND && targetBlock.getType() != Material.COMMAND_CHAIN && targetBlock.getType() != Material.COMMAND_REPEATING) {
-            SendMessage(sender, cmd, "対象のコマンドブロックを見てください。(2 / " + targetBlock.getType().name() + " / " + targetBlock.getX() + " " + targetBlock.getY() + " " + targetBlock.getZ() + ")");
+        if (targetBlock.getType() != Material.COMMAND_BLOCK && targetBlock.getType() != Material.CHAIN_COMMAND_BLOCK && targetBlock.getType() != Material.REPEATING_COMMAND_BLOCK) {
+            SendMessage(sender, cmd, "対象のコマンドブロックを見てください。(" + targetBlock.getType().name() + " / " + targetBlock.getX() + " " + targetBlock.getY() + " " + targetBlock.getZ() + ")");
             return true;
         }
 
@@ -91,7 +92,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
             }
             return true;
         }
-        SendUsageMessage(sender, cmd);
+        SendUsageMessage(sender, getDescription(), getUsage());
         return true;
     }
 
@@ -101,13 +102,12 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandExecutor, Comma
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/convloc: 見ているコマンドブロックのコマンドを「相対座標」に変換します。");
-                add("/convloc <relative|absolute>: 見ているコマンドブロックのコマンドを「相対座標(relative)」か「絶対座標(absolute)」のいずれかに変換します。<relative|absolute>は短縮できます。");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "convLoc",
+                new CmdUsage.Cmd("", "見ているコマンドブロックのコマンドを「相対座標」に変換します。"),
+                new CmdUsage.Cmd("<relative|absolute>", "見ているコマンドブロックのコマンドを「相対座標(relative)」か「絶対座標(absolute)」のいずれかに変換します。<relative|absolute>は短縮できます。")
+        );
     }
 
     String replaceProcess(Location loc, String command, boolean toRelative) {

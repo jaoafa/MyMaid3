@@ -1,13 +1,11 @@
 package com.jaoafa.MyMaid3.Lib;
 
-import java.util.List;
-
 public interface CommandPremise {
 
     /**
      * コマンドを説明する文章を指定・返却します
      *
-     * @return　コマンドを説明する文章
+     * @return コマンドを説明する文章
      */
     String getDescription();
 
@@ -16,5 +14,5 @@ public interface CommandPremise {
      *
      * @return コマンドの使い方
      */
-    List<String> getUsage();
+    CmdUsage getUsage();
 }

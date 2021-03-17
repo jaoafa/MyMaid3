@@ -159,8 +159,6 @@ public class Event_CommandTP extends MyMaidLibrary implements Listener {
 
     void printDebugMsg(String msg) {
         boolean debug = true;
-        if (!debug)
-            return;
         Logger LOGGER = Bukkit.getLogger();
         LOGGER.info(msg);
     }

@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Task_TPSTimings extends BukkitRunnable {
-    JavaPlugin plugin;
+    final JavaPlugin plugin;
     private double OldTps1m = 20;
     private boolean timingsChecking = false;
 
@@ -30,7 +30,7 @@ public class Task_TPSTimings extends BukkitRunnable {
             if (timingsChecking) {
                 // 5分後
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "timings paste");
-                MyMaidConfig.getReportChannel().sendMessage("timings pasted. " + OldTps1m + " -> " + tps1m);
+                MyMaidConfig.getReportChannel().sendMessage("timings pasted. " + OldTps1m + " -> " + tps1m).queue();
                 timingsChecking = false;
                 cancel();
                 new Task_TPSTimings(plugin, OldTps1m, timingsChecking).runTaskLater(plugin, 1200L);
@@ -45,7 +45,7 @@ public class Task_TPSTimings extends BukkitRunnable {
                 new Task_TPSTimings(plugin, OldTps1m, timingsChecking).runTaskLater(plugin, 6000L);
             }
             OldTps1m = tps1m_double;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignored) {
         }
     }
 }

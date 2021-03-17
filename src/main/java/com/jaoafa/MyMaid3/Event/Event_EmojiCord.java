@@ -15,7 +15,7 @@ public class Event_EmojiCord extends MyMaidLibrary implements Listener {
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
         String message = event.getMessage();
         Pattern p = Pattern
-                .compile("<a?\\:(\\w+?)\\:([a-zA-Z0-9+/=]+?)>|\\:([\\w+-]+?(?:~\\d+?)?)\\:(?:\\:skin-tone-(\\d)\\:)?");
+                .compile("<a?:(\\w+?):([a-zA-Z0-9+/=]+?)>|:([\\w+-]+?(?:~\\d+?)?):(?::skin-tone-(\\d):)?");
         Matcher m = p.matcher(message);
         boolean match = false;
         while (m.find()) {

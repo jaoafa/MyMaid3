@@ -36,7 +36,7 @@ public class Event_SignPicStick extends MyMaidLibrary implements Listener {
 
             player.sendMessage("[SignPicStick] " + ChatColor.GREEN + signtext);
 
-            Pattern p = Pattern.compile("\\$([\\w\\.\\-/:\\#\\?\\=\\&\\;\\%\\~\\+]+)");
+            Pattern p = Pattern.compile("\\$([\\w.\\-/:#?=&;%~+]+)");
             Matcher m = p.matcher(signtext);
             if (m.find(1)) {
                 String url = m.group(1);

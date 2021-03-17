@@ -21,9 +21,6 @@ import java.io.InputStreamReader;
 public class Event_AdvancementDiscordNotify extends MyMaidLibrary implements Listener {
     @EventHandler
     public void onDone(PlayerAdvancementDoneEvent event) {
-        if (event.getAdvancement() == null || event.getPlayer() == null) {
-            return;
-        }
         new BukkitRunnable() {
             public void run() {
                 Player player = event.getPlayer();

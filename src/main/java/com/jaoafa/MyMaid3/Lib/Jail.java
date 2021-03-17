@@ -18,9 +18,9 @@ import java.util.*;
  * @author tomachi
  */
 public class Jail extends MyMaidLibrary {
-    static Map<UUID, Jail> data = new HashMap<>();
+    static final Map<UUID, Jail> data = new HashMap<>();
 
-    OfflinePlayer player;
+    final OfflinePlayer player;
     String name;
     UUID uuid;
 
@@ -237,7 +237,7 @@ public class Jail extends MyMaidLibrary {
     /**
      * このユーザーの処罰時刻をDateで返します。
      *
-     * @return
+     * @return Dateの処罰時刻
      */
     public Date getBannedDate() {
         DBSync();
@@ -247,7 +247,7 @@ public class Jail extends MyMaidLibrary {
     /**
      * このユーザーの処罰時刻をUnixTimeで返します。
      *
-     * @return
+     * @return UnixTimeの処罰時刻
      */
     public long getBannedUnixTime() {
         DBSync();
@@ -267,7 +267,7 @@ public class Jail extends MyMaidLibrary {
     /**
      * 最後の処罰遺言を取得します。
      *
-     * @return
+     * @return 処罰遺言
      */
     public String getLastBanTestment() {
         DBSync();

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class MCBans {
-    OfflinePlayer offplayer;
+    final OfflinePlayer offplayer;
     boolean isFound = false;
 
     int globalCount = -1;
@@ -97,7 +97,7 @@ public class MCBans {
     }
 
     public static class Ban {
-        int banid;
+        final int banid;
 
         String mcid;
         String banned_by;

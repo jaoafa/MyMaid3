@@ -39,7 +39,7 @@ public class MySQLDBManager {
                 + "?autoReconnect=true&useUnicode=true&characterEncoding=utf8";
         conn = DriverManager.getConnection(jdbcUrl, this.user, this.password);
         if (WAIT_TIMEOUT == -1) {
-            getWaitTimeout();
+            WAIT_TIMEOUT = getWaitTimeout();
         }
         LAST_PACKET = System.currentTimeMillis();
         conn.setHoldability(ResultSet.CLOSE_CURSORS_AT_COMMIT);

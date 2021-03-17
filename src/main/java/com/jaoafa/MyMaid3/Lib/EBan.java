@@ -15,9 +15,9 @@ import java.util.*;
  * @author tomachi
  */
 public class EBan extends MyMaidLibrary {
-    static Map<UUID, EBan> data = new HashMap<>();
+    static final Map<UUID, EBan> data = new HashMap<>();
 
-    OfflinePlayer player;
+    final OfflinePlayer player;
     String name;
     UUID uuid;
 
@@ -199,7 +199,7 @@ public class EBan extends MyMaidLibrary {
     /**
      * このユーザーの処罰時刻をDateで返します。
      *
-     * @return
+     * @return Dateの処罰時刻
      */
     public Date getBannedDate() {
         DBSync();
@@ -209,7 +209,7 @@ public class EBan extends MyMaidLibrary {
     /**
      * このユーザーの処罰時刻をUnixTimeで返します。
      *
-     * @return
+     * @return UnixTimeの処罰時刻
      */
     public long getBannedUnixTime() {
         DBSync();

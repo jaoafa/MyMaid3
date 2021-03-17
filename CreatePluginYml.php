@@ -34,6 +34,7 @@ $data = [
     "description" => Description,
     "author" => Author,
     "database" => true,
+    "api-version" => 1.16,
     "softdepend" => $Softdepend,
     "commands" => []
 ];

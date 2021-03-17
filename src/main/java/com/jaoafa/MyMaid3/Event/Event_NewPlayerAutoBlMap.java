@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener {
-    Set<UUID> firstLoginer = new HashSet<>();
+    final Set<UUID> firstLoginer = new HashSet<>();
 
     @EventHandler
     public void OnEvent_FirstLogin(PlayerJoinEvent event) {

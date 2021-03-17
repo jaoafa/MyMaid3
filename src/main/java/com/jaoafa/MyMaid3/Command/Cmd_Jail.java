@@ -1,9 +1,6 @@
 package com.jaoafa.MyMaid3.Command;
 
-import com.jaoafa.MyMaid3.Lib.CommandPremise;
-import com.jaoafa.MyMaid3.Lib.Jail;
-import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
-import com.jaoafa.MyMaid3.Lib.PermissionsManager;
+import com.jaoafa.MyMaid3.Lib.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -11,14 +8,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.UUID;
 
 public class Cmd_Jail extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
-            SendUsageMessage(sender, cmd);
+            SendUsageMessage(sender, getDescription(), getUsage());
             return true;
         }
         if (args.length >= 1 && args[0].equalsIgnoreCase("status")) {
@@ -43,13 +43,17 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandExecutor, CommandP
             onCmd_Testment(sender, cmd, args);
             return true;
         }
-        SendUsageMessage(sender, cmd);
+        SendUsageMessage(sender, getDescription(), getUsage());
         return true;
     }
 
     private void onCmd_Status(CommandSender sender, Command cmd, String[] args) {
         if (args.length == 1) {
             Set<Jail> jails = Jail.getList();
+            if(jails == null){
+                SendMessage(sender, cmd, "Jailデータの取得に失敗しました。しばらく経ってからもう一度お試しください。");
+                return;
+            }
             SendMessage(sender, cmd, "現在、" + jails.size() + "人のプレイヤーがJailされています。");
             for (Jail jail : jails) {
                 String name;
@@ -158,15 +162,14 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandExecutor, CommandP
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/jail add <Target> <Reason>: TargetをJailします。");
-                add("/jail remove <Target>: TargetのJailを解除します。");
-                add("/jail status: Jail一覧を表示します。");
-                add("/jail status <Target>: TargetのJail情報を表示します。");
-                add("/jail testment <Testment>: 遺言を記録します。");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "jail",
+                new CmdUsage.Cmd("add <Target> <Reason>", "TargetをJailします。"),
+                new CmdUsage.Cmd("remove <Target>", "TargetのJailを解除します。"),
+                new CmdUsage.Cmd("status", "Jail一覧を表示します。"),
+                new CmdUsage.Cmd("status <Target>", "TargetのJail情報を表示します。"),
+                new CmdUsage.Cmd("testment <Testment>", "遺言を記録します。")
+        );
     }
 }

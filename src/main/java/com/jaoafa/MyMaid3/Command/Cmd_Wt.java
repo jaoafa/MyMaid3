@@ -1,5 +1,6 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import org.bukkit.Bukkit;
@@ -9,14 +10,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Cmd_Wt extends MyMaidLibrary implements CommandExecutor, CommandPremise {
-    Map<String, String> worlds = new HashMap<String, String>() {
+    final Map<String, String> worlds = new HashMap<String, String>() {
         {
             put("1", "Jao_Afa");
             put("2", "Jao_Afa_nether");
@@ -25,9 +25,9 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandExecutor, CommandPre
     };
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
-            SendUsageMessage(sender, cmd);
+            SendUsageMessage(sender, getDescription(), getUsage());
             return true;
         }
 
@@ -104,7 +104,7 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandExecutor, CommandPre
             }
             return true;
         }
-        SendUsageMessage(sender, cmd);
+        SendUsageMessage(sender, getDescription(), getUsage());
         return true;
     }
 
@@ -114,11 +114,13 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandExecutor, CommandPre
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/wt <WorldID/WorldName>: 指定されたWorldIDもしくはWorldNameのワールドのスポーン地点にテレポートします。");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "wt",
+                new CmdUsage.Cmd("1", "ワールド「Jao_Afa」にテレポートします。"),
+                new CmdUsage.Cmd("2", "ワールド「Jao_Afa_nether」にテレポートします。"),
+                new CmdUsage.Cmd("3", "ワールド「SandBox」にテレポートします。"),
+                new CmdUsage.Cmd("<WorldName>", "指定されたワールド名のワールドのスポーン地点にテレポートします。")
+        );
     }
 }

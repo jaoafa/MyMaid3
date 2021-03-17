@@ -15,9 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Task_CoOLD extends BukkitRunnable {
-    Player player;
-    Location loc;
-    int page;
+    final Player player;
+    final Location loc;
+    final int page;
 
     public Task_CoOLD(Player player, Location loc, int page) {
         this.player = player;
@@ -64,7 +64,6 @@ public class Task_CoOLD extends BukkitRunnable {
                 String username = getUserName(res.getInt("user"));
                 int type = res.getInt("type");
                 String typeja = getTypeJa(type);
-                @SuppressWarnings("deprecation")
                 Material material = Material.getMaterial(res.getInt("type"));
                 String block = material != null ? nameFilter(material, res.getInt("data"))
                         : res.getInt("type") + ":" + res.getInt("data");
@@ -96,7 +95,6 @@ public class Task_CoOLD extends BukkitRunnable {
             player.sendMessage(
                     "[CoreProtectOLD] " + ChatColor.LIGHT_PURPLE + "再度実行しなおすと動作するかもしれません。");
             e.printStackTrace();
-            return;
         }
     }
 

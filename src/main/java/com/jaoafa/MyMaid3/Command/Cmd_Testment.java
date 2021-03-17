@@ -1,5 +1,6 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.Jail;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
@@ -8,13 +9,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class Cmd_Testment extends MyMaidLibrary implements CommandExecutor, CommandPremise {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
             SendMessage(sender, cmd, "このコマンドはサーバ内から実行できます。");
             return true;
@@ -44,11 +43,10 @@ public class Cmd_Testment extends MyMaidLibrary implements CommandExecutor, Comm
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/testment <Testment>");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "testment",
+                new CmdUsage.Cmd("", "遺言を記録します。")
+        );
     }
 }

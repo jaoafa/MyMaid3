@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Task_OldWorldCheck extends BukkitRunnable {
-    List<String> targetWorlds = Arrays.asList("kassi-hp-tk", "Jao_Afa_1", "Jao_Afa_2", "SandBox_1", "SandBox_2", "SandBox_3", "ReJao_Afa", "Summer2017", "Summer2018");
+    final List<String> targetWorlds = Arrays.asList("kassi-hp-tk", "Jao_Afa_1", "Jao_Afa_2", "SandBox_1", "SandBox_2", "SandBox_3", "ReJao_Afa", "Summer2017", "Summer2018");
 
     @Override
     public void run() {

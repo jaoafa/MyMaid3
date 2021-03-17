@@ -48,7 +48,6 @@ public class Event_SignLogger extends MyMaidLibrary implements Listener {
             statement.close();
         } catch (SQLException e) {
             ErrorReporter.report(e);
-            return;
         }
     }
 }

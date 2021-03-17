@@ -38,7 +38,7 @@ public class Event_History extends MyMaidLibrary implements Listener {
             return;
         }
 
-        MyMaidConfig.getJDA().getTextChannelById(597423444501463040L)
+        MyMaidConfig.getJDA(.getTextChannelById(597423444501463040L))
                 .sendMessage("**-----: Historyjao DATA / `" + player.getName() + "` :-----**\n"
                         + "```" + String.join("\n", data) + "```")
                 .queue();

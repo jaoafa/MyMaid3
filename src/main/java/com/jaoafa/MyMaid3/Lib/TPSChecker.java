@@ -75,22 +75,6 @@ public class TPSChecker {
         }
     }
 
-    /*
-    private static String format(double tps)
-    {
-        return ( ( tps > 18.0 ) ? ChatColor.GREEN : ( tps > 16.0 ) ? ChatColor.YELLOW : ChatColor.RED ).toString()
-                + ( ( tps > 20.0 ) ? "*" : "" ) + Math.min( Math.round( tps * 100.0 ) / 100.0, 20.0 );
-    }
-    */
-	/*public static String TPSColor(double tps){
-		if(tps > 18.0){
-			return "green";
-		}
-		if(tps > 16.0){
-			return "yellow";
-		}
-		return "red";
-	}*/
     public static ChatColor TPSColor(double tps) {
         if (tps > 18.0) {
             return ChatColor.GREEN;

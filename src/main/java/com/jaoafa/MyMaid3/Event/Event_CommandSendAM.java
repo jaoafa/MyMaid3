@@ -21,9 +21,6 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
         String command = event.getMessage();
         if (isAMRV(player)) {
             // Default以上は実行試行したコマンドを返す

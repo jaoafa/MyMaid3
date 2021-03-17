@@ -56,8 +56,6 @@ public class PlayerVoteData extends MyMaidLibrary {
     @Deprecated
     public PlayerVoteData(String name) throws NullPointerException {
         OfflinePlayer offplayer = Bukkit.getOfflinePlayer(name);
-        if (offplayer == null)
-            throw new NullPointerException("We could not get the player.");
         this.offplayer = offplayer;
 
         changePlayerName();

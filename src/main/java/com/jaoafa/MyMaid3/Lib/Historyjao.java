@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class Historyjao extends MyMaidLibrary {
-    static Map<UUID, Historyjao> data = new HashMap<>();
+    static final Map<UUID, Historyjao> data = new HashMap<>();
 
-    OfflinePlayer player;
+    final OfflinePlayer player;
     String name;
     UUID uuid;
     boolean found = false;
@@ -145,7 +145,7 @@ public class Historyjao extends MyMaidLibrary {
         return found;
     }
 
-    public class HistoryData {
+    public static class HistoryData {
         public int id;
         public String player;
         public String message;

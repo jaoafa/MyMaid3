@@ -56,7 +56,7 @@ public class Event_AMHistoryNotify extends MyMaidLibrary implements Listener {
                     eb.addField("[" + hist.id + "] " + sdfFormat(hist.getCreatedAt()), hist.message, false);
                 }
 
-                MyMaidConfig.getJDA().getTextChannelById(597423444501463040L).sendMessage(eb.build());
+                MyMaidConfig.getJDA(.getTextChannelById(597423444501463040L)).sendMessage(eb.build()).queue();
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
     }

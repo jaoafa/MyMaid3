@@ -1,5 +1,6 @@
 package com.jaoafa.MyMaid3.Command;
 
+import com.jaoafa.MyMaid3.Lib.CmdUsage;
 import com.jaoafa.MyMaid3.Lib.CommandPremise;
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
 import org.bukkit.ChatColor;
@@ -9,16 +10,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Cmd_Ded extends MyMaidLibrary implements CommandExecutor, CommandPremise {
-    public static Map<String, Location> ded = new HashMap<String, Location>();
+    public static final Map<String, Location> ded = new HashMap<>();
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
         if (!(sender instanceof Player)) {
             SendMessage(sender, cmd, "このコマンドはプレイヤーから実行してください。");
             return true;
@@ -48,11 +48,10 @@ public class Cmd_Ded extends MyMaidLibrary implements CommandExecutor, CommandPr
     }
 
     @Override
-    public List<String> getUsage() {
-        return new ArrayList<String>() {
-            {
-                add("/ded");
-            }
-        };
+    public CmdUsage getUsage() {
+        return new CmdUsage(
+                "ded",
+                new CmdUsage.Cmd("", getDescription())
+        );
     }
 }

@@ -14,10 +14,10 @@ import java.util.*;
  *
  * @author tomachi
  */
-public class ChatJail extends MyMaidLibrary {
-    static Map<UUID, ChatJail> data = new HashMap<>();
+public class ChatBan extends MyMaidLibrary {
+    static final Map<UUID, ChatBan> data = new HashMap<>();
 
-    OfflinePlayer player;
+    final OfflinePlayer player;
     String name;
     UUID uuid;
 
@@ -28,31 +28,31 @@ public class ChatJail extends MyMaidLibrary {
 
     long DBSyncTime = -1L;
 
-    public ChatJail(OfflinePlayer offplayer) {
+    public ChatBan(OfflinePlayer offplayer) {
         if (data.containsKey(offplayer.getUniqueId())) {
-            ChatJail chatjail = data.get(offplayer.getUniqueId());
-            this.name = chatjail.getName();
-            this.uuid = chatjail.getUUID();
-            this.banned = chatjail.isBanned();
-            this.lastreason = chatjail.getLastBanReason();
-            this.banned_unixtime = chatjail.getBannedUnixTime();
-            this.banned_by = chatjail.getBannedBy();
-            this.DBSyncTime = chatjail.getDBSyncTime();
+            ChatBan chatban = data.get(offplayer.getUniqueId());
+            this.name = chatban.getName();
+            this.uuid = chatban.getUUID();
+            this.banned = chatban.isBanned();
+            this.lastreason = chatban.getLastBanReason();
+            this.banned_unixtime = chatban.getBannedUnixTime();
+            this.banned_by = chatban.getBannedBy();
+            this.DBSyncTime = chatban.getDBSyncTime();
         }
         this.player = offplayer;
         DBSync();
     }
 
-    public ChatJail(UUID uuid) {
+    public ChatBan(UUID uuid) {
         if (data.containsKey(uuid)) {
-            ChatJail chatjail = data.get(uuid);
-            this.name = chatjail.getName();
-            this.uuid = chatjail.getUUID();
-            this.banned = chatjail.isBanned();
-            this.lastreason = chatjail.getLastBanReason();
-            this.banned_unixtime = chatjail.getBannedUnixTime();
-            this.banned_by = chatjail.getBannedBy();
-            this.DBSyncTime = chatjail.getDBSyncTime();
+            ChatBan chatban = data.get(uuid);
+            this.name = chatban.getName();
+            this.uuid = chatban.getUUID();
+            this.banned = chatban.isBanned();
+            this.lastreason = chatban.getLastBanReason();
+            this.banned_unixtime = chatban.getBannedUnixTime();
+            this.banned_by = chatban.getBannedBy();
+            this.DBSyncTime = chatban.getDBSyncTime();
         }
         this.player = Bukkit.getOfflinePlayer(uuid);
         DBSync();
@@ -63,8 +63,8 @@ public class ChatJail extends MyMaidLibrary {
      *
      * @return 現在処罰中のユーザーの一覧。取得に失敗した場合はnull
      */
-    public static Set<ChatJail> getList() {
-        Set<ChatJail> ChatJailList = new HashSet<>();
+    public static Set<ChatBan> getList() {
+        Set<ChatBan> chatBanList = new HashSet<>();
         if (MyMaidConfig.getMySQLDBManager() == null) {
             throw new IllegalStateException("Main.MySQLDBManager == null");
         }
@@ -74,12 +74,12 @@ public class ChatJail extends MyMaidLibrary {
             statement.setBoolean(1, true);
             ResultSet res = statement.executeQuery();
             while (res.next()) {
-                ChatJail chatjail = new ChatJail(UUID.fromString(res.getString("uuid")));
-                ChatJailList.add(chatjail);
+                ChatBan chatban = new ChatBan(UUID.fromString(res.getString("uuid")));
+                chatBanList.add(chatban);
             }
             res.close();
             statement.close();
-            return ChatJailList;
+            return chatBanList;
         } catch (SQLException e) {
             return null;
         }
@@ -115,13 +115,13 @@ public class ChatJail extends MyMaidLibrary {
         DBSync(true);
 
         Bukkit.broadcastMessage(
-                "[ChatJail] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でChatJailされました。");
+                "[ChatBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」が「" + reason + "」という理由でChatJailされました。");
         MyMaidConfig.getJaotanChannel().sendMessage(
-                "__**ChatJail[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
+                "__**ChatBan[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
                         + "」によって「" + reason + "」という理由でChatJailされました。")
                 .queue();
         MyMaidConfig.getServerChatChannel().sendMessage(
-                "__**ChatJail[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
+                "__**ChatBan[追加]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」が「" + DiscordEscape(banned_by)
                         + "」によって「" + reason + "」という理由でChatJailされました。")
                 .queue();
 
@@ -134,8 +134,8 @@ public class ChatJail extends MyMaidLibrary {
             Location minami = new Location(Jao_Afa, 2856, 69, 2888);
             player.getPlayer().teleport(minami);
 
-            player.getPlayer().sendMessage("[ChatJail] " + ChatColor.RED + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
-            player.getPlayer().sendMessage("[ChatJail] " + ChatColor.RED + "https://jaoafa.com/rule/management/punishment");
+            player.getPlayer().sendMessage("[ChatBan] " + ChatColor.RED + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
+            player.getPlayer().sendMessage("[ChatBan] " + ChatColor.RED + "https://jaoafa.com/rule/management/punishment");
         }
 
         return true;
@@ -172,14 +172,14 @@ public class ChatJail extends MyMaidLibrary {
                     .sendMessage(ChatColor.GRAY + "[" + sdf.format(new Date()) + "]" + ChatColor.GOLD + "■jaotan"
                             + ChatColor.WHITE + ": " + "じゃあな…！");
         }
-        Bukkit.broadcastMessage("[ChatJail] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」のChatJailを解除しました。");
+        Bukkit.broadcastMessage("[ChatBan] " + ChatColor.RED + "プレイヤー:「" + player.getName() + "」のChatJailを解除しました。");
         MyMaidConfig.getJaotanChannel().sendMessage(
-                "__**ChatJail[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のChatJailを「"
+                "__**ChatBan[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のChatJailを「"
                         + DiscordEscape(removePlayerName) + "」によって解除されました。")
                 .queue();
         MyMaidConfig.getServerChatChannel()
                 .sendMessage(
-                        "__**ChatJail[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のChatJailを「"
+                        "__**ChatBan[解除]**__: プレイヤー「" + DiscordEscape(player.getName()) + "」のChatJailを「"
                                 + DiscordEscape(removePlayerName) + "」によって解除されました。")
                 .queue();
         return true;

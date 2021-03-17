@@ -44,7 +44,7 @@ public class Event_PacketLimiterKickNotify extends MyMaidLibrary implements List
             event.getPlayer().teleport(teleportLoc);
             System.out.println("[PacketLimiter_AutoTP] teleport to Jao_Afa " + x + " 70 " + z);
 
-            MyMaidConfig.getJDA().getTextChannelById(597423444501463040L).sendMessage(embed.build()).queue();
+            MyMaidConfig.getJDA(.getTextChannelById(597423444501463040L)).sendMessage(embed.build()).queue();
         }
     }
 }
