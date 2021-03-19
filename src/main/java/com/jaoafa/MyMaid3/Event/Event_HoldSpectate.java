@@ -12,6 +12,7 @@
 package com.jaoafa.MyMaid3.Event;
 
 import com.jaoafa.MyMaid3.Lib.MyMaidLibrary;
+import com.jaoafa.MyMaid3.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,8 @@ public class Event_HoldSpectate extends MyMaidLibrary implements Listener {
                 .filter(p -> p.getSpectatorTarget().getUniqueId().equals(player.getUniqueId()))
                 .forEach(p -> {
                     p.setSpectatorTarget(null);
-                    p.setSpectatorTarget(player);
+                    p.teleport(player, PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getJavaPlugin(), () -> p.setSpectatorTarget(player));
                 });
     }
 }
