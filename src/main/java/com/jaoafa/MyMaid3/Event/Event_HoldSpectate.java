@@ -29,7 +29,7 @@ public class Event_HoldSpectate extends MyMaidLibrary implements Listener {
                 .forEach(p -> {
                     p.setSpectatorTarget(null);
                     p.teleport(player, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getJavaPlugin(), () -> p.setSpectatorTarget(player));
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getJavaPlugin(), () -> p.setSpectatorTarget(player), 8);
                 });
     }
 }
