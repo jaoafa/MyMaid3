@@ -50,6 +50,8 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
         antiCommandMap.put("/stop", new AntiCmd_StopCmd());
         antiCommandMap.put("/bukkit:stop", new AntiCmd_StopCmd());
         antiCommandMap.put("/minecraft:stop", new AntiCmd_StopCmd());
+        antiCommandMap.put("/advancement", new AntiCmd_Advancement());
+        antiCommandMap.put("/minecraft:advancement", new AntiCmd_Advancement());
     }
 
     @EventHandler
@@ -274,6 +276,11 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
             player.chat("続きは http://www.nicovideo.jp/watch/sm32492001 で！ｗ");
             player.chat("(私は\"" + command + "\"コマンドを使用しました。)");
              */
+
+            player.chat("聞いてよアカネチャン！ ん？");
+            player.chat("良いこと思いつきました なんや？");
+            player.chat("私 有名実況者になります！");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
@@ -344,6 +351,14 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
                     "SEGAのゲームは宇宙一ィィィィィィィィィィィィ！！！！！！！ィィィ！！ィィィ！！ィィィ！！ィィィ！！ィィィ！！ィィィ！！ィィィ！！イイイイイイイイイイィィィィィ！！！イイイイイィィ⤵");
             player.chat("(私は\"" + command + "\"コマンドを使用しました。)");
              */
+
+            player.chat("インド人を右にィ(´･∀･｀)");
+            player.chat("インド人を右にィ（ ՞ਊ ՞）☝");
+            player.chat("インド人を右にィ(´･∀･｀)");
+            player.chat("インド人を右にィ（☝ ՞ਊ ՞）☝");
+            player.chat("インド人を右にィ(´･∀･｀)");
+            player.chat("インド人を右にィ（☝ ՞ਊ ՞）☝");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
@@ -392,11 +407,11 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
             player.chat("It is my job to protect the members.");
             player.chat("However!");
             player.chat("Let's go because it is good. Everyone is waiting. in addition···.");
+             */
 
             player.chat("I will not stop, as long as you do not stop, I'll be there before that!");
             player.chat("That's why, Don't you ever stop!");
-            player.chat("(私は\"" + command + "\"コマンドを使用しました。)");
-             */
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             player.setHealth(0.0D);
             checkSpam(player);
             event.setCancelled(true);
@@ -422,9 +437,9 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
             player.chat("(‘o’) ィ～ニャッハッハッハッハハハッハッハハハハハハッハッハッ(ｳｫｰｱｰ?ﾀﾞｨｬ)");
             player.chat("(‘o’) ィ～ニャッハッハッハッハッハハハッハッハハハッハッハッハハハッ(ﾋﾟｩｰﾝ)");
             player.chat("(‘o’) ィ～ニャッハッハッハッハハハッハッハハハハハハッハッハッ(ﾆｮﾝ)ウォオオオオウ！！！！！！");
-            player.chat("(‘o’) ＜ を");
-            player.chat("(私は\"" + command + "\"コマンドを使用しました。)");
             */
+            player.chat("(‘o’) ＜ を");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
@@ -457,12 +472,28 @@ public class Event_AntiProblemCmd extends MyMaidLibrary implements Listener {
             player.chat("団員を守んのは俺の仕事だ。");
             player.chat("でも！");
             player.chat("いいから行くぞ。皆が待ってんだ。それに・・・。");
+            */
 
             player.chat("俺は止まんねぇからよ、お前らが止まんねぇかぎり、その先に俺はいるぞ！");
             player.chat("だからよ、止まるんじゃねぇぞ・・・。");
-            player.chat("(私は\"" + command + "\"コマンドを使用しました。)");
-            */
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             player.setHealth(0.0D);
+            checkSpam(player);
+            event.setCancelled(true);
+        }
+    }
+
+    static class AntiCmd_Advancement implements AntiCommand {
+        @Override
+        public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
+            if (isAMR(player)) {
+                return;
+            }
+
+            player.chat("僕ね、受験期のときに、眞子さま、あの、あれなんすよ、あのー、待ち受けにしていたんですよ。");
+            player.chat("マジでショックです！");
+            player.chat("まぁでも幸せなら……OKです！");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
         }
